@@ -9,25 +9,35 @@ const __dirname = path.dirname(__filename);
 
 function getGitVersion() {
   try {
+    // 检测当前是否在 git submodule 中
+    const parentDir = path.resolve(__dirname, '../../');
+    const isSubmodule = fs.existsSync(path.join(__dirname, '../.git')) &&
+                       fs.readFileSync(path.join(__dirname, '../.git'), 'utf8').startsWith('gitdir:');
+
+    // 设置 git 命令的工作目录
+    const gitOptions = isSubmodule ? { cwd: parentDir, encoding: 'utf8' } : { encoding: 'utf8' };
+
+    console.log(`Detecting git info from: ${isSubmodule ? 'parent project' : 'current directory'}`);
+
     // 尝试获取最新的 git tag
-    const tag = execSync('git describe --tags --abbrev=0', { encoding: 'utf8' }).trim();
+    const tag = execSync('git describe --tags --abbrev=0', gitOptions).trim();
 
     // 获取当前提交的短哈希
-    const commitHash = execSync('git rev-parse --short HEAD', { encoding: 'utf8' }).trim();
+    const commitHash = execSync('git rev-parse --short HEAD', gitOptions).trim();
 
     // 检查当前是否有未提交的更改
-    const isDirty = execSync('git status --porcelain', { encoding: 'utf8' }).trim() !== '';
+    const isDirty = execSync('git status --porcelain', gitOptions).trim() !== '';
 
     // 检查当前提交是否就是 tag 指向的提交
-    const tagCommit = execSync(`git rev-list -n 1 ${tag}`, { encoding: 'utf8' }).trim();
-    const currentCommit = execSync('git rev-parse HEAD', { encoding: 'utf8' }).trim();
+    const tagCommit = execSync(`git rev-list -n 1 ${tag}`, gitOptions).trim();
+    const currentCommit = execSync('git rev-parse HEAD', gitOptions).trim();
 
     let version = tag;
 
     // 如果当前提交不是 tag 指向的提交，添加提交信息
     if (tagCommit !== currentCommit) {
       // 获取从 tag 到当前提交的提交数量
-      const commitCount = execSync(`git rev-list --count ${tag}..HEAD`, { encoding: 'utf8' }).trim();
+      const commitCount = execSync(`git rev-list --count ${tag}..HEAD`, gitOptions).trim();
       version = `${tag}-${commitCount}-g${commitHash}`;
     }
 
@@ -40,7 +50,14 @@ function getGitVersion() {
   } catch (error) {
     console.warn('Warning: Could not get git version info:', error.message);
 
-    // 回退方案：使用 package.json 中的版本号
+    // 回退方案1：尝试从环境变量获取版本（适用于 CI 环境）
+    if (process.env.GITHUB_REF && process.env.GITHUB_REF.startsWith('refs/tags/')) {
+      const tagVersion = process.env.GITHUB_REF.replace('refs/tags/', '');
+      console.log(`Using version from GitHub environment: ${tagVersion}`);
+      return tagVersion;
+    }
+
+    // 回退方案2：使用 package.json 中的版本号
     try {
       const packageJson = JSON.parse(fs.readFileSync(path.join(__dirname, '../package.json'), 'utf8'));
       return packageJson.version || '1.0.0';
@@ -57,10 +74,18 @@ function getBuildTime() {
 
 function getGitInfo() {
   try {
-    const branch = execSync('git rev-parse --abbrev-ref HEAD', { encoding: 'utf8' }).trim();
-    const commitHash = execSync('git rev-parse HEAD', { encoding: 'utf8' }).trim();
-    const commitShort = execSync('git rev-parse --short HEAD', { encoding: 'utf8' }).trim();
-    const commitDate = execSync('git log -1 --format=%ci', { encoding: 'utf8' }).trim();
+    // 检测当前是否在 git submodule 中
+    const parentDir = path.resolve(__dirname, '../../');
+    const isSubmodule = fs.existsSync(path.join(__dirname, '../.git')) &&
+                       fs.readFileSync(path.join(__dirname, '../.git'), 'utf8').startsWith('gitdir:');
+
+    // 设置 git 命令的工作目录
+    const gitOptions = isSubmodule ? { cwd: parentDir, encoding: 'utf8' } : { encoding: 'utf8' };
+
+    const branch = execSync('git rev-parse --abbrev-ref HEAD', gitOptions).trim();
+    const commitHash = execSync('git rev-parse HEAD', gitOptions).trim();
+    const commitShort = execSync('git rev-parse --short HEAD', gitOptions).trim();
+    const commitDate = execSync('git log -1 --format=%ci', gitOptions).trim();
 
     return {
       branch,
