@@ -166,7 +166,7 @@
               v-if="editingLink"
               class="inline-flex items-center px-2 py-1 rounded-full text-xs font-bold bg-gradient-to-r from-indigo-100 to-purple-100 dark:from-indigo-900/30 dark:to-purple-900/30 text-indigo-800 dark:text-indigo-300 border border-indigo-200/50 dark:border-indigo-700/50 shadow-sm"
             >
-              {{ $t('links.editing', { code: editingLink.short_code }) }}
+              {{ $t('links.editing', { code: editingLink.code }) }}
             </span>
             <ChevronDownIcon
               :class="[
@@ -227,6 +227,19 @@
               />
               <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 font-medium">
                 {{ $t('links.targetUrlHelp') }}
+              </p>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-gray-900 dark:text-gray-100 mb-1 uppercase tracking-wide">{{ $t('links.passwordOptional') }}</label>
+              <input
+                v-model="formData.password"
+                type="password"
+                class="w-full px-3 py-2 border-2 border-gray-200/50 dark:border-gray-600/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-400 dark:focus:border-indigo-500 transition-all duration-300 shadow-sm bg-white/80 dark:bg-gray-700/80 backdrop-blur-sm text-sm text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
+                :placeholder="$t('links.passwordPlaceholder')"
+              />
+              <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 font-medium">
+                {{ $t('links.passwordHelp') }}
               </p>
             </div>
 
@@ -355,24 +368,28 @@
             <tbody>
               <tr
                 v-for="link in filteredLinks"
-                :key="link.short_code"
+                :key="link.code"
                 class="border-b border-gray-100/70 dark:border-gray-700/70 hover:bg-gradient-to-r hover:from-gray-50/80 hover:to-indigo-50/40 dark:hover:from-gray-700/50 dark:hover:to-indigo-900/20 transition-all duration-300 group"
               >
                 <td class="py-3 px-4">
                   <button
-                    @click="copyShortLink(link.short_code)"
+                    @click="copyShortLink(link.code)"
                     :class="[
                       'font-mono text-xs px-3 py-1.5 rounded-lg transition-all duration-300 border shadow-sm hover:shadow-md',
-                      copiedLink === link.short_code
+                      copiedLink === link.code
                         ? 'bg-gradient-to-r from-emerald-100 to-emerald-50 dark:from-emerald-900/30 dark:to-emerald-800/20 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700 scale-105 shadow-md'
-                        : 'bg-gradient-to-r from-gray-100 to-gray-50 dark:from-gray-700 dark:to-gray-600 text-gray-800 dark:text-gray-200 border-gray-200 dark:border-gray-600 hover:from-indigo-100 hover:to-indigo-50 dark:hover:from-indigo-900/30 dark:hover:to-indigo-800/20 hover:text-indigo-800 dark:hover:text-indigo-300 hover:border-indigo-300 dark:hover:border-indigo-700 group-hover:scale-105'
+                        : link.password
+                          ? 'bg-gradient-to-r from-amber-100 to-amber-50 dark:from-amber-700 dark:to-amber-600 text-amber-800 dark:text-amber-200 border-amber-200 dark:border-amber-600 hover:from-amber-200 hover:to-amber-100 dark:hover:from-amber-600 dark:hover:to-amber-500 hover:text-amber-900 dark:hover:text-amber-100 hover:border-amber-300 dark:hover:border-amber-500 group-hover:scale-105'
+                          : 'bg-gradient-to-r from-gray-100 to-gray-50 dark:from-gray-700 dark:to-gray-600 text-gray-800 dark:text-gray-200 border-gray-200 dark:border-gray-600 hover:from-indigo-100 hover:to-indigo-50 dark:hover:from-indigo-900/30 dark:hover:to-indigo-800/20 hover:text-indigo-800 dark:hover:text-indigo-300 hover:border-indigo-300 dark:hover:border-indigo-700 group-hover:scale-105'
                     ]"
-                    :title="copiedLink === link.short_code ? $t('common.copied') : $t('links.copyLinkTitle')"
+                    :title="copiedLink === link.code ? $t('common.copied') : link.password ? $t('links.copyPasswordProtectedLink') : $t('links.copyLinkTitle')"
                   >
                     <div class="flex items-center gap-1.5">
-                      <span class="font-bold">{{ link.short_code }}</span>
+                      <span class="font-bold">{{ link.code }}</span>
+                      <!-- 密码保护图标 -->
+                      <span v-if="link.password && copiedLink !== link.code" class="text-amber-600 dark:text-amber-400">🔒</span>
                       <CheckCircleIcon
-                        v-if="copiedLink === link.short_code"
+                        v-if="copiedLink === link.code"
                         className="w-3 h-3 text-emerald-700 dark:text-emerald-400"
                       />
                       <CopyIcon
@@ -384,12 +401,12 @@
                 </td>
                 <td class="py-3 px-4">
                   <a
-                    :href="link.target_url"
+                    :href="link.target"
                     target="_blank"
                     rel="noopener noreferrer"
                     class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 truncate block max-w-xs"
                   >
-                    {{ link.target_url }}
+                    {{ link.target }}
                   </a>
                 </td>
                 <td class="py-3 px-4">
@@ -416,6 +433,13 @@
                       class="text-xs text-gray-500 dark:text-gray-400"
                     >
                       {{ isExpired(link.expires_at) ? $t('links.expired') : $t('analytics.expires') }}: {{ formatDate(link.expires_at) }}
+                    </span>
+                    <!-- 密码保护标识 -->
+                    <span
+                      v-if="link.password"
+                      class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-amber-100 dark:bg-amber-900/30 text-amber-800 dark:text-amber-300 w-fit"
+                    >
+                      🔒 {{ $t('links.passwordProtected') }}
                     </span>
                   </div>
                 </td>
@@ -530,7 +554,7 @@
 
               <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-3">{{ $t('links.deleteLink') }}</h3>
               <p class="text-sm text-gray-700 dark:text-gray-300 mb-8 leading-relaxed">
-                {{ $t('links.deleteConfirmation', { code: deletingLink?.short_code }) }}
+                {{ $t('links.deleteConfirmation', { code: deletingLink?.code }) }}
               </p>
 
               <div class="flex justify-center space-x-4">
@@ -560,9 +584,14 @@
       class="fixed top-6 right-6 z-50 bg-gradient-to-r from-emerald-500 to-emerald-600 dark:from-emerald-400 dark:to-emerald-500 text-white px-6 py-4 rounded-2xl shadow-2xl transform transition-all duration-300 ease-out border border-emerald-400/50 dark:border-emerald-500/50"
       :class="showCopyToast ? 'translate-x-0 opacity-100 scale-100' : 'translate-x-full opacity-0 scale-95'"
     >
-      <div class="flex items-center gap-3">
-        <CheckCircleIcon className="w-6 h-6" />
-        <span class="font-bold text-lg">{{ $t('links.linkCopied') }}</span>
+      <div class="flex items-start gap-3">
+        <CheckCircleIcon className="w-6 h-6 flex-shrink-0 mt-0.5" />
+        <div>
+          <div class="font-bold text-lg">{{ $t('links.linkCopied') }}</div>
+          <div v-if="copiedLinkHasPassword" class="text-emerald-100 text-sm mt-1">
+            {{ $t('links.passwordParameterAdded') }}
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -588,12 +617,14 @@ const showDeleteModal = ref(false)
 const editingLink = ref<SerializableShortLink | null>(null)
 const deletingLink = ref<SerializableShortLink | null>(null)
 const copiedLink = ref<string | null>(null)
+const copiedLinkHasPassword = ref<boolean>(false)
 const showCopyToast = ref(false)
 
 const formData = reactive<LinkPayload>({
   code: '',
   target: '',
   expires_at: null,
+  password: null,
 })
 
 const filterForm = reactive({
@@ -771,13 +802,15 @@ function resetForm() {
   formData.code = ''
   formData.target = ''
   formData.expires_at = null
+  formData.password = null
 }
 
 function startEdit(link: SerializableShortLink) {
-  formData.code = link.short_code
-  formData.target = link.target_url
+  formData.code = link.code
+  formData.target = link.target
   // 将 RFC3339 时间转换为 datetime-local 格式
   formData.expires_at = link.expires_at ? formatDateTimeLocal(link.expires_at) : null
+  formData.password = link.password
   editingLink.value = { ...link }
   showForm.value = true
 
@@ -815,10 +848,11 @@ async function handleSave() {
       target: formData.target,
       // 将 datetime-local 格式转换为 RFC3339
       expires_at: formData.expires_at ? formatToRFC3339(formData.expires_at) : null,
+      password: formData.password || null,
     }
 
     if (editingLink.value) {
-      await updateLink(editingLink.value.short_code, payload)
+      await updateLink(editingLink.value.code, payload)
       editingLink.value = null
     } else {
       await createLink(payload)
@@ -833,7 +867,7 @@ async function handleSave() {
 async function handleDelete() {
   if (deletingLink.value) {
     try {
-      await deleteLink(deletingLink.value.short_code)
+      await deleteLink(deletingLink.value.code)
       closeDeleteModal()
     } catch (err) {
       console.error('Delete failed:', err)
@@ -843,18 +877,28 @@ async function handleDelete() {
 
 async function copyShortLink(code: string) {
   const baseUrl = import.meta.env.VITE_API_BASE_URL || window.location.origin
-  const shortUrl = `${baseUrl}/${code}`
+
+  // 查找对应的链接以检查是否有密码保护
+  const link = links.value.find(l => l.code === code)
+  const hasPassword = link?.password
+
+  // 如果有密码保护，添加 ?password=实际密码 参数
+  const shortUrl = hasPassword
+    ? `${baseUrl}/${code}?password=${link.password}`
+    : `${baseUrl}/${code}`
 
   try {
     await navigator.clipboard.writeText(shortUrl)
 
-    // 设置当前复制的链接
+    // 设置当前复制的链接和密码状态
     copiedLink.value = code
+    copiedLinkHasPassword.value = !!hasPassword
     showCopyToast.value = true
 
     // 2秒后重置状态
     setTimeout(() => {
       copiedLink.value = null
+      copiedLinkHasPassword.value = false
     }, 2000)
 
     // 3秒后隐藏 Toast

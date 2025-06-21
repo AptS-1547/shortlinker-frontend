@@ -164,24 +164,28 @@
         <div v-else class="space-y-2">
           <div
             v-for="link in recentLinks"
-            :key="link.short_code"
+            :key="link.code"
             class="group flex items-center justify-between p-3 bg-gradient-to-r from-gray-50/80 to-gray-100/40 dark:from-gray-700/50 dark:to-gray-600/30 rounded-lg hover:from-indigo-50/80 hover:to-purple-50/40 dark:hover:from-indigo-900/20 dark:hover:to-purple-900/20 transition-all duration-300 border border-gray-200/50 dark:border-gray-600/50 hover:border-indigo-200/70 dark:hover:border-indigo-700/50 hover:shadow-sm hover:-translate-y-0.5"
           >
             <div class="flex items-center gap-3 flex-1 min-w-0">
               <button
-                @click="copyShortLink(link.short_code)"
+                @click="copyShortLink(link.code)"
                 :class="[
-                  'font-mono text-sm px-3 py-1.5 rounded-lg transition-all duration-300 border shadow-sm hover:shadow-md',
-                  copiedLink === link.short_code
+                  'font-mono text-sm px-3 py-1.5 rounded-lg transition-all duration-300 border shadow-sm hover:shadow-md relative',
+                  copiedLink === link.code
                     ? 'bg-gradient-to-r from-emerald-100 to-emerald-50 dark:from-emerald-900/30 dark:to-emerald-800/20 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700 scale-105 shadow-md'
+                    : link.password
+                    ? 'bg-gradient-to-r from-amber-100 to-amber-50 dark:from-amber-900/30 dark:to-amber-800/20 text-amber-800 dark:text-amber-300 border-amber-300 dark:border-amber-700 hover:from-amber-200 hover:to-amber-100 dark:hover:from-amber-800/40 dark:hover:to-amber-700/30 group-hover:scale-105'
                     : 'bg-gradient-to-r from-gray-100 to-gray-50 dark:from-gray-600 dark:to-gray-500 text-gray-800 dark:text-gray-200 border-gray-200 dark:border-gray-500 hover:from-indigo-100 hover:to-indigo-50 dark:hover:from-indigo-900/30 dark:hover:to-indigo-800/20 hover:text-indigo-800 dark:hover:text-indigo-300 hover:border-indigo-300 dark:hover:border-indigo-700 group-hover:scale-105'
                 ]"
-                :title="copiedLink === link.short_code ? 'Copied!' : 'Click to copy short link'"
+                :title="copiedLink === link.code ? $t('common.copied') : link.password ? $t('links.copyPasswordProtectedLink') : $t('links.copyLinkTitle')"
               >
                 <div class="flex items-center gap-1.5">
-                  <span class="font-bold">{{ link.short_code }}</span>
+                  <span class="font-bold">{{ link.code }}</span>
+                  <!-- 密码保护标识 -->
+                  <span v-if="link.password" class="text-xs" :title="$t('links.passwordProtected')">🔒</span>
                   <CheckCircleIcon
-                    v-if="copiedLink === link.short_code"
+                    v-if="copiedLink === link.code"
                     className="w-3 h-3 text-emerald-700 dark:text-emerald-400"
                   />
                   <CopyIcon
@@ -192,7 +196,7 @@
               </button>
               <span class="text-gray-400 dark:text-gray-500 text-sm">→</span>
               <span class="text-gray-700 dark:text-gray-300 truncate font-medium text-sm">
-                {{ link.target_url }}
+                {{ link.target }}
               </span>
             </div>
             <div class="flex items-center gap-2">
@@ -269,7 +273,9 @@
     >
       <div class="flex items-center gap-2">
         <CheckCircleIcon className="w-4 h-4" />
-        <span class="font-medium text-sm">{{ $t('links.linkCopied') }}</span>
+        <span class="font-medium text-sm">
+          {{ copiedLinkHasPassword ? $t('links.passwordParameterAdded') : $t('links.linkCopied') }}
+        </span>
       </div>
     </div>
   </div>
@@ -294,6 +300,7 @@ const { t } = useI18n()
 
 const healthLoading = ref(false)
 const copiedLink = ref<string | null>(null)
+const copiedLinkHasPassword = ref(false)
 const showCopyToast = ref(false)
 
 const activeLinks = computed(() => {
@@ -355,18 +362,28 @@ function formatDate(dateString: string) {
 
 async function copyShortLink(code: string) {
   const baseUrl = import.meta.env.VITE_API_BASE_URL || window.location.origin
-  const shortUrl = `${baseUrl}/${code}`
+
+  // 查找对应的链接以检查是否有密码保护
+  const link = links.value.find(l => l.code === code)
+  const hasPassword = link?.password
+
+  // 如果有密码保护，添加 ?password=实际密码 参数
+  const shortUrl = hasPassword
+    ? `${baseUrl}/${code}?password=${link.password}`
+    : `${baseUrl}/${code}`
 
   try {
     await navigator.clipboard.writeText(shortUrl)
 
-    // 设置当前复制的链接
+    // 设置当前复制的链接和密码状态
     copiedLink.value = code
+    copiedLinkHasPassword.value = !!hasPassword
     showCopyToast.value = true
 
     // 2秒后重置状态
     setTimeout(() => {
       copiedLink.value = null
+      copiedLinkHasPassword.value = false
     }, 2000)
 
     // 3秒后隐藏 Toast

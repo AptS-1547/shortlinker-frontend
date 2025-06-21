@@ -12,10 +12,12 @@ describe('LinkService.createWithCheck', () => {
   it('returns existing link when duplicate', async () => {
     const payload: LinkPayload = { code: 'abc', target: 'https://a.com' }
     const existing: SerializableShortLink = {
-      short_code: 'abc',
-      target_url: 'https://a.com',
+      code: 'abc',
+      target: 'https://a.com',
       created_at: '',
-      expires_at: null
+      expires_at: null,
+      password: null,
+      click_count: 0
     }
     service.fetchOne = vi.fn().mockResolvedValue(existing)
     service.create = vi.fn()

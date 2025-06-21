@@ -62,7 +62,7 @@ export const useLinksStore = defineStore('links', () => {
     try {
       await LinkAPI.delete(code)
       // 从本地数组中移除
-      links.value = links.value.filter((link) => link.short_code !== code)
+      links.value = links.value.filter((link) => link.code !== code)
     } catch (err: unknown) {
       if (err && typeof err === 'object' && 'response' in err) {
         const apiError = err as { response?: { data?: { error?: string } } }
@@ -89,9 +89,9 @@ export const useLinksStore = defineStore('links', () => {
 
       // 处理API响应格式: { data, pagination }
       if (response && response.data && response.pagination) {
-        // 安全地提取链接数据
-        const linksData = response.data || {}
-        links.value = Object.values(linksData)
+        // 安全地提取链接数据 - 现在是数组格式
+        const linksData = response.data || []
+        links.value = Array.isArray(linksData) ? linksData : []
 
         // 提取分页信息
         totalCount.value = response.pagination.total || 0

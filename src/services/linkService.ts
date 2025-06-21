@@ -6,7 +6,7 @@ export class LinkService {
   /**
    * 获取所有链接（带筛选）
    */
-  async fetchAll(query?: GetLinksQuery): Promise<Record<string, SerializableShortLink>> {
+  async fetchAll(query?: GetLinksQuery): Promise<SerializableShortLink[]> {
     const params = new URLSearchParams()
 
     if (query) {
@@ -16,11 +16,18 @@ export class LinkService {
       if (query.created_before) params.append('created_before', query.created_before)
       if (query.only_expired !== undefined) params.append('only_expired', query.only_expired.toString())
       if (query.only_active !== undefined) params.append('only_active', query.only_active.toString())
+      if (query.search) params.append('search', query.search)
     }
 
     const url = params.toString() ? `/link?${params.toString()}` : '/link'
     const response = await adminClient.get(url)
-    return response.data || {}
+
+    // 处理新的API响应格式: { code, data: [...], pagination }
+    if (response && response.data && Array.isArray(response.data)) {
+      return response.data
+    }
+
+    return []
   }
 
   /**
@@ -42,11 +49,11 @@ export class LinkService {
     const url = params.toString() ? `/link?${params.toString()}` : '/link'
     const response = await adminClient.get(url)
 
-    // 处理新的API响应格式: { code, data, pagination }
+    // 处理新的API响应格式: { code, data: [...], pagination }
     if (response && response.data && response.pagination) {
       return {
         code: response.code || 0,
-        data: response.data || {},
+        data: Array.isArray(response.data) ? response.data : [],
         pagination: response.pagination
       }
     }
@@ -54,7 +61,7 @@ export class LinkService {
     // 如果响应格式不正确，返回空数据
     return {
       code: 0,
-      data: {},
+      data: [],
       pagination: {
         page: 1,
         page_size: 10,

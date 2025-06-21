@@ -1,10 +1,14 @@
 export interface SerializableShortLink {
-  short_code: string
-  target_url: string
+  code: string
+  target: string
   /** RFC3339 格式的创建时间 */
   created_at: string
   /** RFC3339 格式的过期时间，null 表示永不过期 */
   expires_at: string | null
+  /** 密码保护 */
+  password: string | null
+  /** 点击次数 */
+  click_count: number
 }
 
 export interface LinkPayload {
@@ -12,6 +16,8 @@ export interface LinkPayload {
   target: string
   /** RFC3339 格式的过期时间，例如: 2023-12-31T23:59:59Z */
   expires_at?: string | null
+  /** 密码保护 */
+  password?: string | null
   force?: boolean
 }
 
@@ -59,7 +65,7 @@ export interface GetLinksQuery {
 // 新的API响应格式
 export interface PaginatedLinksResponse {
   code: number
-  data: Record<string, SerializableShortLink>
+  data: SerializableShortLink[]  // 改为数组格式
   pagination: {
     page: number
     page_size: number

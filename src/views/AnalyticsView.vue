@@ -35,8 +35,8 @@
           </div>
           <div class="ml-3">
             <h3 class="text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wide">{{ $t('analytics.totalClicks') }}</h3>
-            <p class="text-xl font-bold text-gray-900 dark:text-gray-100 mt-0.5">{{ $t('analytics.na') }}</p>
-            <p class="text-xs text-gray-500 dark:text-gray-400 font-medium mt-0.5">{{ $t('analytics.featureComingSoon') }}</p>
+            <p class="text-xl font-bold text-gray-900 dark:text-gray-100 mt-0.5">{{ totalClicks }}</p>
+            <p class="text-xs text-emerald-600 dark:text-emerald-400 font-medium mt-0.5">{{ $t('analytics.recentActivity') }}</p>
           </div>
         </div>
       </div>
@@ -49,8 +49,8 @@
           </div>
           <div class="ml-3">
             <h3 class="text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wide">{{ $t('analytics.thisWeek') }}</h3>
-            <p class="text-xl font-bold text-gray-900 dark:text-gray-100 mt-0.5">{{ recentLinksCount }}</p>
-            <p class="text-xs text-indigo-600 dark:text-indigo-400 font-medium mt-0.5">{{ $t('analytics.recentActivity') }}</p>
+            <p class="text-xl font-bold text-gray-900 dark:text-gray-100 mt-0.5">{{ weeklyClicks }}</p>
+            <p class="text-xs text-indigo-600 dark:text-indigo-400 font-medium mt-0.5">{{ $t('analytics.clicks') }}</p>
           </div>
         </div>
       </div>
@@ -60,7 +60,7 @@
     <div class="relative bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-xl shadow-lg border border-gray-200/50 dark:border-gray-700/50 p-5 mb-6 transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5">
       <div class="absolute inset-0 bg-gradient-to-br from-blue-50/30 via-indigo-50/20 to-purple-50/30 dark:from-blue-900/10 dark:via-indigo-900/10 dark:to-purple-900/10 rounded-xl"></div>
       <div class="relative">
-        <h2 class="text-lg font-bold text-gray-900 dark:text-gray-100 mb-4 bg-gradient-to-r from-gray-900 to-indigo-900 dark:from-gray-100 dark:to-indigo-300 bg-clip-text text-transparent">
+        <h2 class="text-lg font-bold mb-4 bg-gradient-to-r from-gray-900 to-indigo-900 dark:from-gray-100 dark:to-indigo-300 bg-clip-text text-transparent">
           {{ $t('analytics.recentActivityTitle') }}
         </h2>
 
@@ -74,7 +74,7 @@
         <div v-else-if="recentLinks.length > 0" class="space-y-3">
           <div
             v-for="(link, index) in recentLinks"
-            :key="link.short_code"
+            :key="link.code"
             class="group flex items-center justify-between p-3 bg-gradient-to-r from-gray-50/80 to-gray-100/40 dark:from-gray-700/50 dark:to-gray-600/30 rounded-lg hover:from-indigo-50/80 hover:to-purple-50/40 dark:hover:from-indigo-900/20 dark:hover:to-purple-900/20 transition-all duration-300 border border-gray-200/50 dark:border-gray-600/50 hover:border-indigo-200/70 dark:hover:border-indigo-700/50 hover:shadow-sm hover:-translate-y-0.5"
           >
             <div class="flex items-center gap-3">
@@ -83,12 +83,42 @@
               </div>
               <div class="flex-1 min-w-0">
                 <div class="flex items-center gap-2 mb-1">
-                  <span class="font-mono text-xs bg-gradient-to-r from-indigo-100 to-indigo-50 dark:from-indigo-900/30 dark:to-indigo-800/20 text-indigo-800 dark:text-indigo-300 px-2 py-1 rounded border border-indigo-200/50 dark:border-indigo-700/50 shadow-sm">
-                    {{ link.short_code }}
+                  <button
+                    @click="copyShortLink(link.code)"
+                    :class="[
+                      'font-mono text-xs px-2 py-1 rounded border shadow-sm transition-all duration-300 hover:shadow-md',
+                      copiedLink === link.code
+                        ? 'bg-gradient-to-r from-emerald-100 to-emerald-50 dark:from-emerald-900/30 dark:to-emerald-800/20 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700 scale-105'
+                        : link.password
+                          ? 'bg-gradient-to-r from-amber-100 to-amber-50 dark:from-amber-900/30 dark:to-amber-800/20 text-amber-800 dark:text-amber-300 border-amber-200/50 dark:border-amber-700/50 hover:from-amber-200 hover:to-amber-100 hover:border-amber-300'
+                          : 'bg-gradient-to-r from-indigo-100 to-indigo-50 dark:from-indigo-900/30 dark:to-indigo-800/20 text-indigo-800 dark:text-indigo-300 border-indigo-200/50 dark:border-indigo-700/50 hover:from-indigo-200 hover:to-indigo-100 hover:border-indigo-300'
+                    ]"
+                    :title="copiedLink === link.code ? $t('common.copied') : link.password ? $t('links.copyPasswordProtectedLink') : $t('links.copyLinkTitle')"
+                  >
+                    <div class="flex items-center gap-1">
+                      <span class="font-bold">{{ link.code }}</span>
+                      <span v-if="link.password && copiedLink !== link.code" class="text-amber-600 dark:text-amber-400 text-xs">🔒</span>
+                      <CheckCircleIcon
+                        v-if="copiedLink === link.code"
+                        className="w-3 h-3 text-emerald-700 dark:text-emerald-400"
+                      />
+                      <CopyIcon
+                        v-else
+                        className="w-3 h-3 opacity-0 group-hover:opacity-70 transition-opacity"
+                      />
+                    </div>
+                  </button>
+                  <!-- 密码保护标识 -->
+                  <span
+                    v-if="link.password"
+                    class="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium bg-amber-100 dark:bg-amber-900/30 text-amber-800 dark:text-amber-300 border border-amber-200/50 dark:border-amber-700/50"
+                    :title="$t('links.passwordProtected')"
+                  >
+                    🔒
                   </span>
                   <span class="text-gray-400 dark:text-gray-500 text-sm">→</span>
                   <span class="text-gray-700 dark:text-gray-300 truncate max-w-md font-medium text-sm">
-                    {{ link.target_url }}
+                    {{ link.target }}
                   </span>
                 </div>
                 <p class="text-xs text-gray-500 dark:text-gray-400">
@@ -101,7 +131,7 @@
             </div>
             <div class="text-right">
               <p class="text-xs text-gray-500 dark:text-gray-400 font-medium">{{ $t('analytics.clicks') }}</p>
-              <p class="text-lg font-bold text-gray-900 dark:text-gray-100">{{ $t('analytics.na') }}</p>
+              <p class="text-lg font-bold text-gray-900 dark:text-gray-100">{{ link.click_count || 0 }}</p>
             </div>
           </div>
         </div>
@@ -129,7 +159,7 @@
     <div class="relative bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-xl shadow-lg border border-gray-200/50 dark:border-gray-700/50 p-5 mb-6 transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5">
       <div class="absolute inset-0 bg-gradient-to-br from-green-50/30 via-blue-50/20 to-purple-50/30 dark:from-green-900/10 dark:via-blue-900/10 dark:to-purple-900/10 rounded-xl"></div>
       <div class="relative">
-        <h2 class="text-lg font-bold text-gray-900 dark:text-gray-100 mb-4 bg-gradient-to-r from-gray-900 to-emerald-900 dark:from-gray-100 dark:to-emerald-300 bg-clip-text text-transparent">
+        <h2 class="text-lg font-bold mb-4 bg-gradient-to-r from-gray-900 to-emerald-900 dark:from-gray-100 dark:to-emerald-300 bg-clip-text text-transparent">
           {{ $t('analytics.linkStatusDistribution') }}
         </h2>
 
@@ -212,6 +242,53 @@
             </div>
           </div>
         </div>
+
+        <!-- 额外统计信息 -->
+        <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="group relative p-4 bg-gradient-to-br from-amber-50/80 to-amber-100/40 dark:from-amber-900/20 dark:to-amber-800/10 rounded-lg border-2 border-amber-200/50 dark:border-amber-700/30 transition-all duration-300 hover:shadow-md hover:-translate-y-0.5 hover:border-amber-300/70 dark:hover:border-amber-600/50">
+            <div class="absolute inset-0 bg-gradient-to-br from-amber-100/20 to-amber-50/10 dark:from-amber-900/10 dark:to-amber-800/5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <div class="relative">
+              <div class="flex items-center justify-between mb-3">
+                <div>
+                  <p class="text-xs font-bold text-amber-800 dark:text-amber-300 uppercase tracking-wide">{{ $t('links.passwordProtected') }}</p>
+                  <p class="text-xl font-bold text-amber-900 dark:text-amber-200 mt-1">{{ passwordProtectedCount }}</p>
+                </div>
+                <div class="p-2 bg-gradient-to-br from-amber-200 to-amber-100 dark:from-amber-800/50 dark:to-amber-700/30 rounded-lg shadow-sm">
+                  <span class="text-lg">🔒</span>
+                </div>
+              </div>
+              <div class="mt-3">
+                <div class="bg-amber-200/70 dark:bg-amber-800/30 rounded-full h-2 shadow-inner">
+                  <div
+                    class="bg-gradient-to-r from-amber-500 to-amber-400 dark:from-amber-400 dark:to-amber-300 h-2 rounded-full transition-all duration-700 shadow-sm"
+                    :style="{ width: `${totalLinks > 0 ? (passwordProtectedCount / totalLinks) * 100 : 0}%` }"
+                  ></div>
+                </div>
+                <p class="text-xs text-amber-800 dark:text-amber-300 mt-1 font-medium">
+                  {{ totalLinks > 0 ? ((passwordProtectedCount / totalLinks) * 100).toFixed(1) : 0 }}% {{ $t('analytics.ofTotal') }}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="group relative p-4 bg-gradient-to-br from-purple-50/80 to-purple-100/40 dark:from-purple-900/20 dark:to-purple-800/10 rounded-lg border-2 border-purple-200/50 dark:border-purple-700/30 transition-all duration-300 hover:shadow-md hover:-translate-y-0.5 hover:border-purple-300/70 dark:hover:border-purple-600/50">
+            <div class="absolute inset-0 bg-gradient-to-br from-purple-100/20 to-purple-50/10 dark:from-purple-900/10 dark:to-purple-800/5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <div class="relative">
+              <div class="flex items-center justify-between mb-3">
+                <div>
+                  <p class="text-xs font-bold text-purple-800 dark:text-purple-300 uppercase tracking-wide">{{ $t('analytics.averageClicks') }}</p>
+                  <p class="text-xl font-bold text-purple-900 dark:text-purple-200 mt-1">{{ averageClicksPerLink.toFixed(1) }}</p>
+                </div>
+                <div class="p-2 bg-gradient-to-br from-purple-200 to-purple-100 dark:from-purple-800/50 dark:to-purple-700/30 rounded-lg shadow-sm">
+                  <ChartBarIcon className="w-5 h-5 text-purple-700 dark:text-purple-400" />
+                </div>
+              </div>
+              <p class="text-xs text-purple-800 dark:text-purple-300 mt-1 font-medium">
+                {{ $t('analytics.clicksPerLink') }}
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -230,22 +307,48 @@
         </div>
       </div>
     </div>
+
+    <!-- 复制成功提示 Toast -->
+    <div
+      v-if="showCopyToast"
+      class="fixed top-6 right-6 z-50 bg-gradient-to-r from-emerald-500 to-emerald-600 dark:from-emerald-400 dark:to-emerald-500 text-white px-6 py-4 rounded-2xl shadow-2xl transform transition-all duration-300 ease-out border border-emerald-400/50 dark:border-emerald-500/50"
+      :class="showCopyToast ? 'translate-x-0 opacity-100 scale-100' : 'translate-x-full opacity-0 scale-95'"
+    >
+      <div class="flex items-start gap-3">
+        <CheckCircleIcon className="w-6 h-6 flex-shrink-0 mt-0.5" />
+        <div>
+          <div class="font-bold text-lg">{{ $t('links.linkCopied') }}</div>
+          <div v-if="copiedLinkHasPassword" class="text-emerald-100 text-sm mt-1">
+            {{ $t('links.passwordParameterAdded') }}
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useLinksStore } from '@/stores/links'
 import { storeToRefs } from 'pinia'
-import { LinkIcon, EyeIcon, ChartBarIcon, CheckCircleIcon, ClockIcon, PlusIcon, SpinnerIcon, InfoIcon } from '@/components/icons'
+import { LinkIcon, EyeIcon, ChartBarIcon, CheckCircleIcon, ClockIcon, PlusIcon, SpinnerIcon, InfoIcon, CopyIcon } from '@/components/icons'
 
 const { t } = useI18n()
 const linksStore = useLinksStore()
 const { links, loading } = storeToRefs(linksStore)
 const { fetchLinks } = linksStore
 
+// 复制相关状态
+const copiedLink = ref<string | null>(null)
+const copiedLinkHasPassword = ref<boolean>(false)
+const showCopyToast = ref(false)
+
 const totalLinks = computed(() => links.value.length)
+
+const totalClicks = computed(() => {
+  return links.value.reduce((total, link) => total + (link.click_count || 0), 0)
+})
 
 const recentLinks = computed(() => {
   return [...links.value]
@@ -258,6 +361,15 @@ const recentLinksCount = computed(() => {
   oneWeekAgo.setDate(oneWeekAgo.getDate() - 7)
 
   return links.value.filter((link) => new Date(link.created_at) > oneWeekAgo).length
+})
+
+const weeklyClicks = computed(() => {
+  const oneWeekAgo = new Date()
+  oneWeekAgo.setDate(oneWeekAgo.getDate() - 7)
+
+  return links.value
+    .filter((link) => new Date(link.created_at) > oneWeekAgo)
+    .reduce((total, link) => total + (link.click_count || 0), 0)
 })
 
 const activeLinksCount = computed(() => {
@@ -286,6 +398,21 @@ const permanentLinksPercentage = computed(() => {
   return totalLinks.value > 0 ? (permanentLinksCount.value / totalLinks.value) * 100 : 0
 })
 
+const topClickedLinks = computed(() => {
+  return [...links.value]
+    .sort((a, b) => (b.click_count || 0) - (a.click_count || 0))
+    .slice(0, 5)
+    .filter(link => (link.click_count || 0) > 0)
+})
+
+const averageClicksPerLink = computed(() => {
+  return totalLinks.value > 0 ? totalClicks.value / totalLinks.value : 0
+})
+
+const passwordProtectedCount = computed(() => {
+  return links.value.filter(link => link.password).length
+})
+
 function formatDate(dateString: string) {
   // 确保正确解析 RFC3339 格式的时间
   const date = new Date(dateString)
@@ -296,6 +423,43 @@ function formatDate(dateString: string) {
     hour: '2-digit',
     minute: '2-digit',
   })
+}
+
+async function copyShortLink(code: string) {
+  const baseUrl = import.meta.env.VITE_API_BASE_URL || window.location.origin
+
+  // 查找对应的链接以检查是否有密码保护
+  const link = links.value.find(l => l.code === code)
+  const hasPassword = link?.password
+
+  // 如果有密码保护，添加 ?password=实际密码 参数
+  const shortUrl = hasPassword
+    ? `${baseUrl}/${code}?password=${link.password}`
+    : `${baseUrl}/${code}`
+
+  try {
+    await navigator.clipboard.writeText(shortUrl)
+
+    // 设置当前复制的链接和密码状态
+    copiedLink.value = code
+    copiedLinkHasPassword.value = !!hasPassword
+    showCopyToast.value = true
+
+    // 2秒后重置状态
+    setTimeout(() => {
+      copiedLink.value = null
+      copiedLinkHasPassword.value = false
+    }, 2000)
+
+    // 3秒后隐藏 Toast
+    setTimeout(() => {
+      showCopyToast.value = false
+    }, 3000)
+
+    console.log('Link copied to clipboard:', shortUrl)
+  } catch (err) {
+    console.error('Failed to copy link:', err)
+  }
 }
 
 onMounted(() => {
