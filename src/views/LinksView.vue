@@ -2,9 +2,13 @@
   <div class="space-y-6">
     <!-- 页面标题 - 现代化设计 -->
     <div class="relative mb-6">
-      <div class="absolute inset-0 bg-gradient-to-r from-indigo-500/5 via-blue-500/5 to-purple-500/5 dark:from-indigo-400/10 dark:via-blue-400/10 dark:to-purple-400/10 rounded-xl"></div>
+      <div
+        class="absolute inset-0 bg-gradient-to-r from-indigo-500/5 via-blue-500/5 to-purple-500/5 dark:from-indigo-400/10 dark:via-blue-400/10 dark:to-purple-400/10 rounded-xl"
+      ></div>
       <div class="relative p-4">
-        <h1 class="text-2xl font-bold bg-gradient-to-r from-gray-900 via-indigo-900 to-blue-900 dark:from-gray-100 dark:via-indigo-300 dark:to-blue-300 bg-clip-text text-transparent">
+        <h1
+          class="text-2xl font-bold bg-gradient-to-r from-gray-900 via-indigo-900 to-blue-900 dark:from-gray-100 dark:via-indigo-300 dark:to-blue-300 bg-clip-text text-transparent"
+        >
           {{ $t('links.title') }}
         </h1>
         <p class="text-gray-600 dark:text-gray-400 mt-1">{{ $t('links.description') }}</p>
@@ -12,22 +16,37 @@
     </div>
 
     <!-- 筛选器 - 现代化设计 -->
-    <div class="relative bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-xl shadow-lg border border-gray-200/50 dark:border-gray-700/50 transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5">
-      <div class="absolute inset-0 bg-gradient-to-br from-blue-50/30 via-indigo-50/20 to-purple-50/30 dark:from-blue-900/10 dark:via-indigo-900/10 dark:to-purple-900/10 rounded-xl"></div>
+    <div
+      class="relative bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-xl shadow-lg border border-gray-200/50 dark:border-gray-700/50 transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5"
+    >
+      <div
+        class="absolute inset-0 bg-gradient-to-br from-blue-50/30 via-indigo-50/20 to-purple-50/30 dark:from-blue-900/10 dark:via-indigo-900/10 dark:to-purple-900/10 rounded-xl"
+      ></div>
       <div
         class="relative p-4 border-b border-gray-200/50 dark:border-gray-700/50 cursor-pointer hover:bg-gradient-to-r hover:from-gray-50/50 hover:to-indigo-50/30 dark:hover:from-gray-700/30 dark:hover:to-indigo-900/20 transition-all duration-300 rounded-t-xl"
         @click="toggleFilter"
       >
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-3">
-            <div class="p-2 bg-gradient-to-br from-blue-100 to-blue-50 dark:from-blue-900/50 dark:to-blue-800/30 text-blue-600 dark:text-blue-400 rounded-lg shadow-sm">
+            <div
+              class="p-2 bg-gradient-to-br from-blue-100 to-blue-50 dark:from-blue-900/50 dark:to-blue-800/30 text-blue-600 dark:text-blue-400 rounded-lg shadow-sm"
+            >
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.207A1 1 0 013 6.5V4z"></path>
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.207A1 1 0 013 6.5V4z"
+                ></path>
               </svg>
             </div>
             <div>
-              <h2 class="text-lg font-bold text-gray-900 dark:text-gray-100">{{ $t('links.filterTitle') }}</h2>
-              <p class="text-sm text-gray-600 dark:text-gray-400 mt-0.5">{{ $t('links.filterDescription') }}</p>
+              <h2 class="text-lg font-bold text-gray-900 dark:text-gray-100">
+                {{ $t('links.filterTitle') }}
+              </h2>
+              <p class="text-sm text-gray-600 dark:text-gray-400 mt-0.5">
+                {{ $t('links.filterDescription') }}
+              </p>
             </div>
           </div>
           <div class="flex items-center gap-2">
@@ -57,7 +76,10 @@
         <div class="relative p-4">
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             <div>
-              <label class="block text-xs font-bold text-gray-900 dark:text-gray-100 mb-1 uppercase tracking-wide">{{ $t('common.search') }}</label>
+              <label
+                class="block text-xs font-bold text-gray-900 dark:text-gray-100 mb-1 uppercase tracking-wide"
+                >{{ $t('common.search') }}</label
+              >
               <input
                 v-model="filterForm.search"
                 type="text"
@@ -67,7 +89,10 @@
             </div>
 
             <div>
-              <label class="block text-xs font-bold text-gray-900 dark:text-gray-100 mb-1 uppercase tracking-wide">{{ $t('links.status') }}</label>
+              <label
+                class="block text-xs font-bold text-gray-900 dark:text-gray-100 mb-1 uppercase tracking-wide"
+                >{{ $t('links.status') }}</label
+              >
               <select
                 v-model="filterForm.status"
                 class="w-full px-3 py-2 border-2 border-gray-200/50 dark:border-gray-600/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-400 dark:focus:border-indigo-500 transition-all duration-300 shadow-sm bg-white/80 dark:bg-gray-700/80 backdrop-blur-sm text-sm text-gray-900 dark:text-gray-100"
@@ -81,7 +106,10 @@
             </div>
 
             <div>
-              <label class="block text-xs font-bold text-gray-900 dark:text-gray-100 mb-1 uppercase tracking-wide">{{ $t('links.createdAfter') }}</label>
+              <label
+                class="block text-xs font-bold text-gray-900 dark:text-gray-100 mb-1 uppercase tracking-wide"
+                >{{ $t('links.createdAfter') }}</label
+              >
               <input
                 v-model="filterForm.created_after"
                 type="date"
@@ -90,7 +118,10 @@
             </div>
 
             <div>
-              <label class="block text-xs font-bold text-gray-900 dark:text-gray-100 mb-1 uppercase tracking-wide">{{ $t('links.createdBefore') }}</label>
+              <label
+                class="block text-xs font-bold text-gray-900 dark:text-gray-100 mb-1 uppercase tracking-wide"
+                >{{ $t('links.createdBefore') }}</label
+              >
               <input
                 v-model="filterForm.created_before"
                 type="date"
@@ -99,7 +130,10 @@
             </div>
 
             <div>
-              <label class="block text-xs font-bold text-gray-900 dark:text-gray-100 mb-1 uppercase tracking-wide">{{ $t('links.pageSize') }}</label>
+              <label
+                class="block text-xs font-bold text-gray-900 dark:text-gray-100 mb-1 uppercase tracking-wide"
+                >{{ $t('links.pageSize') }}</label
+              >
               <select
                 v-model="filterForm.page_size"
                 class="w-full px-3 py-2 border-2 border-gray-200/50 dark:border-gray-600/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-400 dark:focus:border-indigo-500 transition-all duration-300 shadow-sm bg-white/80 dark:bg-gray-700/80 backdrop-blur-sm text-sm text-gray-900 dark:text-gray-100"
@@ -112,7 +146,9 @@
             </div>
           </div>
 
-          <div class="flex items-center justify-between pt-4 border-t-2 border-gray-200/50 dark:border-gray-700/50 mt-4">
+          <div
+            class="flex items-center justify-between pt-4 border-t-2 border-gray-200/50 dark:border-gray-700/50 mt-4"
+          >
             <button
               @click="resetFilters"
               class="px-3 py-1.5 text-xs font-bold text-gray-700 dark:text-gray-300 bg-gradient-to-r from-gray-100 to-gray-50 dark:from-gray-700 dark:to-gray-600 hover:from-gray-200 hover:to-gray-100 dark:hover:from-gray-600 dark:hover:to-gray-500 rounded-lg transition-all duration-300 shadow-sm hover:shadow-md transform hover:scale-105 uppercase tracking-wide"
@@ -131,9 +167,13 @@
     </div>
 
     <!-- 创建/编辑链接表单 - 现代化设计 -->
-    <div class="relative bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-xl shadow-lg border border-gray-200/50 dark:border-gray-700/50 transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5">
+    <div
+      class="relative bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-xl shadow-lg border border-gray-200/50 dark:border-gray-700/50 transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5"
+    >
       <!-- 表单头部 -->
-      <div class="absolute inset-0 bg-gradient-to-br from-green-50/30 via-indigo-50/20 to-purple-50/30 dark:from-green-900/10 dark:via-indigo-900/10 dark:to-purple-900/10 rounded-xl"></div>
+      <div
+        class="absolute inset-0 bg-gradient-to-br from-green-50/30 via-indigo-50/20 to-purple-50/30 dark:from-green-900/10 dark:via-indigo-900/10 dark:to-purple-900/10 rounded-xl"
+      ></div>
       <div
         class="relative p-4 border-b border-gray-200/50 dark:border-gray-700/50 cursor-pointer hover:bg-gradient-to-r hover:from-gray-50/50 hover:to-indigo-50/30 dark:hover:from-gray-700/30 dark:hover:to-indigo-900/20 transition-all duration-300 rounded-t-xl"
         @click="toggleForm"
@@ -143,13 +183,12 @@
             <div
               :class="[
                 'p-2 rounded-lg flex items-center justify-center transition-all duration-300 shadow-sm',
-                editingLink ? 'bg-gradient-to-br from-amber-100 to-orange-50 dark:from-amber-900/50 dark:to-orange-900/30 text-amber-700 dark:text-amber-400' : 'bg-gradient-to-br from-indigo-100 to-indigo-50 dark:from-indigo-900/50 dark:to-indigo-800/30 text-indigo-700 dark:text-indigo-400',
+                editingLink
+                  ? 'bg-gradient-to-br from-amber-100 to-orange-50 dark:from-amber-900/50 dark:to-orange-900/30 text-amber-700 dark:text-amber-400'
+                  : 'bg-gradient-to-br from-indigo-100 to-indigo-50 dark:from-indigo-900/50 dark:to-indigo-800/30 text-indigo-700 dark:text-indigo-400',
               ]"
             >
-              <EditIcon
-                v-if="editingLink"
-                className="w-5 h-5"
-              />
+              <EditIcon v-if="editingLink" className="w-5 h-5" />
               <PlusIcon v-else className="w-5 h-5" />
             </div>
             <div>
@@ -189,7 +228,9 @@
           <form @submit.prevent="handleSave" class="space-y-4">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label class="block text-xs font-bold text-gray-900 dark:text-gray-100 mb-1 uppercase tracking-wide">
+                <label
+                  class="block text-xs font-bold text-gray-900 dark:text-gray-100 mb-1 uppercase tracking-wide"
+                >
                   {{ $t('links.shortCodeOptional') }}
                 </label>
                 <input
@@ -204,7 +245,9 @@
               </div>
 
               <div>
-                <label class="block text-xs font-bold text-gray-900 dark:text-gray-100 mb-1 uppercase tracking-wide">
+                <label
+                  class="block text-xs font-bold text-gray-900 dark:text-gray-100 mb-1 uppercase tracking-wide"
+                >
                   {{ $t('links.expiresAtOptional') }}
                 </label>
                 <input
@@ -212,12 +255,17 @@
                   type="datetime-local"
                   class="w-full px-3 py-2 border-2 border-gray-200/50 dark:border-gray-600/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-400 dark:focus:border-indigo-500 transition-all duration-300 shadow-sm bg-white/80 dark:bg-gray-700/80 backdrop-blur-sm text-sm text-gray-900 dark:text-gray-100"
                 />
-                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 font-medium">{{ $t('links.expiresAtHelp') }}</p>
+                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 font-medium">
+                  {{ $t('links.expiresAtHelp') }}
+                </p>
               </div>
             </div>
 
             <div>
-              <label class="block text-xs font-bold text-gray-900 dark:text-gray-100 mb-1 uppercase tracking-wide">{{ $t('links.targetUrlRequired') }}</label>
+              <label
+                class="block text-xs font-bold text-gray-900 dark:text-gray-100 mb-1 uppercase tracking-wide"
+                >{{ $t('links.targetUrlRequired') }}</label
+              >
               <input
                 v-model="formData.target"
                 type="url"
@@ -231,7 +279,10 @@
             </div>
 
             <div>
-              <label class="block text-xs font-bold text-gray-900 dark:text-gray-100 mb-1 uppercase tracking-wide">{{ $t('links.passwordOptional') }}</label>
+              <label
+                class="block text-xs font-bold text-gray-900 dark:text-gray-100 mb-1 uppercase tracking-wide"
+                >{{ $t('links.passwordOptional') }}</label
+              >
               <input
                 v-model="formData.password"
                 type="password"
@@ -243,7 +294,9 @@
               </p>
             </div>
 
-            <div class="flex items-center justify-between pt-4 border-t-2 border-gray-200/50 dark:border-gray-700/50">
+            <div
+              class="flex items-center justify-between pt-4 border-t-2 border-gray-200/50 dark:border-gray-700/50"
+            >
               <div class="flex items-center gap-2">
                 <button
                   type="button"
@@ -282,24 +335,36 @@
     </div>
 
     <!-- 链接列表 - 现代化设计 -->
-    <div class="relative bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-xl shadow-lg border border-gray-200/50 dark:border-gray-700/50 transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5">
-      <div class="absolute inset-0 bg-gradient-to-br from-gray-50/30 via-blue-50/20 to-indigo-50/30 dark:from-gray-800/30 dark:via-blue-900/10 dark:to-indigo-900/10 rounded-xl"></div>
+    <div
+      class="relative bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-xl shadow-lg border border-gray-200/50 dark:border-gray-700/50 transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5"
+    >
+      <div
+        class="absolute inset-0 bg-gradient-to-br from-gray-50/30 via-blue-50/20 to-indigo-50/30 dark:from-gray-800/30 dark:via-blue-900/10 dark:to-indigo-900/10 rounded-xl"
+      ></div>
       <div class="relative p-4 border-b border-gray-200/50 dark:border-gray-700/50">
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-3">
-            <div class="p-2 bg-gradient-to-br from-gray-100 to-gray-50 dark:from-gray-700 dark:to-gray-600 rounded-lg shadow-sm">
+            <div
+              class="p-2 bg-gradient-to-br from-gray-100 to-gray-50 dark:from-gray-700 dark:to-gray-600 rounded-lg shadow-sm"
+            >
               <LinkIcon className="w-5 h-5 text-gray-700 dark:text-gray-300" />
             </div>
-            <h2 class="text-lg font-bold text-gray-900 dark:text-gray-100">{{ $t('links.shortLinks') }}</h2>
+            <h2 class="text-lg font-bold text-gray-900 dark:text-gray-100">
+              {{ $t('links.shortLinks') }}
+            </h2>
           </div>
           <div class="flex items-center gap-4">
-            <span class="text-xs font-bold text-gray-600 dark:text-gray-400 bg-gradient-to-r from-gray-100 to-gray-50 dark:from-gray-700 dark:to-gray-600 px-2 py-1 rounded border border-gray-200/50 dark:border-gray-600/50">
+            <span
+              class="text-xs font-bold text-gray-600 dark:text-gray-400 bg-gradient-to-r from-gray-100 to-gray-50 dark:from-gray-700 dark:to-gray-600 px-2 py-1 rounded border border-gray-200/50 dark:border-gray-600/50"
+            >
               {{ filteredLinks.length }}
               <span v-if="filteredLinks.length !== totalCount">of {{ totalCount }}</span>
               total
               <span v-if="hasActiveFilters">(filtered)</span>
             </span>
-            <span class="text-xs font-bold text-gray-600 dark:text-gray-400 bg-gradient-to-r from-indigo-100 to-indigo-50 dark:from-indigo-900/30 dark:to-indigo-800/20 px-2 py-1 rounded border border-indigo-200/50 dark:border-indigo-700/50">
+            <span
+              class="text-xs font-bold text-gray-600 dark:text-gray-400 bg-gradient-to-r from-indigo-100 to-indigo-50 dark:from-indigo-900/30 dark:to-indigo-800/20 px-2 py-1 rounded border border-indigo-200/50 dark:border-indigo-700/50"
+            >
               Page {{ currentPage }} of {{ totalPages }}
             </span>
           </div>
@@ -358,11 +423,31 @@
           <table class="w-full">
             <thead>
               <tr class="border-b-2 border-gray-200/70 dark:border-gray-700/70">
-                <th class="text-left py-3 px-4 font-bold text-gray-900 dark:text-gray-100 uppercase tracking-wide text-xs">{{ $t('links.table.code') }}</th>
-                <th class="text-left py-3 px-4 font-bold text-gray-900 dark:text-gray-100 uppercase tracking-wide text-xs">{{ $t('links.table.targetUrl') }}</th>
-                <th class="text-left py-3 px-4 font-bold text-gray-900 dark:text-gray-100 uppercase tracking-wide text-xs">{{ $t('links.table.status') }}</th>
-                <th class="text-left py-3 px-4 font-bold text-gray-900 dark:text-gray-100 uppercase tracking-wide text-xs">{{ $t('links.table.created') }}</th>
-                <th class="text-left py-3 px-4 font-bold text-gray-900 dark:text-gray-100 uppercase tracking-wide text-xs">{{ $t('links.table.actions') }}</th>
+                <th
+                  class="text-left py-3 px-4 font-bold text-gray-900 dark:text-gray-100 uppercase tracking-wide text-xs"
+                >
+                  {{ $t('links.table.code') }}
+                </th>
+                <th
+                  class="text-left py-3 px-4 font-bold text-gray-900 dark:text-gray-100 uppercase tracking-wide text-xs"
+                >
+                  {{ $t('links.table.targetUrl') }}
+                </th>
+                <th
+                  class="text-left py-3 px-4 font-bold text-gray-900 dark:text-gray-100 uppercase tracking-wide text-xs"
+                >
+                  {{ $t('links.table.status') }}
+                </th>
+                <th
+                  class="text-left py-3 px-4 font-bold text-gray-900 dark:text-gray-100 uppercase tracking-wide text-xs"
+                >
+                  {{ $t('links.table.created') }}
+                </th>
+                <th
+                  class="text-left py-3 px-4 font-bold text-gray-900 dark:text-gray-100 uppercase tracking-wide text-xs"
+                >
+                  {{ $t('links.table.actions') }}
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -380,14 +465,24 @@
                         ? 'bg-gradient-to-r from-emerald-100 to-emerald-50 dark:from-emerald-900/30 dark:to-emerald-800/20 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700 scale-105 shadow-md'
                         : link.password
                           ? 'bg-gradient-to-r from-amber-100 to-amber-50 dark:from-amber-700 dark:to-amber-600 text-amber-800 dark:text-amber-200 border-amber-200 dark:border-amber-600 hover:from-amber-200 hover:to-amber-100 dark:hover:from-amber-600 dark:hover:to-amber-500 hover:text-amber-900 dark:hover:text-amber-100 hover:border-amber-300 dark:hover:border-amber-500 group-hover:scale-105'
-                          : 'bg-gradient-to-r from-gray-100 to-gray-50 dark:from-gray-700 dark:to-gray-600 text-gray-800 dark:text-gray-200 border-gray-200 dark:border-gray-600 hover:from-indigo-100 hover:to-indigo-50 dark:hover:from-indigo-900/30 dark:hover:to-indigo-800/20 hover:text-indigo-800 dark:hover:text-indigo-300 hover:border-indigo-300 dark:hover:border-indigo-700 group-hover:scale-105'
+                          : 'bg-gradient-to-r from-gray-100 to-gray-50 dark:from-gray-700 dark:to-gray-600 text-gray-800 dark:text-gray-200 border-gray-200 dark:border-gray-600 hover:from-indigo-100 hover:to-indigo-50 dark:hover:from-indigo-900/30 dark:hover:to-indigo-800/20 hover:text-indigo-800 dark:hover:text-indigo-300 hover:border-indigo-300 dark:hover:border-indigo-700 group-hover:scale-105',
                     ]"
-                    :title="copiedLink === link.code ? $t('common.copied') : link.password ? $t('links.copyPasswordProtectedLink') : $t('links.copyLinkTitle')"
+                    :title="
+                      copiedLink === link.code
+                        ? $t('common.copied')
+                        : link.password
+                          ? $t('links.copyPasswordProtectedLink')
+                          : $t('links.copyLinkTitle')
+                    "
                   >
                     <div class="flex items-center gap-1.5">
                       <span class="font-bold">{{ link.code }}</span>
                       <!-- 密码保护图标 -->
-                      <span v-if="link.password && copiedLink !== link.code" class="text-amber-600 dark:text-amber-400">🔒</span>
+                      <span
+                        v-if="link.password && copiedLink !== link.code"
+                        class="text-amber-600 dark:text-amber-400"
+                        >🔒</span
+                      >
                       <CheckCircleIcon
                         v-if="copiedLink === link.code"
                         className="w-3 h-3 text-emerald-700 dark:text-emerald-400"
@@ -428,11 +523,10 @@
                     >
                       {{ $t('links.permanent') }}
                     </span>
-                    <span
-                      v-if="link.expires_at"
-                      class="text-xs text-gray-500 dark:text-gray-400"
-                    >
-                      {{ isExpired(link.expires_at) ? $t('links.expired') : $t('analytics.expires') }}: {{ formatDate(link.expires_at) }}
+                    <span v-if="link.expires_at" class="text-xs text-gray-500 dark:text-gray-400">
+                      {{
+                        isExpired(link.expires_at) ? $t('links.expired') : $t('analytics.expires')
+                      }}: {{ formatDate(link.expires_at) }}
                     </span>
                     <!-- 密码保护标识 -->
                     <span
@@ -470,7 +564,10 @@
           </table>
 
           <!-- 分页控件 -->
-          <div v-if="totalPages > 1" class="flex items-center justify-between mt-6 pt-4 border-t-2 border-gray-200/70 dark:border-gray-700/70">
+          <div
+            v-if="totalPages > 1"
+            class="flex items-center justify-between mt-6 pt-4 border-t-2 border-gray-200/70 dark:border-gray-700/70"
+          >
             <div class="flex items-center gap-2">
               <button
                 @click="goToPreviousPage"
@@ -480,11 +577,13 @@
                 {{ $t('common.previous') }}
               </button>
               <span class="text-sm text-gray-600 dark:text-gray-400">
-                {{ $t('links.pagination.showing', {
-                  from: (currentPage - 1) * pageSize + 1,
-                  to: Math.min(currentPage * pageSize, totalCount),
-                  total: totalCount
-                }) }}
+                {{
+                  $t('links.pagination.showing', {
+                    from: (currentPage - 1) * pageSize + 1,
+                    to: Math.min(currentPage * pageSize, totalCount),
+                    total: totalCount,
+                  })
+                }}
               </span>
             </div>
 
@@ -497,7 +596,7 @@
                   'px-4 py-2 text-sm font-bold rounded-lg transition-all duration-300',
                   page === currentPage
                     ? 'bg-indigo-500 dark:bg-indigo-400 text-white'
-                    : 'text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600'
+                    : 'text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600',
                 ]"
               >
                 {{ page }}
@@ -546,13 +645,19 @@
             v-if="showDeleteModal"
             class="relative bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm rounded-2xl shadow-2xl max-w-md w-full p-8 border border-gray-200/50 dark:border-gray-700/50"
           >
-            <div class="absolute inset-0 bg-gradient-to-br from-white/60 to-red-50/30 dark:from-gray-800/60 dark:to-red-900/20 rounded-2xl"></div>
+            <div
+              class="absolute inset-0 bg-gradient-to-br from-white/60 to-red-50/30 dark:from-gray-800/60 dark:to-red-900/20 rounded-2xl"
+            ></div>
             <div class="relative text-center">
-              <div class="w-16 h-16 mx-auto mb-6 bg-gradient-to-br from-red-100 to-red-50 dark:from-red-900/50 dark:to-red-800/30 rounded-full flex items-center justify-center shadow-lg">
+              <div
+                class="w-16 h-16 mx-auto mb-6 bg-gradient-to-br from-red-100 to-red-50 dark:from-red-900/50 dark:to-red-800/30 rounded-full flex items-center justify-center shadow-lg"
+              >
                 <DeleteIcon className="w-8 h-8 text-red-600 dark:text-red-400" />
               </div>
 
-              <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-3">{{ $t('links.deleteLink') }}</h3>
+              <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-3">
+                {{ $t('links.deleteLink') }}
+              </h3>
               <p class="text-sm text-gray-700 dark:text-gray-300 mb-8 leading-relaxed">
                 {{ $t('links.deleteConfirmation', { code: deletingLink?.code }) }}
               </p>
@@ -582,7 +687,11 @@
     <div
       v-if="showCopyToast"
       class="fixed top-6 right-6 z-50 bg-gradient-to-r from-emerald-500 to-emerald-600 dark:from-emerald-400 dark:to-emerald-500 text-white px-6 py-4 rounded-2xl shadow-2xl transform transition-all duration-300 ease-out border border-emerald-400/50 dark:border-emerald-500/50"
-      :class="showCopyToast ? 'translate-x-0 opacity-100 scale-100' : 'translate-x-full opacity-0 scale-95'"
+      :class="
+        showCopyToast
+          ? 'translate-x-0 opacity-100 scale-100'
+          : 'translate-x-full opacity-0 scale-95'
+      "
     >
       <div class="flex items-start gap-3">
         <CheckCircleIcon className="w-6 h-6 flex-shrink-0 mt-0.5" />
@@ -601,13 +710,24 @@
 import { ref, onMounted, reactive, watch, computed } from 'vue'
 import { useLinksStore } from '@/stores/links'
 import { storeToRefs } from 'pinia'
-import { LinkIcon, PlusIcon, EditIcon, ChevronDownIcon, SpinnerIcon, CopyIcon, DeleteIcon, CheckCircleIcon } from '@/components/icons/index'
+import {
+  LinkIcon,
+  PlusIcon,
+  EditIcon,
+  ChevronDownIcon,
+  SpinnerIcon,
+  CopyIcon,
+  DeleteIcon,
+  CheckCircleIcon,
+} from '@/components/icons/index'
 import type { SerializableShortLink, LinkPayload, GetLinksQuery } from '@/services/api'
 import { useI18n } from 'vue-i18n'
 
 const linksStore = useLinksStore()
-const { links, loading, error, totalCount, currentPage, pageSize, hasNext, hasPrev } = storeToRefs(linksStore)
-const { fetchLinks, createLink, updateLink, deleteLink, applyFilter, resetFilter, goToPage } = linksStore
+const { links, loading, error, totalCount, currentPage, pageSize, hasNext, hasPrev } =
+  storeToRefs(linksStore)
+const { fetchLinks, createLink, updateLink, deleteLink, applyFilter, resetFilter, goToPage } =
+  linksStore
 
 const { t } = useI18n()
 
@@ -639,7 +759,12 @@ const filterForm = reactive({
 const totalPages = computed(() => Math.ceil(totalCount.value / pageSize.value))
 
 const hasActiveFilters = computed(() => {
-  return !!(filterForm.search || filterForm.status || filterForm.created_after || filterForm.created_before)
+  return !!(
+    filterForm.search ||
+    filterForm.status ||
+    filterForm.created_after ||
+    filterForm.created_before
+  )
 })
 
 const activeFilterCount = computed(() => {
@@ -657,9 +782,9 @@ const filteredLinks = computed(() => {
 
   // 如果选择了永久或临时链接筛选
   if (filterForm.status === 'permanent') {
-    filtered = filtered.filter(link => !link.expires_at)
+    filtered = filtered.filter((link) => !link.expires_at)
   } else if (filterForm.status === 'temporary') {
-    filtered = filtered.filter(link => !!link.expires_at)
+    filtered = filtered.filter((link) => !!link.expires_at)
   }
 
   return filtered
@@ -879,7 +1004,7 @@ async function copyShortLink(code: string) {
   const baseUrl = import.meta.env.VITE_API_BASE_URL || window.location.origin
 
   // 查找对应的链接以检查是否有密码保护
-  const link = links.value.find(l => l.code === code)
+  const link = links.value.find((l) => l.code === code)
   const hasPassword = link?.password
 
   // 如果有密码保护，添加 ?password=实际密码 参数

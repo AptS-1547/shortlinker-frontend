@@ -29,6 +29,3 @@ coverage
 *.sw?
 
 *.tsbuildinfo
-
-# Version info (generated during build)
-src/version.json

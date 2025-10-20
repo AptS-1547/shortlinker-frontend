@@ -15,13 +15,13 @@ const getBasePath = () => {
   }
 
   // 优先从 window 对象获取（Rust 可以注入）
-    if (typeof window !== 'undefined' && (window as any).__APP_CONFIG__) {
-      const config = (window as any).__APP_CONFIG__
-      if (config.basePath && config.basePath !== '%BASE_PATH%') {
-        console.warn('Using base path from Rust config:', config.basePath)
-        return config.basePath
-      }
+  if (typeof window !== 'undefined' && (window as any).__APP_CONFIG__) {
+    const config = (window as any).__APP_CONFIG__
+    if (config.basePath && config.basePath !== '%BASE_PATH%') {
+      console.warn('Using base path from Rust config:', config.basePath)
+      return config.basePath
     }
+  }
 
   // 其次从 meta 标签获取
   const metaBase = document.querySelector('meta[name="base-path"]')?.getAttribute('content')
@@ -94,6 +94,5 @@ router.beforeEach((to) => {
     return { path: '/dashboard' }
   }
 })
-
 
 export default router

@@ -1,10 +1,5 @@
 <template>
-  <svg
-    :class="className"
-    fill="none"
-    stroke="currentColor"
-    viewBox="0 0 24 24"
-  >
+  <svg :class="className" fill="none" stroke="currentColor" viewBox="0 0 24 24">
     <path
       stroke-linecap="round"
       stroke-linejoin="round"
@@ -20,6 +15,6 @@ interface Props {
 }
 
 withDefaults(defineProps<Props>(), {
-  className: 'w-5 h-5'
+  className: 'w-5 h-5',
 })
 </script>

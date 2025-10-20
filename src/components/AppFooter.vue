@@ -1,14 +1,20 @@
 <template>
-  <footer class="bg-gradient-to-r from-slate-50 to-gray-50 dark:from-gray-900 dark:to-gray-800 border-t border-gray-200/50 dark:border-gray-700/50 mt-8">
+  <footer
+    class="bg-gradient-to-r from-slate-50 to-gray-50 dark:from-gray-900 dark:to-gray-800 border-t border-gray-200/50 dark:border-gray-700/50 mt-8"
+  >
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
       <div class="flex flex-col md:flex-row items-center justify-between gap-3">
         <!-- 项目信息 -->
         <div class="flex items-center gap-3">
-          <div class="w-6 h-6 bg-gradient-to-br from-indigo-500 to-indigo-600 dark:from-indigo-400 dark:to-indigo-500 rounded-lg flex items-center justify-center shadow-sm">
+          <div
+            class="w-6 h-6 bg-gradient-to-br from-indigo-500 to-indigo-600 dark:from-indigo-400 dark:to-indigo-500 rounded-lg flex items-center justify-center shadow-sm"
+          >
             <LinkIcon className="w-4 h-4 text-white" />
           </div>
           <div>
-            <h3 class="text-base font-bold bg-gradient-to-r from-gray-800 via-indigo-800 to-purple-800 dark:from-gray-200 dark:via-indigo-400 dark:to-purple-400 bg-clip-text text-transparent">
+            <h3
+              class="text-base font-bold bg-gradient-to-r from-gray-800 via-indigo-800 to-purple-800 dark:from-gray-200 dark:via-indigo-400 dark:to-purple-400 bg-clip-text text-transparent"
+            >
               ShortLinker
             </h3>
             <div class="flex items-center gap-2">
@@ -18,9 +24,9 @@
               <span
                 :class="[
                   'inline-flex items-center px-1.5 py-0.5 rounded text-xs font-bold',
-                  versionBadgeColor
+                  versionBadgeColor,
                 ]"
-                :title="`${versionLabel} - Built: ${buildDate}`"
+                :title="versionLabel"
               >
                 {{ versionLabel }}
               </span>
@@ -101,10 +107,10 @@
 
       <!-- 版权信息 -->
       <div class="mt-3 pt-3 border-t border-gray-200/50 dark:border-gray-700/50">
-        <div class="flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-gray-500 dark:text-gray-400">
-          <p>
-            © {{ currentYear }} ShortLinker. Built with ❤️ for the open source community.
-          </p>
+        <div
+          class="flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-gray-500 dark:text-gray-400"
+        >
+          <p>© {{ currentYear }} ShortLinker. Built with ❤️ for the open source community.</p>
           <p class="flex items-center gap-1">
             <span>Powered by</span>
             <a
@@ -139,7 +145,7 @@ import { LinkIcon } from '@/components/icons'
 import { useVersion } from '@/composables/useVersion'
 
 const currentYear = computed(() => new Date().getFullYear())
-const { displayVersion, versionBadgeColor, versionLabel, buildDate } = useVersion()
+const { displayVersion, versionBadgeColor, versionLabel } = useVersion()
 </script>
 
 <style scoped>

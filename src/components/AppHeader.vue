@@ -1,11 +1,15 @@
 <template>
-  <header class="bg-gradient-to-r from-slate-800 to-slate-700 dark:from-gray-900 dark:to-gray-800 text-white shadow-md dark:shadow-gray-900/20">
+  <header
+    class="bg-gradient-to-r from-slate-800 to-slate-700 dark:from-gray-900 dark:to-gray-800 text-white shadow-md dark:shadow-gray-900/20"
+  >
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex items-center justify-between h-16">
         <!-- Logo and Title -->
         <div class="flex items-center space-x-2 sm:space-x-4">
           <div class="flex items-center space-x-2 sm:space-x-3">
-            <div class="w-7 h-7 sm:w-8 sm:h-8 bg-gradient-to-br from-indigo-500 to-indigo-600 dark:from-indigo-400 dark:to-indigo-500 rounded-lg flex items-center justify-center shadow-sm">
+            <div
+              class="w-7 h-7 sm:w-8 sm:h-8 bg-gradient-to-br from-indigo-500 to-indigo-600 dark:from-indigo-400 dark:to-indigo-500 rounded-lg flex items-center justify-center shadow-sm"
+            >
               <LinkIcon className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
             </div>
             <div class="hidden sm:block">
@@ -57,8 +61,12 @@
                 class="absolute inset-0 w-2.5 h-2.5 sm:w-3 sm:h-3 bg-amber-400 rounded-full animate-pulse opacity-75"
               ></div>
             </div>
-            <span class="text-xs sm:text-sm font-medium capitalize hidden sm:inline">{{ $t(`layout.health.${healthStatus}`) }}</span>
-            <ChevronRightIcon className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-white/60 dark:text-gray-400" />
+            <span class="text-xs sm:text-sm font-medium capitalize hidden sm:inline">{{
+              $t(`layout.health.${healthStatus}`)
+            }}</span>
+            <ChevronRightIcon
+              className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-white/60 dark:text-gray-400"
+            />
           </button>
 
           <!-- Mobile Menu Toggle -->
@@ -169,12 +177,16 @@ function handleLogout() {
 
 /* 增强阴影层次 */
 header {
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 /* 暗夜模式增强 */
 header {
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.3),
+    0 2px 4px -1px rgba(0, 0, 0, 0.2);
 }
 
 /* 移动端优化 */

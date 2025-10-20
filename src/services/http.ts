@@ -50,7 +50,6 @@ export class ApiConfig {
     console.warn(`Using ${type} route prefix from environment variable`)
     return this.getEnvValue(`${type.toUpperCase()}_ROUTE_PREFIX`, defaultValue)
   }
-
 }
 
 // ==================== 错误处理 ====================

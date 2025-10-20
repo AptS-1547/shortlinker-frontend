@@ -5,10 +5,18 @@
       class="flex items-center space-x-1 sm:space-x-2 bg-white/10 dark:bg-black/10 px-2 py-1 sm:px-3 rounded-full hover:bg-white/20 dark:hover:bg-black/20 transition-all duration-200 transform hover:scale-105"
     >
       <svg class="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"
+        />
       </svg>
       <span class="text-xs sm:text-sm font-medium">{{ currentLanguage }}</span>
-      <ChevronDownIcon class="w-2 h-2 sm:w-3 sm:h-3 text-white/60 dark:text-gray-400 transition-transform duration-200" :class="{ 'rotate-180': showLanguageMenu }" />
+      <ChevronDownIcon
+        class="w-2 h-2 sm:w-3 sm:h-3 text-white/60 dark:text-gray-400 transition-transform duration-200"
+        :class="{ 'rotate-180': showLanguageMenu }"
+      />
     </button>
 
     <!-- Language Dropdown -->

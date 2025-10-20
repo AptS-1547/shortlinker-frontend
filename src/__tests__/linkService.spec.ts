@@ -17,7 +17,7 @@ describe('LinkService.createWithCheck', () => {
       created_at: '',
       expires_at: null,
       password: null,
-      click_count: 0
+      click_count: 0,
     }
     service.fetchOne = vi.fn().mockResolvedValue(existing)
     service.create = vi.fn()

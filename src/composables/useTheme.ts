@@ -22,7 +22,7 @@ export function useTheme() {
     // 更新 document class 和背景色
     const htmlElement = document.documentElement
     const bodyElement = document.body
-    
+
     if (isDark.value) {
       htmlElement.classList.add('dark')
       htmlElement.style.backgroundColor = '#0f172a' // slate-900
@@ -39,7 +39,7 @@ export function useTheme() {
     if (savedTheme && ['light', 'dark', 'system'].includes(savedTheme)) {
       theme.value = savedTheme
     }
-    
+
     updateDarkMode()
 
     // 监听系统主题变化
@@ -56,6 +56,6 @@ export function useTheme() {
   return {
     theme: computed(() => theme.value),
     isDark: computed(() => isDark.value),
-    setTheme
+    setTheme,
   }
 }

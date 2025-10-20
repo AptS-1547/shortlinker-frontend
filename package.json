@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "npm run version && vue-tsc && vite build",
-    "build:prod": "npm run version && vue-tsc && vite build --mode production",
+    "build": "vue-tsc && vite build",
+    "build:prod": "vue-tsc && vite build --mode production",
     "preview": "vite preview",
     "test:unit": "vitest",
     "build-only": "vite build",
@@ -15,9 +15,7 @@
     "lint:eslint": "eslint . --fix",
     "lint": "run-s lint:*",
     "format": "prettier --write src/",
-    "vue-i18n-extract": "vue-i18n-extract report --vueFiles './src/**/*.?(js|vue|ts)' --languageFiles './src/i18n/locales/*.?(json|yml|yaml|js)'",
-    "version": "node scripts/generate-version.js",
-    "version:check": "node scripts/generate-version.js --check"
+    "vue-i18n-extract": "vue-i18n-extract report --vueFiles './src/**/*.?(js|vue|ts)' --languageFiles './src/i18n/locales/*.?(json|yml|yaml|js)'"
   },
   "dependencies": {
     "@heroicons/vue": "^2.2.0",

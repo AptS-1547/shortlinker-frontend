@@ -65,7 +65,7 @@ export interface GetLinksQuery {
 // 新的API响应格式
 export interface PaginatedLinksResponse {
   code: number
-  data: SerializableShortLink[]  // 改为数组格式
+  data: SerializableShortLink[] // 改为数组格式
   pagination: {
     page: number
     page_size: number

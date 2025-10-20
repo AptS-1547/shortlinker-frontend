@@ -8,7 +8,9 @@
     />
 
     <!-- Navigation Tabs - Desktop -->
-    <div class="bg-gradient-to-r from-slate-700 to-slate-600 dark:from-gray-800 dark:to-gray-700 shadow-sm hidden sm:block">
+    <div
+      class="bg-gradient-to-r from-slate-700 to-slate-600 dark:from-gray-800 dark:to-gray-700 shadow-sm hidden sm:block"
+    >
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <nav class="flex items-center gap-2 py-3">
           <router-link
@@ -38,7 +40,10 @@
       leave-from-class="opacity-100 translate-y-0"
       leave-to-class="opacity-0 -translate-y-1"
     >
-      <div v-if="showMobileMenu" class="sm:hidden bg-gradient-to-r from-slate-700 to-slate-600 dark:from-gray-800 dark:to-gray-700 shadow-lg">
+      <div
+        v-if="showMobileMenu"
+        class="sm:hidden bg-gradient-to-r from-slate-700 to-slate-600 dark:from-gray-800 dark:to-gray-700 shadow-lg"
+      >
         <nav class="px-4 py-3 space-y-2">
           <router-link
             v-for="item in menuItems"
@@ -77,11 +82,7 @@
     <AppFooter />
 
     <!-- Health Modal -->
-    <HealthModal
-      :is-open="showHealthModal"
-      :health-data="healthData"
-      @close="closeHealthModal"
-    />
+    <HealthModal :is-open="showHealthModal" :health-data="healthData" @close="closeHealthModal" />
   </div>
 </template>
 
@@ -92,7 +93,11 @@ import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '@/stores/auth'
 import { useHealthStore } from '@/stores/health'
 import { storeToRefs } from 'pinia'
-import { Squares2X2Icon, LinkIcon as HeroLinkIcon, ChartBarIcon as HeroChartBarIcon } from '@heroicons/vue/24/outline'
+import {
+  Squares2X2Icon,
+  LinkIcon as HeroLinkIcon,
+  ChartBarIcon as HeroChartBarIcon,
+} from '@heroicons/vue/24/outline'
 import { LogoutIcon } from '@/components/icons'
 import AppHeader from '@/components/AppHeader.vue'
 import HealthModal from '@/components/HealthModal.vue'

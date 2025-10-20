@@ -10,7 +10,7 @@ const messages = {
   zh,
   ja,
   fr,
-  ru
+  ru,
 }
 
 // 语言配置映射
@@ -18,28 +18,28 @@ export const languageConfig = {
   zh: {
     flag: '🇨🇳',
     name: '中文',
-    code: 'zh'
+    code: 'zh',
   },
   en: {
     flag: '🇺🇸',
     name: 'English',
-    code: 'en'
+    code: 'en',
   },
   ja: {
     flag: '🇯🇵',
     name: '日本語',
-    code: 'ja'
+    code: 'ja',
   },
   fr: {
     flag: '🇫🇷',
     name: 'Français',
-    code: 'fr'
+    code: 'fr',
   },
   ru: {
     flag: '🇷🇺',
     name: 'Русский',
-    code: 'ru'
-  }
+    code: 'ru',
+  },
 } as const
 
 // 支持的语言列表
@@ -62,7 +62,7 @@ export const getLanguageKey = (lang: string) => {
     en: 'english',
     ja: 'japanese',
     fr: 'french',
-    ru: 'russian'
+    ru: 'russian',
   }
   return keyMap[lang] || lang
 }
@@ -99,7 +99,7 @@ export const i18n = createI18n({
   locale: getDefaultLocale(),
   fallbackLocale: 'en',
   messages,
-  globalInjection: true
+  globalInjection: true,
 })
 
 export default i18n

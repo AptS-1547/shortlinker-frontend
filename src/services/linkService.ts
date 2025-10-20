@@ -1,6 +1,12 @@
 import { adminClient } from './http'
 import { ApiError } from './http'
-import type { SerializableShortLink, LinkPayload, LinkCreateResult, GetLinksQuery, PaginatedLinksResponse } from './types'
+import type {
+  SerializableShortLink,
+  LinkPayload,
+  LinkCreateResult,
+  GetLinksQuery,
+  PaginatedLinksResponse,
+} from './types'
 
 export class LinkService {
   /**
@@ -14,8 +20,10 @@ export class LinkService {
       if (query.page_size !== undefined) params.append('page_size', query.page_size.toString())
       if (query.created_after) params.append('created_after', query.created_after)
       if (query.created_before) params.append('created_before', query.created_before)
-      if (query.only_expired !== undefined) params.append('only_expired', query.only_expired.toString())
-      if (query.only_active !== undefined) params.append('only_active', query.only_active.toString())
+      if (query.only_expired !== undefined)
+        params.append('only_expired', query.only_expired.toString())
+      if (query.only_active !== undefined)
+        params.append('only_active', query.only_active.toString())
       if (query.search) params.append('search', query.search)
     }
 
@@ -41,8 +49,10 @@ export class LinkService {
       if (query.page_size !== undefined) params.append('page_size', query.page_size.toString())
       if (query.created_after) params.append('created_after', query.created_after)
       if (query.created_before) params.append('created_before', query.created_before)
-      if (query.only_expired !== undefined) params.append('only_expired', query.only_expired.toString())
-      if (query.only_active !== undefined) params.append('only_active', query.only_active.toString())
+      if (query.only_expired !== undefined)
+        params.append('only_expired', query.only_expired.toString())
+      if (query.only_active !== undefined)
+        params.append('only_active', query.only_active.toString())
       if (query.search) params.append('search', query.search)
     }
 
@@ -54,7 +64,7 @@ export class LinkService {
       return {
         code: response.code || 0,
         data: Array.isArray(response.data) ? response.data : [],
-        pagination: response.pagination
+        pagination: response.pagination,
       }
     }
 
@@ -66,8 +76,8 @@ export class LinkService {
         page: 1,
         page_size: 10,
         total: 0,
-        total_pages: 0
-      }
+        total_pages: 0,
+      },
     }
   }
 
