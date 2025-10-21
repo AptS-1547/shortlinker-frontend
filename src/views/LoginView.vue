@@ -166,9 +166,10 @@
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
-import { AuthAPI, HealthAPI } from '@/services/api'
+import { HealthAPI } from '@/services/api'
 import { LinkIcon, RefreshIcon, ExclamationTriangleIcon, InfoIcon } from '@/components/icons'
 import { useI18n } from 'vue-i18n'
+import { config } from '@/config'
 
 const router = useRouter()
 const authStore = useAuthStore()
@@ -179,7 +180,7 @@ const isSubmitting = ref(false)
 const error = ref('')
 
 const apiBaseUrl = computed(() => {
-  return import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:8080'
+  return config.apiBaseUrl || 'http://127.0.0.1:8080'
 })
 
 const handleSubmit = async (e: Event) => {
@@ -196,21 +197,21 @@ const handleSubmit = async (e: Event) => {
   try {
     error.value = t('auth.authenticating')
 
-    const authResponse = await AuthAPI.login({ password: password.value.trim() })
-    authStore.login(authResponse.token)
+    // 登录会由后端设置 HttpOnly Cookie
+    await authStore.login(password.value.trim())
 
     error.value = t('auth.verifying')
+    // 验证连接健康状态
     await HealthAPI.check()
 
     router.push('/dashboard')
   } catch (err) {
     console.error('Authentication failed:', err)
-    authStore.logout()
 
     if (err instanceof Error) {
       if (err.message.includes('Network Error') || err.message.includes('ECONNREFUSED')) {
         error.value = t('auth.errors.networkError')
-      } else if (err.message.includes('401')) {
+      } else if (err.message.includes('401') || err.message.includes('INVALID_CREDENTIALS')) {
         error.value = t('auth.errors.unauthorized')
       } else if (err.message.includes('404')) {
         error.value = t('auth.errors.notFound')

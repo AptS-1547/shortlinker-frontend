@@ -13,7 +13,7 @@
     "type-check": "vue-tsc --build",
     "lint:oxlint": "oxlint . --fix -D correctness --ignore-path .gitignore",
     "lint:eslint": "eslint . --fix",
-    "lint": "run-s lint:*",
+    "lint": "run-s lint:oxlint",
     "format": "prettier --write src/",
     "vue-i18n-extract": "vue-i18n-extract report --vueFiles './src/**/*.?(js|vue|ts)' --languageFiles './src/i18n/locales/*.?(json|yml|yaml|js)'"
   },

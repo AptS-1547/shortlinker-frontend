@@ -10,7 +10,7 @@ export const useHealthStore = defineStore('health', () => {
     loading.value = true
     try {
       status.value = await HealthAPI.check()
-    } catch (err) {
+    } catch {
       status.value = {
         status: 'unhealthy',
         timestamp: new Date().toISOString(),

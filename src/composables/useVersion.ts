@@ -1,19 +1,9 @@
 import { computed } from 'vue'
-
-declare global {
-  interface Window {
-    __APP_CONFIG__: {
-      basePath: string
-      adminRoutePrefix: string
-      healthRoutePrefix: string
-      shortlinkerVersion: string
-    }
-  }
-}
+import { config } from '@/config'
 
 export function useVersion() {
   const version = computed(() => {
-    return window.__APP_CONFIG__?.shortlinkerVersion || 'unknown'
+    return config.shortlinkerVersion
   })
 
   const displayVersion = computed(() => {

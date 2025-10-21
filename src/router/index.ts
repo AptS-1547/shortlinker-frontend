@@ -1,44 +1,16 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
-import LoginView from '@/views/LoginView.vue'
-import AdminLayout from '@/layouts/AdminLayout.vue'
-import DashboardView from '@/views/DashboardView.vue'
-import LinksView from '@/views/LinksView.vue'
-import AnalyticsView from '@/views/AnalyticsView.vue'
+import { config } from '@/config'
 
-// 从运行时配置或环境变量获取基础路径
-const getBasePath = () => {
-  // 确保在浏览器环境中运行
-  if (typeof window === 'undefined') {
-    // 如果在 SSR 环境中，使用构建时的 BASE_URL
-    return import.meta.env.BASE_URL || '/'
-  }
-
-  // 优先从 window 对象获取（Rust 可以注入）
-  if (typeof window !== 'undefined' && (window as any).__APP_CONFIG__) {
-    const config = (window as any).__APP_CONFIG__
-    if (config.basePath && config.basePath !== '%BASE_PATH%') {
-      console.warn('Using base path from Rust config:', config.basePath)
-      return config.basePath
-    }
-  }
-
-  // 其次从 meta 标签获取
-  const metaBase = document.querySelector('meta[name="base-path"]')?.getAttribute('content')
-  if (metaBase && metaBase !== '%BASE_PATH%') {
-    console.warn('Using base path from meta tag:', metaBase)
-    return metaBase
-  }
-
-  // 最后使用构建时的配置
-  console.warn('Using base path from import.meta.env:', import.meta.env.BASE_URL)
-  return import.meta.env.BASE_URL || '/'
-}
-
-const basePath = getBasePath()
+// 路由懒加载
+const LoginView = () => import('@/views/LoginView.vue')
+const AdminLayout = () => import('@/layouts/AdminLayout.vue')
+const DashboardView = () => import('@/views/DashboardView.vue')
+const LinksView = () => import('@/views/LinksView.vue')
+const AnalyticsView = () => import('@/views/AnalyticsView.vue')
 
 const router = createRouter({
-  history: createWebHistory(basePath),
+  history: createWebHistory(config.basePath),
   routes: [
     {
       path: '/',
@@ -83,16 +55,30 @@ const router = createRouter({
   ],
 })
 
-router.beforeEach((to) => {
+router.beforeEach(async (to) => {
   const authStore = useAuthStore()
 
-  if (to.meta.requiresAuth && !authStore.isAuthenticated) {
-    return { path: '/login' }
+  // 如果是需要认证的路由，先检查认证状态
+  if (to.meta.requiresAuth) {
+    // 只在第一次访问时检查认证状态（避免每次路由都调用 API）
+    if (!authStore.isAuthenticated && !authStore.isChecking) {
+      // 通过后端验证 Cookie 是否有效
+      const isValid = await authStore.checkAuthStatus()
+      if (!isValid) {
+        return { path: '/login' }
+      }
+    } else if (!authStore.isAuthenticated) {
+      return { path: '/login' }
+    }
   }
 
+  // 如果已登录，不允许访问登录页
   if (to.path === '/login' && authStore.isAuthenticated) {
     return { path: '/dashboard' }
   }
+
+  // 明确返回 undefined 表示允许导航
+  return undefined
 })
 
 export default router

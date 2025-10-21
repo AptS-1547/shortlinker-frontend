@@ -15,6 +15,6 @@ app.use(router)
 app.use(i18n)
 
 // 在应用挂载前初始化主题
-const themeComposable = useTheme()
+useTheme()
 
 app.mount('#app')

@@ -190,9 +190,9 @@
                   </span>
                 </div>
                 <p class="text-xs text-gray-500 dark:text-gray-400">
-                  {{ $t('analytics.created') }}: {{ formatDate(link.created_at) }}
+                  {{ $t('analytics.created') }}: {{ formatDateTime(link.created_at) }}
                   <span v-if="link.expires_at" class="ml-2">
-                    • {{ $t('analytics.expires') }}: {{ formatDate(link.expires_at) }}
+                    • {{ $t('analytics.expires') }}: {{ formatDateTime(link.expires_at) }}
                   </span>
                 </p>
               </div>
@@ -488,6 +488,7 @@ import { computed, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useLinksStore } from '@/stores/links'
 import { storeToRefs } from 'pinia'
+import { config } from '@/config'
 import {
   LinkIcon,
   EyeIcon,
@@ -499,8 +500,10 @@ import {
   InfoIcon,
   CopyIcon,
 } from '@/components/icons'
+import { useDateFormat } from '@/composables/useDateFormat'
 
 const { t } = useI18n()
+const { formatDateTime } = useDateFormat()
 const linksStore = useLinksStore()
 const { links, loading } = storeToRefs(linksStore)
 const { fetchLinks } = linksStore
@@ -579,20 +582,8 @@ const passwordProtectedCount = computed(() => {
   return links.value.filter((link) => link.password).length
 })
 
-function formatDate(dateString: string) {
-  // 确保正确解析 RFC3339 格式的时间
-  const date = new Date(dateString)
-  return date.toLocaleString('zh-CN', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-  })
-}
-
 async function copyShortLink(code: string) {
-  const baseUrl = import.meta.env.VITE_API_BASE_URL || window.location.origin
+  const baseUrl = config.apiBaseUrl || window.location.origin
 
   // 查找对应的链接以检查是否有密码保护
   const link = links.value.find((l) => l.code === code)

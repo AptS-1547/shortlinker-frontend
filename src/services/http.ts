@@ -1,56 +1,5 @@
 import axios, { type AxiosInstance, type AxiosError } from 'axios'
-
-// ==================== 配置管理 ====================
-export class ApiConfig {
-  private static instance: ApiConfig
-
-  public readonly baseUrl: string
-  public readonly adminRoutePrefix: string
-  public readonly healthRoutePrefix: string
-
-  private constructor() {
-    this.baseUrl = this.getBaseUrl()
-    this.adminRoutePrefix = this.getRoutePrefix('admin', '/admin')
-    this.healthRoutePrefix = this.getRoutePrefix('health', '/health')
-  }
-
-  static getInstance(): ApiConfig {
-    if (!ApiConfig.instance) {
-      ApiConfig.instance = new ApiConfig()
-    }
-    return ApiConfig.instance
-  }
-
-  private getEnvValue(key: string, defaultValue: string = ''): string {
-    return import.meta.env[`VITE_${key}`] || defaultValue
-  }
-
-  private getBaseUrl(): string {
-    if (import.meta.env.PROD) {
-      return typeof window !== 'undefined' ? window.location.origin : ''
-    }
-    return this.getEnvValue('API_BASE_URL', 'http://127.0.0.1:8080')
-  }
-
-  private getRoutePrefix(type: 'admin' | 'health', defaultValue: string): string {
-    // 优先使用 Rust 注入的配置
-    if (typeof window !== 'undefined' && (window as any).__APP_CONFIG__) {
-      const config = (window as any).__APP_CONFIG__
-      if (type === 'admin' && config.adminRoutePrefix) {
-        console.warn('Using admin route prefix from Rust config:', config.adminRoutePrefix)
-        return config.adminRoutePrefix
-      }
-      if (type === 'health' && config.healthRoutePrefix) {
-        console.warn('Using health route prefix from Rust config:', config.healthRoutePrefix)
-        return config.healthRoutePrefix
-      }
-    }
-
-    // 降级到环境变量
-    console.warn(`Using ${type} route prefix from environment variable`)
-    return this.getEnvValue(`${type.toUpperCase()}_ROUTE_PREFIX`, defaultValue)
-  }
-}
+import { config as appConfig } from '@/config'
 
 // ==================== 错误处理 ====================
 export class ApiError extends Error {
@@ -66,7 +15,8 @@ export class ApiError extends Error {
 
 const handleAuthError = (): void => {
   if (typeof window !== 'undefined') {
-    localStorage.removeItem('adminToken')
+    // 不再使用 localStorage 存储 token
+    // Cookie 会由后端自动清除
     window.location.href = '/login'
   }
 }
@@ -84,6 +34,12 @@ export const createErrorHandler = (context: string) => {
       // HTTP 状态码错误
       const status = axiosError.response?.status
       switch (status) {
+        case 400:
+          throw new ApiError(
+            `400: Bad Request${context ? ` for ${context}` : ''}`,
+            400,
+            'BAD_REQUEST',
+          )
         case 401:
           // 如果是登录接口，不要自动重定向
           if (axiosError.config?.url?.includes('/auth/login')) {
@@ -95,14 +51,28 @@ export const createErrorHandler = (context: string) => {
             401,
             'UNAUTHORIZED',
           )
+        case 403:
+          throw new ApiError(
+            `403: Forbidden${context ? ` - insufficient permissions for ${context}` : ''}`,
+            403,
+            'FORBIDDEN',
+          )
         case 404:
-          throw new ApiError(`404: ${context || 'Endpoint'} not found`, 404, 'NOT_FOUND')
+          throw new ApiError(`404: ${context || 'Resource'} not found`, 404, 'NOT_FOUND')
+        case 429:
+          throw new ApiError(
+            '429: Too many requests - please try again later',
+            429,
+            'TOO_MANY_REQUESTS',
+          )
         case 500:
           throw new ApiError(
             `500: ${context ? `${context} failed` : 'Internal server error'}`,
             500,
             'SERVER_ERROR',
           )
+        case 503:
+          throw new ApiError('503: Service temporarily unavailable', 503, 'SERVICE_UNAVAILABLE')
         default:
           throw new ApiError(
             `${status}: ${axiosError.response?.statusText || 'Unknown error'}`,
@@ -124,6 +94,7 @@ export class HttpClient {
     this.client = axios.create({
       baseURL,
       withCredentials: true,
+      timeout: 10000, // 10 秒超时
     })
 
     this.setupInterceptors(context)
@@ -131,13 +102,10 @@ export class HttpClient {
 
   private setupInterceptors(context: string): void {
     // 请求拦截器
+    // 注意：不再需要手动添加 Authorization header
+    // 认证通过 HttpOnly Cookie 自动发送
     this.client.interceptors.request.use((config) => {
-      if (typeof window !== 'undefined') {
-        const token = localStorage.getItem('adminToken')
-        if (token) {
-          config.headers.Authorization = `Bearer ${token}`
-        }
-      }
+      // 可以在这里添加其他请求头（如 X-Request-ID）
       return config
     })
 
@@ -145,28 +113,45 @@ export class HttpClient {
     this.client.interceptors.response.use((response) => response, createErrorHandler(context))
   }
 
-  async get<T = any>(url: string): Promise<T> {
+  async get<T = unknown>(url: string): Promise<T> {
     const response = await this.client.get(url)
     return response.data
   }
 
-  async post<T = any>(url: string, data?: any): Promise<T> {
+  async post<T = unknown>(url: string, data?: unknown): Promise<T> {
     const response = await this.client.post(url, data)
     return response.data
   }
 
-  async put<T = any>(url: string, data?: any): Promise<T> {
+  async put<T = unknown>(url: string, data?: unknown): Promise<T> {
     const response = await this.client.put(url, data)
     return response.data
   }
 
-  async delete<T = any>(url: string): Promise<T> {
+  async delete<T = unknown>(url: string): Promise<T> {
     const response = await this.client.delete(url)
     return response.data
   }
 }
 
 // ==================== 客户端实例 ====================
-export const config = ApiConfig.getInstance()
-export const adminClient = new HttpClient(`${config.baseUrl}${config.adminRoutePrefix}`, 'admin')
-export const healthClient = new HttpClient(`${config.baseUrl}${config.healthRoutePrefix}`, 'health')
+// 获取基础 URL
+const getBaseUrl = (): string => {
+  if (import.meta.env.PROD) {
+    return typeof window !== 'undefined' ? window.location.origin : ''
+  }
+  return appConfig.apiBaseUrl || 'http://127.0.0.1:8080'
+}
+
+const baseUrl = getBaseUrl()
+
+// 导出配置对象（为了兼容性）
+export const config = {
+  baseUrl,
+  adminRoutePrefix: appConfig.adminRoutePrefix,
+  healthRoutePrefix: appConfig.healthRoutePrefix,
+}
+
+// 创建客户端实例
+export const adminClient = new HttpClient(`${baseUrl}${appConfig.adminRoutePrefix}`, 'admin')
+export const healthClient = new HttpClient(`${baseUrl}${appConfig.healthRoutePrefix}`, 'health')

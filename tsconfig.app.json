@@ -7,6 +7,14 @@
 
     "paths": {
       "@/*": ["./src/*"]
-    }
+    },
+
+    /* 渐进式严格类型检查 */
+    "strictNullChecks": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "forceConsistentCasingInFileNames": true
   }
 }

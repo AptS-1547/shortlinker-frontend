@@ -225,5 +225,24 @@
     "light": "浅色主题",
     "dark": "深色主题",
     "system": "系统主题"
+  },
+  "errors": {
+    "boundary": {
+      "title": "糟糕！出错了",
+      "description": "遇到了意外错误。请尝试重新加载页面或返回主页。",
+      "technicalDetails": "技术详情",
+      "reload": "重新加载",
+      "goHome": "返回首页",
+      "persistentIssue": "如果问题持续存在，请联系技术支持。"
+    },
+    "network": "网络错误 - 请检查您的连接",
+    "badRequest": "错误的请求 - 请检查您的输入",
+    "unauthorized": "未授权 - 请重新登录",
+    "forbidden": "禁止访问 - 您没有访问此资源的权限",
+    "notFound": "资源未找到",
+    "tooManyRequests": "请求过于频繁 - 请稍后重试",
+    "serverError": "服务器错误 - 请稍后重试",
+    "serviceUnavailable": "服务暂时不可用 - 请稍后重试",
+    "unknown": "发生未知错误"
   }
 }

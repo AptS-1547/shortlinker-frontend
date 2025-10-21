@@ -225,5 +225,24 @@
     "light": "Light",
     "dark": "Dark",
     "system": "System Default"
+  },
+  "errors": {
+    "boundary": {
+      "title": "Oops! Something went wrong",
+      "description": "We encountered an unexpected error. Please try reloading the page or go back to the home page.",
+      "technicalDetails": "Technical Details",
+      "reload": "Reload Page",
+      "goHome": "Go to Home",
+      "persistentIssue": "If the problem persists, please contact support."
+    },
+    "network": "Network error - please check your connection",
+    "badRequest": "Bad request - please check your input",
+    "unauthorized": "Unauthorized - please log in again",
+    "forbidden": "Forbidden - you don't have permission to access this resource",
+    "notFound": "Resource not found",
+    "tooManyRequests": "Too many requests - please try again later",
+    "serverError": "Server error - please try again later",
+    "serviceUnavailable": "Service temporarily unavailable - please try again later",
+    "unknown": "An unknown error occurred"
   }
 }
