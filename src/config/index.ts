@@ -6,13 +6,6 @@
  * 3. 默认值
  */
 
-interface RuntimeConfig {
-  basePath?: string
-  adminRoutePrefix?: string
-  healthRoutePrefix?: string
-  shortlinkerVersion?: string
-}
-
 interface AppConfig {
   basePath: string
   adminRoutePrefix: string
@@ -36,13 +29,17 @@ function getEnvValue(key: string): string | undefined {
 function getRuntimeValue(key: keyof AppConfig): string | undefined {
   if (typeof window === 'undefined') return undefined
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const config = (window as any).__APP_CONFIG__ as RuntimeConfig | undefined
+  const config = window.__APP_CONFIG__
   if (!config) return undefined
 
-  const value = config[key as keyof RuntimeConfig]
+  const value = config[key as keyof typeof config]
   // 检查是否是未替换的占位符
-  if (value && typeof value === 'string' && value.startsWith('%') && value.endsWith('%')) {
+  if (
+    value &&
+    typeof value === 'string' &&
+    value.startsWith('%') &&
+    value.endsWith('%')
+  ) {
     return undefined
   }
 
@@ -55,7 +52,7 @@ function getRuntimeValue(key: keyof AppConfig): string | undefined {
 function getConfigValue(
   key: keyof AppConfig,
   defaultValue: string,
-  envKey?: string
+  envKey?: string,
 ): string {
   // 开发模式：优先使用环境变量
   if (import.meta.env.DEV) {
@@ -93,7 +90,11 @@ class Config implements AppConfig {
     this._basePath = getConfigValue('basePath', '/', 'BASE_URL')
     this._adminRoutePrefix = getConfigValue('adminRoutePrefix', '/admin')
     this._healthRoutePrefix = getConfigValue('healthRoutePrefix', '/health')
-    this._shortlinkerVersion = getConfigValue('shortlinkerVersion', 'unknown', 'VERSION')
+    this._shortlinkerVersion = getConfigValue(
+      'shortlinkerVersion',
+      'unknown',
+      'VERSION',
+    )
     this._apiBaseUrl = getConfigValue('apiBaseUrl', '', 'API_BASE_URL')
 
     // 打印配置信息（仅开发模式）
@@ -136,7 +137,11 @@ class Config implements AppConfig {
     this._basePath = getConfigValue('basePath', '/', 'BASE_URL')
     this._adminRoutePrefix = getConfigValue('adminRoutePrefix', '/admin')
     this._healthRoutePrefix = getConfigValue('healthRoutePrefix', '/health')
-    this._shortlinkerVersion = getConfigValue('shortlinkerVersion', 'unknown', 'VERSION')
+    this._shortlinkerVersion = getConfigValue(
+      'shortlinkerVersion',
+      'unknown',
+      'VERSION',
+    )
     this._apiBaseUrl = getConfigValue('apiBaseUrl', '', 'API_BASE_URL')
 
     console.log('[Config] Configuration reloaded')

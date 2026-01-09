@@ -3,7 +3,9 @@
     "loading": "加载中...",
     "cancel": "取消",
     "save": "保存",
+    "saving": "保存中...",
     "delete": "删除",
+    "deleting": "删除中...",
     "edit": "编辑",
     "create": "创建",
     "search": "搜索",
@@ -17,7 +19,8 @@
     "previous": "上一页",
     "next": "下一页",
     "yes": "是",
-    "no": "否"
+    "no": "否",
+    "more": "更多"
   },
   "auth": {
     "title": "管理员登录",
@@ -29,7 +32,7 @@
     "verifying": "验证中...",
     "processing": "处理中...",
     "serverConnection": "服务器连接",
-    "serverConnectionDesc": "请确保 ShortLinker 服务正在 {url} 上运行",
+    "serverConnectionDesc": "请确保 ShortLinker 服务正在 {{url}} 上运行",
     "errors": {
       "passwordRequired": "请输入密码",
       "networkError": "无法连接到服务器。请检查服务是否正在运行。",
@@ -46,7 +49,6 @@
     "totalLinks": "总链接数",
     "activeLinks": "活跃链接",
     "responseTime": "响应时间",
-    "recentLinks": "最近链接",
     "noLinks": "暂无链接",
     "noLinksDesc": "创建您的第一个短链接以开始使用。",
     "createLink": "创建链接",
@@ -56,7 +58,23 @@
     "lastCheck": "最后检查",
     "healthy": "健康",
     "unknown": "未知",
-    "never": "从未"
+    "never": "从未",
+    "stats": {
+      "totalLinks": "总链接数",
+      "linksCreated": "已创建链接",
+      "totalClicks": "总点击数",
+      "clicksTracked": "已跟踪点击",
+      "activeLinks": "活跃链接",
+      "notExpired": "未过期",
+      "uptime": "运行时间",
+      "systemHealth": "系统健康"
+    },
+    "recentLinks": {
+      "title": "最近链接",
+      "description": "您最近创建的短链接",
+      "clicks": "次点击",
+      "noLinks": "暂无链接"
+    }
   },
   "links": {
     "title": "链接管理",
@@ -82,7 +100,6 @@
     "passwordPlaceholder": "输入密码保护此链接",
     "passwordHelp": "设置密码以保护此链接的访问",
     "passwordProtected": "密码保护",
-    "status": "状态",
     "created": "创建时间",
     "actions": "操作",
     "active": "活跃",
@@ -91,9 +108,12 @@
     "creating": "创建中...",
     "updating": "更新中...",
     "createLink": "创建链接",
+    "createNew": "新建链接",
+    "editLink": "编辑链接",
     "updateLink": "更新链接",
     "clearEdit": "清除编辑",
     "shortLinks": "短链接",
+    "noLinks": "暂无链接",
     "noMatchingLinks": "没有匹配的链接",
     "noLinksYet": "暂无链接",
     "noMatchingLinksDesc": "尝试调整筛选条件或创建新链接。",
@@ -102,7 +122,8 @@
     "createFirstLink": "创建您的第一个链接",
     "createNewLink": "创建新链接",
     "deleteLink": "删除链接",
-    "deleteConfirmation": "确定要删除链接 {code} 吗？此操作无法撤销。",
+    "openInNewTab": "在新标签页中打开",
+    "deleteConfirmation": "确定要删除链接 {{code}} 吗？此操作无法撤销。",
     "deleting": "删除中...",
     "copyLinkTitle": "点击复制短链接",
     "copyPasswordProtectedLink": "点击复制密码保护链接（包含密码）",
@@ -111,6 +132,8 @@
     "createdAfter": "创建时间晚于",
     "createdBefore": "创建时间早于",
     "pageSize": "页面大小",
+    "searchPlaceholder": "搜索链接...",
+    "tableTitle": "链接列表",
     "filterOptions": {
       "allLinks": "所有链接",
       "activeOnly": "仅活跃",
@@ -119,8 +142,8 @@
       "temporaryLinks": "临时链接"
     },
     "pagination": {
-      "showing": "显示 {from}-{to}，共 {total} 条",
-      "page": "第 {current} 页，共 {total} 页",
+      "showing": "显示 {{from}}-{{to}}，共 {{total}} 条",
+      "page": "第 {{current}} 页，共 {{total}} 页",
       "perPage": "每页"
     },
     "search": {
@@ -131,14 +154,53 @@
     },
     "table": {
       "code": "代码",
+      "target": "目标网址",
       "targetUrl": "目标网址",
+      "clicks": "点击数",
       "status": "状态",
       "created": "创建时间",
+      "expires": "过期时间",
       "actions": "操作"
     },
-    "activeFilters": "{count} 个筛选条件",
+    "status": {
+      "active": "活跃",
+      "expired": "已过期",
+      "protected": "已保护"
+    },
+    "form": {
+      "code": "短代码",
+      "codePlaceholder": "留空自动生成",
+      "target": "目标网址",
+      "targetPlaceholder": "https://example.com/your-long-url",
+      "password": "密码（可选）",
+      "passwordPlaceholder": "输入密码保护此链接",
+      "invalidUrl": "URL 必须以 http:// 或 https:// 开头"
+    },
+    "deleteConfirm": {
+      "title": "确认删除",
+      "description": "确定要删除链接 {{code}} 吗？此操作无法撤销。"
+    },
+    "activeFilters": "{{count}} 个筛选条件",
     "filtered": "（已筛选）",
-    "editing": "正在编辑：{code}"
+    "editing": "正在编辑：{{code}}",
+    "batch": {
+      "selectAll": "全选",
+      "selectRow": "选择此行",
+      "selected": "已选中 {{count}} 项",
+      "delete": "删除",
+      "clear": "取消选择",
+      "deleteTitle": "确认批量删除",
+      "deleteDescription": "确定要删除选中的 {{count}} 个链接吗？此操作无法撤销。"
+    },
+    "columns": {
+      "configure": "列",
+      "title": "显示/隐藏列"
+    },
+    "expand": {
+      "shortUrl": "短链接",
+      "passwordProtection": "密码保护"
+    },
+    "pageSize": "每页显示"
   },
   "analytics": {
     "title": "分析",
@@ -165,16 +227,35 @@
     "created": "创建时间",
     "averageClicks": "平均点击数",
     "clicksPerLink": "每链接点击数",
-    "na": "暂无"
+    "na": "暂无",
+    "comingSoon": {
+      "title": "功能开发中",
+      "description": "详细的分析功能即将推出！敬请期待。"
+    },
+    "features": {
+      "clickTrends": "点击趋势",
+      "clickTrendsDesc": "查看您链接的点击趋势和模式",
+      "visitors": "访客分析",
+      "visitorsDesc": "了解谁在访问您的链接",
+      "geography": "地理分布",
+      "geographyDesc": "查看访客的地理位置分布",
+      "topLinks": "热门链接",
+      "topLinksDesc": "发现您最受欢迎的链接"
+    }
   },
   "layout": {
     "title": "ShortLinker 管理面板",
-    "subtitle": "快速便捷地管理您的链接。",
+    "subtitle": "管理面板",
     "logout": "退出登录",
     "navigation": {
+      "title": "导航",
       "dashboard": "仪表板",
       "links": "链接管理",
-      "analytics": "数据分析"
+      "analytics": "数据分析",
+      "settings": "设置"
+    },
+    "system": {
+      "title": "系统"
     },
     "health": {
       "healthy": "健康",
@@ -191,6 +272,7 @@
     "title": "系统健康状态",
     "description": "实时服务监控",
     "close": "关闭",
+    "refresh": "刷新",
     "loadingData": "加载健康数据中...",
     "overallStatus": "总体状态",
     "responseTime": "响应时间",
@@ -211,6 +293,7 @@
     "unknown": "未知"
   },
   "langswitcher": {
+    "title": "选择语言",
     "language": {
       "switch": "切换语言",
       "english": "English",
@@ -225,6 +308,18 @@
     "light": "浅色主题",
     "dark": "深色主题",
     "system": "系统主题"
+  },
+  "settings": {
+    "title": "设置",
+    "description": "自定义您的偏好设置",
+    "theme": {
+      "title": "主题",
+      "description": "选择界面主题"
+    },
+    "language": {
+      "title": "语言",
+      "description": "选择界面语言"
+    }
   },
   "errors": {
     "boundary": {

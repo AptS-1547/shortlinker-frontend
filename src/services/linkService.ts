@@ -1,37 +1,57 @@
-import { adminClient } from './http'
-import { ApiError } from './http'
+import { ApiError, adminClient } from './http'
 import type {
-  SerializableShortLink,
-  LinkPayload,
-  LinkCreateResult,
   GetLinksQuery,
+  LinkCreateResult,
+  LinkPayload,
   PaginatedLinksResponse,
+  SerializableShortLink,
 } from './types'
+
+/**
+ * 构建链接查询参数
+ */
+function buildLinkQueryParams(query?: GetLinksQuery): URLSearchParams {
+  const params = new URLSearchParams()
+
+  if (query) {
+    if (query.page !== undefined) params.append('page', query.page.toString())
+    if (query.page_size !== undefined)
+      params.append('page_size', query.page_size.toString())
+    if (query.created_after) params.append('created_after', query.created_after)
+    if (query.created_before)
+      params.append('created_before', query.created_before)
+    if (query.only_expired !== undefined)
+      params.append('only_expired', query.only_expired.toString())
+    if (query.only_active !== undefined)
+      params.append('only_active', query.only_active.toString())
+    if (query.search) params.append('search', query.search)
+  }
+
+  return params
+}
+
+/**
+ * 构建带查询参数的 URL
+ */
+function buildLinkUrl(query?: GetLinksQuery): string {
+  const params = buildLinkQueryParams(query)
+  return params.toString() ? `/link?${params.toString()}` : '/link'
+}
 
 export class LinkService {
   /**
    * 获取所有链接（带筛选）
    */
   async fetchAll(query?: GetLinksQuery): Promise<SerializableShortLink[]> {
-    const params = new URLSearchParams()
-
-    if (query) {
-      if (query.page !== undefined) params.append('page', query.page.toString())
-      if (query.page_size !== undefined) params.append('page_size', query.page_size.toString())
-      if (query.created_after) params.append('created_after', query.created_after)
-      if (query.created_before) params.append('created_before', query.created_before)
-      if (query.only_expired !== undefined)
-        params.append('only_expired', query.only_expired.toString())
-      if (query.only_active !== undefined)
-        params.append('only_active', query.only_active.toString())
-      if (query.search) params.append('search', query.search)
-    }
-
-    const url = params.toString() ? `/link?${params.toString()}` : '/link'
-    const response = await adminClient.get(url)
+    const url = buildLinkUrl(query)
+    const response = await adminClient.get<{
+      code?: number
+      data?: SerializableShortLink[]
+      pagination?: PaginatedLinksResponse['pagination']
+    }>(url)
 
     // 处理新的API响应格式: { code, data: [...], pagination }
-    if (response && response.data && Array.isArray(response.data)) {
+    if (response?.data && Array.isArray(response.data)) {
       return response.data
     }
 
@@ -41,26 +61,19 @@ export class LinkService {
   /**
    * 获取分页链接（如果后端支持分页响应）
    */
-  async fetchPaginated(query?: GetLinksQuery): Promise<PaginatedLinksResponse> {
-    const params = new URLSearchParams()
-
-    if (query) {
-      if (query.page !== undefined) params.append('page', query.page.toString())
-      if (query.page_size !== undefined) params.append('page_size', query.page_size.toString())
-      if (query.created_after) params.append('created_after', query.created_after)
-      if (query.created_before) params.append('created_before', query.created_before)
-      if (query.only_expired !== undefined)
-        params.append('only_expired', query.only_expired.toString())
-      if (query.only_active !== undefined)
-        params.append('only_active', query.only_active.toString())
-      if (query.search) params.append('search', query.search)
-    }
-
-    const url = params.toString() ? `/link?${params.toString()}` : '/link'
-    const response = await adminClient.get(url)
+  async fetchPaginated(
+    query?: GetLinksQuery,
+    signal?: AbortSignal,
+  ): Promise<PaginatedLinksResponse> {
+    const url = buildLinkUrl(query)
+    const response = await adminClient.get<{
+      code?: number
+      data?: SerializableShortLink[]
+      pagination?: PaginatedLinksResponse['pagination']
+    }>(url, { signal })
 
     // 处理新的API响应格式: { code, data: [...], pagination }
-    if (response && response.data && response.pagination) {
+    if (response?.data && response.pagination) {
       return {
         code: response.code || 0,
         data: Array.isArray(response.data) ? response.data : [],
@@ -86,7 +99,9 @@ export class LinkService {
    */
   async fetchOne(code: string): Promise<SerializableShortLink | null> {
     try {
-      const response = await adminClient.get(`/link/${code}`)
+      const response = await adminClient.get<{ data?: SerializableShortLink }>(
+        `/link/${code}`,
+      )
       return response.data || null
     } catch (error) {
       if (error instanceof ApiError && error.status === 404) {

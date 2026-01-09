@@ -1,4 +1,4 @@
-import { config, ApiError } from './http'
+import { ApiError, config } from './http'
 import type { QRCodeOptions } from './types'
 
 export class QRCodeService {
@@ -38,7 +38,9 @@ export class QRCodeService {
     options: QRCodeOptions = {},
   ): Promise<string> {
     const domain =
-      baseUrl || config.baseUrl || (typeof window !== 'undefined' ? window.location.origin : '')
+      baseUrl ||
+      config.baseUrl ||
+      (typeof window !== 'undefined' ? window.location.origin : '')
 
     const fullUrl = `${domain}/${shortCode}`
     return this.generate(fullUrl, options)
@@ -47,7 +49,10 @@ export class QRCodeService {
   /**
    * 下载二维码
    */
-  async download(dataUrl: string, filename: string = 'qrcode.png'): Promise<void> {
+  async download(
+    dataUrl: string,
+    filename: string = 'qrcode.png',
+  ): Promise<void> {
     try {
       let downloadUrl: string
 

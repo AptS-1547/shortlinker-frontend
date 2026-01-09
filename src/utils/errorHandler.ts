@@ -1,4 +1,4 @@
-import axios, { AxiosError } from 'axios'
+import axios, { type AxiosError } from 'axios'
 
 /**
  * API 错误响应接口
@@ -15,7 +15,10 @@ export interface ApiErrorResponse {
  * @param defaultMessage - 默认错误消息
  * @returns 提取的错误消息
  */
-export function extractErrorMessage(error: unknown, defaultMessage: string): string {
+export function extractErrorMessage(
+  error: unknown,
+  defaultMessage: string,
+): string {
   // 检查是否是 Axios 错误
   if (axios.isAxiosError(error)) {
     const axiosError = error as AxiosError<ApiErrorResponse>

@@ -3,7 +3,9 @@
     "loading": "読み込み中...",
     "cancel": "キャンセル",
     "save": "保存",
+    "saving": "保存中...",
     "delete": "削除",
+    "deleting": "削除中...",
     "edit": "編集",
     "create": "作成",
     "search": "検索",
@@ -17,7 +19,8 @@
     "previous": "前へ",
     "next": "次へ",
     "yes": "はい",
-    "no": "いいえ"
+    "no": "いいえ",
+    "more": "その他"
   },
   "auth": {
     "title": "管理者ログイン",
@@ -29,7 +32,7 @@
     "verifying": "検証中...",
     "processing": "処理中...",
     "serverConnection": "サーバー接続",
-    "serverConnectionDesc": "ShortLinkerサービスが {url} で実行されていることを確認してください",
+    "serverConnectionDesc": "ShortLinkerサービスが {{url}} で実行されていることを確認してください",
     "errors": {
       "passwordRequired": "パスワードを入力してください",
       "networkError": "サーバーに接続できません。サービスが実行されているか確認してください。",
@@ -46,7 +49,6 @@
     "totalLinks": "総リンク数",
     "activeLinks": "アクティブリンク",
     "responseTime": "応答時間",
-    "recentLinks": "最近のリンク",
     "noLinks": "リンクがありません",
     "noLinksDesc": "最初のショートリンクを作成して始めましょう。",
     "createLink": "リンク作成",
@@ -56,7 +58,23 @@
     "lastCheck": "最終チェック",
     "healthy": "正常",
     "unknown": "不明",
-    "never": "なし"
+    "never": "なし",
+    "stats": {
+      "totalLinks": "総リンク数",
+      "linksCreated": "作成されたリンク",
+      "totalClicks": "総クリック数",
+      "clicksTracked": "追跡されたクリック",
+      "activeLinks": "アクティブリンク",
+      "notExpired": "未期限切れ",
+      "uptime": "稼働時間",
+      "systemHealth": "システムヘルス"
+    },
+    "recentLinks": {
+      "title": "最近のリンク",
+      "description": "最近作成されたショートリンク",
+      "clicks": "クリック",
+      "noLinks": "リンクがありません"
+    }
   },
   "links": {
     "title": "リンク管理",
@@ -82,7 +100,6 @@
     "passwordPlaceholder": "このリンクを保護するパスワードを入力",
     "passwordHelp": "このリンクへのアクセスを保護するパスワードを設定",
     "passwordProtected": "パスワード保護",
-    "status": "状態",
     "created": "作成日時",
     "actions": "アクション",
     "active": "アクティブ",
@@ -91,9 +108,12 @@
     "creating": "作成中...",
     "updating": "更新中...",
     "createLink": "リンク作成",
+    "createNew": "新規作成",
+    "editLink": "リンクを編集",
     "updateLink": "リンク更新",
     "clearEdit": "編集をクリア",
     "shortLinks": "ショートリンク",
+    "noLinks": "リンクがありません",
     "noMatchingLinks": "一致するリンクがありません",
     "noLinksYet": "リンクがありません",
     "noMatchingLinksDesc": "フィルター条件を調整するか、新しいリンクを作成してください。",
@@ -102,7 +122,8 @@
     "createFirstLink": "最初のリンクを作成",
     "createNewLink": "新しいリンクを作成",
     "deleteLink": "リンクを削除",
-    "deleteConfirmation": "リンク {code} を削除してもよろしいですか？この操作は取り消せません。",
+    "openInNewTab": "新しいタブで開く",
+    "deleteConfirmation": "リンク {{code}} を削除してもよろしいですか？この操作は取り消せません。",
     "deleting": "削除中...",
     "copyLinkTitle": "ショートリンクをコピー",
     "copyPasswordProtectedLink": "パスワード保護されたリンクをコピー（パスワード含む）",
@@ -111,6 +132,8 @@
     "createdAfter": "作成日以降",
     "createdBefore": "作成日以前",
     "pageSize": "ページサイズ",
+    "searchPlaceholder": "リンクを検索...",
+    "tableTitle": "リンク一覧",
     "filterOptions": {
       "allLinks": "すべてのリンク",
       "activeOnly": "アクティブのみ",
@@ -119,8 +142,8 @@
       "temporaryLinks": "一時リンク"
     },
     "pagination": {
-      "showing": "{total}件中 {from}-{to}件を表示",
-      "page": "{total}ページ中 {current}ページ",
+      "showing": "{{total}}件中 {{from}}-{{to}}件を表示",
+      "page": "{{total}}ページ中 {{current}}ページ",
       "perPage": "件/ページ"
     },
     "search": {
@@ -131,14 +154,53 @@
     },
     "table": {
       "code": "コード",
+      "target": "ターゲットURL",
       "targetUrl": "ターゲットURL",
+      "clicks": "クリック数",
       "status": "状態",
       "created": "作成日時",
+      "expires": "有効期限",
       "actions": "アクション"
     },
-    "activeFilters": "{count}個のフィルター",
+    "status": {
+      "active": "アクティブ",
+      "expired": "期限切れ",
+      "protected": "保護済み"
+    },
+    "form": {
+      "code": "ショートコード",
+      "codePlaceholder": "空白で自動生成",
+      "target": "ターゲットURL",
+      "targetPlaceholder": "https://example.com/your-long-url",
+      "password": "パスワード（任意）",
+      "passwordPlaceholder": "このリンクを保護するパスワードを入力",
+      "invalidUrl": "URLは http:// または https:// で始まる必要があります"
+    },
+    "deleteConfirm": {
+      "title": "削除の確認",
+      "description": "リンク {{code}} を削除してもよろしいですか？この操作は取り消せません。"
+    },
+    "activeFilters": "{{count}}個のフィルター",
     "filtered": "（フィルター済み）",
-    "editing": "編集中: {code}"
+    "editing": "編集中: {{code}}",
+    "batch": {
+      "selectAll": "すべて選択",
+      "selectRow": "この行を選択",
+      "selected": "{{count}}件選択中",
+      "delete": "削除",
+      "clear": "選択解除",
+      "deleteTitle": "一括削除の確認",
+      "deleteDescription": "選択した{{count}}件のリンクを削除してもよろしいですか？この操作は取り消せません。"
+    },
+    "columns": {
+      "configure": "列",
+      "title": "列の表示/非表示"
+    },
+    "expand": {
+      "shortUrl": "短縮URL",
+      "passwordProtection": "パスワード保護"
+    },
+    "pageSize": "表示件数"
   },
   "analytics": {
     "title": "分析",
@@ -165,16 +227,35 @@
     "created": "作成日時",
     "averageClicks": "平均クリック数",
     "clicksPerLink": "リンクあたりのクリック数",
-    "na": "N/A"
+    "na": "N/A",
+    "comingSoon": {
+      "title": "近日公開",
+      "description": "詳細な分析機能は近日公開予定です！お楽しみに。"
+    },
+    "features": {
+      "clickTrends": "クリックトレンド",
+      "clickTrendsDesc": "リンクのクリックトレンドとパターンを表示",
+      "visitors": "訪問者分析",
+      "visitorsDesc": "リンクにアクセスしている訪問者を理解",
+      "geography": "地理的分布",
+      "geographyDesc": "訪問者の所在地を確認",
+      "topLinks": "人気リンク",
+      "topLinksDesc": "最も人気のあるリンクを発見"
+    }
   },
   "layout": {
     "title": "ShortLinker 管理",
-    "subtitle": "スピードとスタイルでリンクを管理",
+    "subtitle": "管理パネル",
     "logout": "ログアウト",
     "navigation": {
+      "title": "ナビゲーション",
       "dashboard": "ダッシュボード",
       "links": "リンク",
-      "analytics": "分析"
+      "analytics": "分析",
+      "settings": "設定"
+    },
+    "system": {
+      "title": "システム"
     },
     "health": {
       "healthy": "正常",
@@ -191,6 +272,7 @@
     "title": "システムヘルス状態",
     "description": "リアルタイムサービス監視",
     "close": "閉じる",
+    "refresh": "更新",
     "loadingData": "ヘルスデータを読み込み中...",
     "overallStatus": "全体状態",
     "responseTime": "応答時間",
@@ -211,6 +293,7 @@
     "unknown": "不明"
   },
   "langswitcher": {
+    "title": "言語を選択",
     "language": {
       "switch": "言語を切り替え",
       "english": "English",
@@ -225,5 +308,36 @@
     "light": "ライトテーマ",
     "dark": "ダークテーマ",
     "system": "システムテーマ"
+  },
+  "settings": {
+    "title": "設定",
+    "description": "お好みの設定をカスタマイズ",
+    "theme": {
+      "title": "テーマ",
+      "description": "インターフェースのテーマを選択"
+    },
+    "language": {
+      "title": "言語",
+      "description": "インターフェースの言語を選択"
+    }
+  },
+  "errors": {
+    "boundary": {
+      "title": "おっと！エラーが発生しました",
+      "description": "予期しないエラーが発生しました。ページを再読み込みするか、ホームページに戻ってください。",
+      "technicalDetails": "技術詳細",
+      "reload": "再読み込み",
+      "goHome": "ホームに戻る",
+      "persistentIssue": "問題が解決しない場合は、サポートにお問い合わせください。"
+    },
+    "network": "ネットワークエラー - 接続を確認してください",
+    "badRequest": "リクエストエラー - 入力内容を確認してください",
+    "unauthorized": "認証エラー - 再度ログインしてください",
+    "forbidden": "アクセス拒否 - このリソースへのアクセス権限がありません",
+    "notFound": "リソースが見つかりません",
+    "tooManyRequests": "リクエストが多すぎます - しばらくしてから再試行してください",
+    "serverError": "サーバーエラー - しばらくしてから再試行してください",
+    "serviceUnavailable": "サービスが一時的に利用できません - しばらくしてから再試行してください",
+    "unknown": "不明なエラーが発生しました"
   }
 }

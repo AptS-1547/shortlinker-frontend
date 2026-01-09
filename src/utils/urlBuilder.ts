@@ -8,7 +8,9 @@
  * @param params - 参数对象
  * @returns URLSearchParams 实例
  */
-export function buildUrlParams(params: Record<string, unknown>): URLSearchParams {
+export function buildUrlParams(
+  params: Record<string, unknown>,
+): URLSearchParams {
   const searchParams = new URLSearchParams()
 
   for (const [key, value] of Object.entries(params)) {
@@ -141,7 +143,10 @@ export function isValidUrl(url: string): boolean {
  * @param defaultProtocol - 默认协议（默认为 'https'）
  * @returns 标准化后的 URL
  */
-export function normalizeUrl(url: string, defaultProtocol: string = 'https'): string {
+export function normalizeUrl(
+  url: string,
+  defaultProtocol: string = 'https',
+): string {
   if (!url) {
     return ''
   }
@@ -153,4 +158,15 @@ export function normalizeUrl(url: string, defaultProtocol: string = 'https'): st
 
   // 添加默认协议
   return `${defaultProtocol}://${url}`
+}
+
+/**
+ * 构建短链接完整 URL
+ * @param code - 短链接代码
+ * @returns 完整的短链接 URL
+ */
+export function buildShortUrl(code: string): string {
+  // 获取当前域名作为基础 URL
+  const baseUrl = typeof window !== 'undefined' ? window.location.origin : ''
+  return `${baseUrl}/${code}`
 }

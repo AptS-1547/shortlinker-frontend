@@ -18,7 +18,7 @@ export interface CopyResult {
 export async function copyToClipboard(text: string): Promise<CopyResult> {
   try {
     // 优先使用现代 Clipboard API
-    if (navigator.clipboard && navigator.clipboard.writeText) {
+    if (navigator.clipboard?.writeText) {
       await navigator.clipboard.writeText(text)
       return { success: true }
     }
@@ -66,7 +66,7 @@ export async function copyToClipboard(text: string): Promise<CopyResult> {
  */
 export async function readFromClipboard(): Promise<string | null> {
   try {
-    if (navigator.clipboard && navigator.clipboard.readText) {
+    if (navigator.clipboard?.readText) {
       return await navigator.clipboard.readText()
     }
 
@@ -84,5 +84,5 @@ export async function readFromClipboard(): Promise<string | null> {
  * @returns 是否支持
  */
 export function isClipboardSupported(): boolean {
-  return !!(navigator.clipboard && navigator.clipboard.writeText)
+  return !!navigator.clipboard?.writeText
 }

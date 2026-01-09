@@ -40,7 +40,10 @@ export class BatchService {
         if (success) {
           result.success.push(identifier)
         } else {
-          result.failed.push({ code: identifier, error: error! })
+          result.failed.push({
+            code: identifier,
+            error: error || 'Unknown error',
+          })
         }
       } else {
         result.failed.push({

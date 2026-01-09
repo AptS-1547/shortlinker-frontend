@@ -8,7 +8,10 @@
  * @param locale - 语言代码（默认为 'en-US'）
  * @returns 格式化后的日期字符串
  */
-export function formatDate(dateString: string, locale: string = 'en-US'): string {
+export function formatDate(
+  dateString: string,
+  locale: string = 'en-US',
+): string {
   try {
     return new Date(dateString).toLocaleDateString(locale, {
       year: 'numeric',
@@ -27,7 +30,10 @@ export function formatDate(dateString: string, locale: string = 'en-US'): string
  * @param locale - 语言代码（默认为 'en-US'）
  * @returns 格式化后的日期时间字符串
  */
-export function formatDateTime(dateString: string, locale: string = 'en-US'): string {
+export function formatDateTime(
+  dateString: string,
+  locale: string = 'en-US',
+): string {
   try {
     return new Date(dateString).toLocaleString(locale, {
       year: 'numeric',
@@ -96,7 +102,10 @@ export function isExpired(expiresAt: string): boolean {
  * @param date2 - 第二个日期字符串（默认为当前时间）
  * @returns 天数差（可能为负数）
  */
-export function daysDifference(date1: string, date2: string = new Date().toISOString()): number {
+export function daysDifference(
+  date1: string,
+  date2: string = new Date().toISOString(),
+): number {
   try {
     const d1 = new Date(date1)
     const d2 = new Date(date2)
@@ -114,7 +123,10 @@ export function daysDifference(date1: string, date2: string = new Date().toISOSt
  * @param locale - 语言代码（默认为 'en'）
  * @returns 相对时间字符串
  */
-export function formatRelativeTime(dateString: string, locale: string = 'en'): string {
+export function formatRelativeTime(
+  dateString: string,
+  locale: string = 'en',
+): string {
   try {
     const date = new Date(dateString)
     const now = new Date()

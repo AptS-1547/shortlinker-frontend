@@ -1,15 +1,32 @@
 import { adminClient } from './http'
 import type { AuthRequest } from './types'
 
+interface AuthApiResponse {
+  code: number
+  data: {
+    message: string
+    expires_in?: number
+  }
+}
+
+export interface AuthResult {
+  expiresIn: number
+}
+
 export class AuthService {
   /**
    * 用户登录
-   * 后端会设置 HttpOnly Cookie，不返回 token
+   * 后端会设置 httpOnly Cookie，前端不需要处理 token
+   * 返回 expires_in（秒）
    */
-  async login(credentials: AuthRequest): Promise<void> {
-    await adminClient.post('/auth/login', credentials)
-    // 成功后，Cookie 已由后端通过 Set-Cookie 响应头设置
-    // 前端不需要存储任何 token
+  async login(credentials: AuthRequest): Promise<AuthResult> {
+    const response = await adminClient.post<AuthApiResponse>(
+      '/auth/login',
+      credentials,
+    )
+    return {
+      expiresIn: response.data?.expires_in || 900,
+    }
   }
 
   /**
@@ -21,8 +38,22 @@ export class AuthService {
       await adminClient.post('/auth/logout', {})
     } catch (error) {
       console.error('Logout API failed:', error)
-      // 即使 API 失败，也应该让前端认为已登出
       throw error
+    }
+  }
+
+  /**
+   * 刷新 Token
+   * 后端会验证 refresh cookie 并生成新的 access/refresh tokens
+   * 返回 expires_in（秒）
+   */
+  async refreshToken(): Promise<AuthResult> {
+    const response = await adminClient.post<AuthApiResponse>(
+      '/auth/refresh',
+      {},
+    )
+    return {
+      expiresIn: response.data?.expires_in || 900,
     }
   }
 

@@ -1,38 +1,156 @@
-import axios, { type AxiosInstance, type AxiosError } from 'axios'
+import axios, {
+  type AxiosError,
+  type AxiosInstance,
+  type InternalAxiosRequestConfig,
+} from 'axios'
 import { config as appConfig } from '@/config'
+import { forceLogout, refreshTokenFromHttp } from '@/stores/authStore'
 
 // ==================== 错误处理 ====================
 export class ApiError extends Error {
-  constructor(
-    message: string,
-    public status?: number,
-    public code?: string,
-  ) {
+  status?: number
+  code?: string
+
+  constructor(message: string, status?: number, code?: string) {
     super(message)
     this.name = 'ApiError'
+    this.status = status
+    this.code = code
   }
 }
 
 const handleAuthError = (): void => {
   if (typeof window !== 'undefined') {
-    // 不再使用 localStorage 存储 token
-    // Cookie 会由后端自动清除
-    window.location.href = '/login'
+    // 同步更新 authStore 状态
+    forceLogout()
+    // Cookie is automatically managed by browser, no localStorage cleanup needed
+    const basePath = appConfig.basePath
+    const loginPath =
+      basePath && basePath !== '/' ? `${basePath}/login` : '/login'
+    window.location.href = loginPath
   }
 }
 
-export const createErrorHandler = (context: string) => {
-  return (error: unknown): never => {
+// Flag to prevent multiple refresh attempts
+let isRefreshing = false
+let refreshPromise: Promise<void> | null = null
+
+// ==================== HTTP 客户端 ====================
+export class HttpClient {
+  private client: AxiosInstance
+  private context: string
+
+  constructor(baseURL: string, context: string = '') {
+    this.context = context
+    this.client = axios.create({
+      baseURL,
+      withCredentials: true, // Important: send cookies automatically
+      timeout: 10000,
+    })
+
+    this.setupInterceptors()
+  }
+
+  private setupInterceptors(): void {
+    // Request interceptor - no Authorization header needed, cookies are sent automatically
+    this.client.interceptors.request.use((config) => config)
+
+    // Response interceptor with token refresh logic
+    this.client.interceptors.response.use(
+      (response) => response,
+      async (error: AxiosError) => {
+        const originalRequest = error.config as InternalAxiosRequestConfig & {
+          _retry?: boolean
+        }
+
+        // Handle 401 errors
+        if (error.response?.status === 401) {
+          console.log('[HTTP] 401 intercepted for:', originalRequest?.url)
+
+          // Don't retry for auth endpoints
+          if (
+            originalRequest?.url?.includes('/auth/login') ||
+            originalRequest?.url?.includes('/auth/refresh') ||
+            originalRequest?.url?.includes('/auth/verify')
+          ) {
+            console.log('[HTTP] 401 on auth endpoint, not retrying')
+            return this.handleHttpError(error)
+          }
+
+          // Already retried, redirect to login
+          if (originalRequest?._retry) {
+            console.log('[HTTP] 401 already retried, redirecting to login')
+            handleAuthError()
+            return this.handleHttpError(error)
+          }
+
+          // Try to refresh token using authStore's unified refresh logic
+          if (!isRefreshing) {
+            console.log('[HTTP] 401 triggering token refresh')
+            isRefreshing = true
+            refreshPromise = refreshTokenFromHttp()
+              .then(() => {
+                console.log('[HTTP] Token refresh success, retrying request')
+                isRefreshing = false
+                refreshPromise = null
+              })
+              .catch(() => {
+                console.log('[HTTP] Token refresh failed, redirecting to login')
+                isRefreshing = false
+                refreshPromise = null
+                handleAuthError()
+                throw error
+              })
+          } else {
+            console.log('[HTTP] 401 waiting for ongoing refresh')
+          }
+
+          // Wait for refresh to complete
+          try {
+            await refreshPromise
+            // Mark as retried and retry original request
+            originalRequest._retry = true
+            console.log(
+              '[HTTP] Retrying original request:',
+              originalRequest?.url,
+            )
+            return this.client.request(originalRequest)
+          } catch {
+            return this.handleHttpError(error)
+          }
+        }
+
+        return this.handleHttpError(error)
+      },
+    )
+  }
+
+  private handleHttpError(error: unknown): never {
     if (axios.isAxiosError(error)) {
       const axiosError = error as AxiosError
 
-      // 网络错误
-      if (axiosError.code === 'ECONNREFUSED' || axiosError.code === 'ERR_NETWORK') {
-        throw new ApiError('Network Error: Cannot connect to server', undefined, 'NETWORK_ERROR')
+      // Canceled request (AbortController)
+      if (axiosError.code === 'ERR_CANCELED') {
+        const cancelError = new Error('Request canceled')
+        cancelError.name = 'AbortError'
+        throw cancelError
       }
 
-      // HTTP 状态码错误
+      // Network error
+      if (
+        axiosError.code === 'ECONNREFUSED' ||
+        axiosError.code === 'ERR_NETWORK'
+      ) {
+        throw new ApiError(
+          'Network Error: Cannot connect to server',
+          undefined,
+          'NETWORK_ERROR',
+        )
+      }
+
       const status = axiosError.response?.status
+      const context = this.context
+
       switch (status) {
         case 400:
           throw new ApiError(
@@ -41,15 +159,14 @@ export const createErrorHandler = (context: string) => {
             'BAD_REQUEST',
           )
         case 401:
-          // 如果是登录接口，不要自动重定向
-          if (axiosError.config?.url?.includes('/auth/login')) {
-            throw new ApiError('Invalid credentials', 401, 'INVALID_CREDENTIALS')
-          }
-          handleAuthError()
           throw new ApiError(
-            `401: Unauthorized access${context ? ` to ${context}` : ''}`,
+            axiosError.config?.url?.includes('/auth/login')
+              ? 'Invalid credentials'
+              : `401: Unauthorized access${context ? ` to ${context}` : ''}`,
             401,
-            'UNAUTHORIZED',
+            axiosError.config?.url?.includes('/auth/login')
+              ? 'INVALID_CREDENTIALS'
+              : 'UNAUTHORIZED',
           )
         case 403:
           throw new ApiError(
@@ -58,7 +175,11 @@ export const createErrorHandler = (context: string) => {
             'FORBIDDEN',
           )
         case 404:
-          throw new ApiError(`404: ${context || 'Resource'} not found`, 404, 'NOT_FOUND')
+          throw new ApiError(
+            `404: ${context || 'Resource'} not found`,
+            404,
+            'NOT_FOUND',
+          )
         case 429:
           throw new ApiError(
             '429: Too many requests - please try again later',
@@ -72,7 +193,11 @@ export const createErrorHandler = (context: string) => {
             'SERVER_ERROR',
           )
         case 503:
-          throw new ApiError('503: Service temporarily unavailable', 503, 'SERVICE_UNAVAILABLE')
+          throw new ApiError(
+            '503: Service temporarily unavailable',
+            503,
+            'SERVICE_UNAVAILABLE',
+          )
         default:
           throw new ApiError(
             `${status}: ${axiosError.response?.statusText || 'Unknown error'}`,
@@ -82,39 +207,16 @@ export const createErrorHandler = (context: string) => {
       }
     }
 
-    throw error instanceof Error ? error : new ApiError('Unknown error occurred')
-  }
-}
-
-// ==================== HTTP 客户端 ====================
-export class HttpClient {
-  private client: AxiosInstance
-
-  constructor(baseURL: string, context: string = '') {
-    this.client = axios.create({
-      baseURL,
-      withCredentials: true,
-      timeout: 10000, // 10 秒超时
-    })
-
-    this.setupInterceptors(context)
+    throw error instanceof Error
+      ? error
+      : new ApiError('Unknown error occurred')
   }
 
-  private setupInterceptors(context: string): void {
-    // 请求拦截器
-    // 注意：不再需要手动添加 Authorization header
-    // 认证通过 HttpOnly Cookie 自动发送
-    this.client.interceptors.request.use((config) => {
-      // 可以在这里添加其他请求头（如 X-Request-ID）
-      return config
-    })
-
-    // 响应拦截器
-    this.client.interceptors.response.use((response) => response, createErrorHandler(context))
-  }
-
-  async get<T = unknown>(url: string): Promise<T> {
-    const response = await this.client.get(url)
+  async get<T = unknown>(
+    url: string,
+    options?: { signal?: AbortSignal },
+  ): Promise<T> {
+    const response = await this.client.get(url, { signal: options?.signal })
     return response.data
   }
 
@@ -135,7 +237,6 @@ export class HttpClient {
 }
 
 // ==================== 客户端实例 ====================
-// 获取基础 URL
 const getBaseUrl = (): string => {
   if (import.meta.env.PROD) {
     return typeof window !== 'undefined' ? window.location.origin : ''
@@ -145,13 +246,19 @@ const getBaseUrl = (): string => {
 
 const baseUrl = getBaseUrl()
 
-// 导出配置对象（为了兼容性）
+// Export config for compatibility
 export const config = {
   baseUrl,
   adminRoutePrefix: appConfig.adminRoutePrefix,
   healthRoutePrefix: appConfig.healthRoutePrefix,
 }
 
-// 创建客户端实例
-export const adminClient = new HttpClient(`${baseUrl}${appConfig.adminRoutePrefix}`, 'admin')
-export const healthClient = new HttpClient(`${baseUrl}${appConfig.healthRoutePrefix}`, 'health')
+// Create client instances
+export const adminClient = new HttpClient(
+  `${baseUrl}${appConfig.adminRoutePrefix}`,
+  'admin',
+)
+export const healthClient = new HttpClient(
+  `${baseUrl}${appConfig.healthRoutePrefix}`,
+  'health',
+)

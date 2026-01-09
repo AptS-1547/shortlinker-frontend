@@ -1,0 +1,223 @@
+import { create } from 'zustand'
+import type {
+  GetLinksQuery,
+  LinkPayload,
+  SerializableShortLink,
+} from '@/services/api'
+import { LinkAPI } from '@/services/api'
+import { extractErrorMessage } from '@/utils/errorHandler'
+import { Storage, STORAGE_KEYS } from '@/utils/storage'
+
+// 模块级 AbortController
+let fetchController: AbortController | null = null
+
+// 读取持久化的 pageSize
+const getPersistedPageSize = (): number => {
+  const saved = Storage.get(STORAGE_KEYS.LINKS_PAGE_SIZE)
+  const parsed = saved ? parseInt(saved, 10) : 20
+  return [10, 20, 50, 100].includes(parsed) ? parsed : 20
+}
+
+interface PaginationState {
+  page: number
+  pageSize: number
+  total: number
+  totalPages: number
+  hasNext: boolean
+  hasPrev: boolean
+}
+
+interface LinksState {
+  links: SerializableShortLink[]
+  fetching: boolean
+  creating: boolean
+  updating: boolean
+  deleting: boolean
+  error: string | null
+  pagination: PaginationState
+  currentQuery: GetLinksQuery
+
+  // Actions
+  fetchLinks: (query?: GetLinksQuery) => Promise<void>
+  applyFilter: (query: GetLinksQuery) => Promise<void>
+  resetFilter: () => Promise<void>
+  goToPage: (page: number) => Promise<void>
+  setPageSize: (pageSize: number) => Promise<void>
+  createLink: (data: LinkPayload) => Promise<void>
+  updateLink: (code: string, data: LinkPayload) => Promise<void>
+  deleteLink: (code: string) => Promise<void>
+}
+
+const initialPagination: PaginationState = {
+  page: 1,
+  pageSize: getPersistedPageSize(),
+  total: 0,
+  totalPages: 0,
+  hasNext: false,
+  hasPrev: false,
+}
+
+export const useLinksStore = create<LinksState>((set, get) => ({
+  links: [],
+  fetching: false,
+  creating: false,
+  updating: false,
+  deleting: false,
+  error: null,
+  pagination: { ...initialPagination },
+  currentQuery: {},
+
+  fetchLinks: async (query?: GetLinksQuery) => {
+    const state = get()
+    let targetQuery = query || state.currentQuery
+
+    // 确保 page_size 总是存在，优先使用持久化的值
+    if (!targetQuery.page_size) {
+      targetQuery = { ...targetQuery, page_size: state.pagination.pageSize }
+    }
+
+    // 取消之前的请求
+    if (fetchController) {
+      fetchController.abort()
+    }
+    fetchController = new AbortController()
+    const signal = fetchController.signal
+
+    set({ fetching: true, error: null })
+
+    try {
+      if (query) {
+        set({ currentQuery: { ...query } })
+      }
+
+      const response = await LinkAPI.fetchPaginated(targetQuery, signal)
+
+      // 检查是否被取消
+      if (signal.aborted) {
+        return
+      }
+
+      if (response?.data && response.pagination) {
+        const linksData = response.data || []
+        set({
+          links: Array.isArray(linksData) ? linksData : [],
+          pagination: {
+            page: response.pagination.page || 1,
+            pageSize: response.pagination.page_size || 10,
+            total: response.pagination.total || 0,
+            totalPages: response.pagination.total_pages || 0,
+            hasNext: response.pagination.page < response.pagination.total_pages,
+            hasPrev: response.pagination.page > 1,
+          },
+        })
+      } else {
+        set({
+          links: [],
+          pagination: { ...initialPagination },
+        })
+        console.warn('Unexpected API response format:', response)
+      }
+    } catch (err) {
+      // 忽略被取消的请求
+      if (err instanceof Error && err.name === 'AbortError') {
+        console.log('[Links] Request aborted')
+        return
+      }
+
+      set({
+        error: extractErrorMessage(err, 'Failed to fetch links'),
+        links: [],
+        pagination: { ...initialPagination },
+      })
+      console.error('Failed to fetch links:', err)
+    } finally {
+      // 只有当前请求没被取消时才更新 fetching 状态
+      if (!signal.aborted) {
+        set({ fetching: false })
+      }
+    }
+  },
+
+  applyFilter: async (query: GetLinksQuery) => {
+    const newQuery = { ...query, page: 1 }
+    set({ currentQuery: newQuery })
+    await get().fetchLinks(newQuery)
+  },
+
+  resetFilter: async () => {
+    set({ currentQuery: {}, pagination: { ...initialPagination, page: 1 } })
+    await get().fetchLinks({})
+  },
+
+  goToPage: async (page: number) => {
+    const currentQuery = get().currentQuery
+    const newQuery = { ...currentQuery, page }
+    set({ currentQuery: newQuery, pagination: { ...get().pagination, page } })
+    await get().fetchLinks(newQuery)
+  },
+
+  setPageSize: async (pageSize: number) => {
+    Storage.set(STORAGE_KEYS.LINKS_PAGE_SIZE, String(pageSize))
+    const currentQuery = get().currentQuery
+    const newQuery = { ...currentQuery, page: 1, page_size: pageSize }
+    set({
+      currentQuery: newQuery,
+      pagination: { ...get().pagination, pageSize, page: 1 },
+    })
+    await get().fetchLinks(newQuery)
+  },
+
+  createLink: async (data: LinkPayload) => {
+    set({ creating: true, error: null })
+    try {
+      await LinkAPI.create(data)
+      await get().fetchLinks(get().currentQuery)
+    } catch (err) {
+      set({ error: extractErrorMessage(err, 'Failed to create link') })
+      throw err
+    } finally {
+      set({ creating: false })
+    }
+  },
+
+  updateLink: async (code: string, data: LinkPayload) => {
+    set({ updating: true, error: null })
+    try {
+      await LinkAPI.update(code, data)
+      await get().fetchLinks(get().currentQuery)
+    } catch (err) {
+      set({ error: extractErrorMessage(err, 'Failed to update link') })
+      throw err
+    } finally {
+      set({ updating: false })
+    }
+  },
+
+  deleteLink: async (code: string) => {
+    set({ deleting: true, error: null })
+    try {
+      await LinkAPI.delete(code)
+      const currentLinks = get().links
+      const currentPagination = get().pagination
+      set({
+        links: currentLinks.filter((link) => link.code !== code),
+        pagination: {
+          ...currentPagination,
+          total: Math.max(0, currentPagination.total - 1),
+        },
+      })
+    } catch (err) {
+      set({ error: extractErrorMessage(err, 'Failed to delete link') })
+      throw err
+    } finally {
+      set({ deleting: false })
+    }
+  },
+}))
+
+// Selector for loading state
+export const useLinksLoading = () =>
+  useLinksStore(
+    (state) =>
+      state.fetching || state.creating || state.updating || state.deleting,
+  )

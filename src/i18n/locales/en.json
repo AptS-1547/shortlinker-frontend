@@ -3,7 +3,9 @@
     "loading": "Loading...",
     "cancel": "Cancel",
     "save": "Save",
+    "saving": "Saving...",
     "delete": "Delete",
+    "deleting": "Deleting...",
     "edit": "Edit",
     "create": "Create",
     "search": "Search",
@@ -17,7 +19,8 @@
     "previous": "Previous",
     "next": "Next",
     "yes": "Yes",
-    "no": "No"
+    "no": "No",
+    "more": "More"
   },
   "auth": {
     "title": "Admin Login",
@@ -29,7 +32,7 @@
     "verifying": "Verifying...",
     "processing": "Processing...",
     "serverConnection": "Server Connection",
-    "serverConnectionDesc": "Make sure the ShortLinker service is running on {url}",
+    "serverConnectionDesc": "Make sure the ShortLinker service is running on {{url}}",
     "errors": {
       "passwordRequired": "Please enter a password",
       "networkError": "Cannot connect to server. Please check if the service is running.",
@@ -46,7 +49,6 @@
     "totalLinks": "Total Links",
     "activeLinks": "Active Links",
     "responseTime": "Response Time",
-    "recentLinks": "Recent Links",
     "noLinks": "No links yet",
     "noLinksDesc": "Create your first short link to get started.",
     "createLink": "Create Link",
@@ -56,7 +58,23 @@
     "lastCheck": "Last Check",
     "healthy": "Healthy",
     "unknown": "Unknown",
-    "never": "Never"
+    "never": "Never",
+    "stats": {
+      "totalLinks": "Total Links",
+      "linksCreated": "Links Created",
+      "totalClicks": "Total Clicks",
+      "clicksTracked": "Clicks Tracked",
+      "activeLinks": "Active Links",
+      "notExpired": "Not Expired",
+      "uptime": "Uptime",
+      "systemHealth": "System Health"
+    },
+    "recentLinks": {
+      "title": "Recent Links",
+      "description": "Your recently created short links",
+      "clicks": "clicks",
+      "noLinks": "No links yet"
+    }
   },
   "links": {
     "title": "Link Management",
@@ -82,7 +100,6 @@
     "passwordPlaceholder": "Enter password to protect this link",
     "passwordHelp": "Set a password to protect access to this link",
     "passwordProtected": "Password Protected",
-    "status": "Status",
     "created": "Created",
     "actions": "Actions",
     "active": "Active",
@@ -91,9 +108,12 @@
     "creating": "Creating...",
     "updating": "Updating...",
     "createLink": "Create Link",
+    "createNew": "Create New",
+    "editLink": "Edit Link",
     "updateLink": "Update Link",
     "clearEdit": "Clear Edit",
     "shortLinks": "Short Links",
+    "noLinks": "No links yet",
     "noMatchingLinks": "No matching links",
     "noLinksYet": "No links yet",
     "noMatchingLinksDesc": "Try adjusting your filters or create a new link.",
@@ -102,7 +122,8 @@
     "createFirstLink": "Create Your First Link",
     "createNewLink": "Create New Link",
     "deleteLink": "Delete Link",
-    "deleteConfirmation": "Are you sure you want to delete the link {code}? This action cannot be undone.",
+    "openInNewTab": "Open in New Tab",
+    "deleteConfirmation": "Are you sure you want to delete the link {{code}}? This action cannot be undone.",
     "deleting": "Deleting...",
     "copyLinkTitle": "Click to copy short link",
     "copyPasswordProtectedLink": "Click to copy password-protected link (includes password)",
@@ -111,6 +132,8 @@
     "createdAfter": "Created After",
     "createdBefore": "Created Before",
     "pageSize": "Page Size",
+    "searchPlaceholder": "Search links...",
+    "tableTitle": "Links",
     "filterOptions": {
       "allLinks": "All Links",
       "activeOnly": "Active Only",
@@ -119,8 +142,8 @@
       "temporaryLinks": "Temporary Links"
     },
     "pagination": {
-      "showing": "Showing {from}-{to} of {total}",
-      "page": "Page {current} of {total}",
+      "showing": "Showing {{from}}-{{to}} of {{total}}",
+      "page": "Page {{current}} of {{total}}",
       "perPage": "per page"
     },
     "search": {
@@ -131,14 +154,53 @@
     },
     "table": {
       "code": "Code",
+      "target": "Target URL",
       "targetUrl": "Target URL",
+      "clicks": "Clicks",
       "status": "Status",
       "created": "Created",
+      "expires": "Expires",
       "actions": "Actions"
     },
-    "activeFilters": "{count} active",
+    "status": {
+      "active": "Active",
+      "expired": "Expired",
+      "protected": "Protected"
+    },
+    "form": {
+      "code": "Short Code",
+      "codePlaceholder": "Leave empty for auto-generation",
+      "target": "Target URL",
+      "targetPlaceholder": "https://example.com/your-long-url",
+      "password": "Password (optional)",
+      "passwordPlaceholder": "Enter password to protect this link",
+      "invalidUrl": "URL must start with http:// or https://"
+    },
+    "deleteConfirm": {
+      "title": "Confirm Delete",
+      "description": "Are you sure you want to delete the link {{code}}? This action cannot be undone."
+    },
+    "activeFilters": "{{count}} active",
     "filtered": "(filtered)",
-    "editing": "Editing: {code}"
+    "editing": "Editing: {{code}}",
+    "batch": {
+      "selectAll": "Select all",
+      "selectRow": "Select this row",
+      "selected": "{{count}} selected",
+      "delete": "Delete",
+      "clear": "Clear selection",
+      "deleteTitle": "Confirm Batch Delete",
+      "deleteDescription": "Are you sure you want to delete {{count}} selected links? This action cannot be undone."
+    },
+    "columns": {
+      "configure": "Columns",
+      "title": "Toggle columns"
+    },
+    "expand": {
+      "shortUrl": "Short URL",
+      "passwordProtection": "Password Protection"
+    },
+    "pageSize": "Show"
   },
   "analytics": {
     "title": "Analytics",
@@ -165,16 +227,35 @@
     "created": "Created",
     "averageClicks": "Average Clicks",
     "clicksPerLink": "clicks per link",
-    "na": "N/A"
+    "na": "N/A",
+    "comingSoon": {
+      "title": "Coming Soon",
+      "description": "Detailed analytics features are coming soon! Stay tuned."
+    },
+    "features": {
+      "clickTrends": "Click Trends",
+      "clickTrendsDesc": "View click trends and patterns for your links",
+      "visitors": "Visitor Analytics",
+      "visitorsDesc": "Understand who is visiting your links",
+      "geography": "Geographic Distribution",
+      "geographyDesc": "See where your visitors are located",
+      "topLinks": "Top Links",
+      "topLinksDesc": "Discover your most popular links"
+    }
   },
   "layout": {
     "title": "ShortLinker Admin",
-    "subtitle": "Manage links with speed and style.",
+    "subtitle": "Admin Panel",
     "logout": "Logout",
     "navigation": {
+      "title": "Navigation",
       "dashboard": "Dashboard",
       "links": "Links",
-      "analytics": "Analytics"
+      "analytics": "Analytics",
+      "settings": "Settings"
+    },
+    "system": {
+      "title": "System"
     },
     "health": {
       "healthy": "Healthy",
@@ -191,6 +272,7 @@
     "title": "System Health Status",
     "description": "Real-time service monitoring",
     "close": "Close",
+    "refresh": "Refresh",
     "loadingData": "Loading health data...",
     "overallStatus": "Overall Status",
     "responseTime": "Response Time",
@@ -211,6 +293,7 @@
     "unknown": "Unknown"
   },
   "langswitcher": {
+    "title": "Select Language",
     "language": {
       "switch": "Switch Language",
       "english": "English",
@@ -225,6 +308,18 @@
     "light": "Light",
     "dark": "Dark",
     "system": "System Default"
+  },
+  "settings": {
+    "title": "Settings",
+    "description": "Customize your preferences",
+    "theme": {
+      "title": "Theme",
+      "description": "Choose your interface theme"
+    },
+    "language": {
+      "title": "Language",
+      "description": "Choose your interface language"
+    }
   },
   "errors": {
     "boundary": {

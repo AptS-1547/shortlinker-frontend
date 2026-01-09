@@ -1,21 +1,20 @@
 // ==================== 导出类型 ====================
-export * from './types'
 
-// ==================== 导出服务实例 ====================
-export { linkService as LinkAPI } from './linkService'
-export { authService as AuthAPI } from './authService'
-export { healthService as HealthAPI } from './healthService'
+export { authService as AuthAPI, type AuthResult } from './authService'
 export { batchService as BatchAPI } from './batchService'
-export { qrcodeService as QRCodeAPI } from './qrcodeService'
-
+export { healthService as HealthAPI } from './healthService'
 // ==================== 导出HTTP相关 ====================
 export { ApiError, config } from './http'
+// ==================== 导出服务实例 ====================
+export { linkService as LinkAPI } from './linkService'
+export { qrcodeService as QRCodeAPI } from './qrcodeService'
+export * from './types'
 
+import { authService } from './authService'
+import { batchService } from './batchService'
+import { healthService } from './healthService'
 // ==================== 导出原有函数以保持兼容性 ====================
 import { linkService } from './linkService'
-import { authService } from './authService'
-import { healthService } from './healthService'
-import { batchService } from './batchService'
 import { qrcodeService } from './qrcodeService'
 
 export const fetchLinks = linkService.fetchAll.bind(linkService)
@@ -35,5 +34,6 @@ export const batchCreateLinks = batchService.createLinks.bind(batchService)
 export const batchUpdateLinks = batchService.updateLinks.bind(batchService)
 
 export const generateQRCode = qrcodeService.generate.bind(qrcodeService)
-export const generateShortLinkQRCode = qrcodeService.generateForShortLink.bind(qrcodeService)
+export const generateShortLinkQRCode =
+  qrcodeService.generateForShortLink.bind(qrcodeService)
 export const downloadQRCode = qrcodeService.download.bind(qrcodeService)

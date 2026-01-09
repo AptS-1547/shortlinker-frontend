@@ -158,7 +158,11 @@ export function isValidEmail(email: string): boolean {
  * @param maxDate - 最大日期（可选）
  * @returns 是否有效
  */
-export function isValidDate(date: string, minDate?: string, maxDate?: string): boolean {
+export function isValidDate(
+  date: string,
+  minDate?: string,
+  maxDate?: string,
+): boolean {
   if (!date || typeof date !== 'string') {
     return false
   }
@@ -167,7 +171,7 @@ export function isValidDate(date: string, minDate?: string, maxDate?: string): b
     const dateObj = new Date(date)
 
     // 检查是否是有效日期
-    if (isNaN(dateObj.getTime())) {
+    if (Number.isNaN(dateObj.getTime())) {
       return false
     }
 
@@ -209,7 +213,11 @@ export function isEmpty(str: string | null | undefined): boolean {
  * @param max - 最大长度
  * @returns 是否在范围内
  */
-export function isLengthInRange(str: string, min: number, max: number): boolean {
+export function isLengthInRange(
+  str: string,
+  min: number,
+  max: number,
+): boolean {
   if (!str || typeof str !== 'string') {
     return false
   }

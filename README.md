@@ -1,107 +1,73 @@
-# Shortlinker Admin Panel
+# React + TypeScript + Vite
 
-A modern web administration interface for managing the [Shortlinker](https://github.com/AptS-1547/shortlinker) URL shortening service.
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-To enable this panel with Shortlinker, build the `dist` directory and set `ENABLE_ADMIN_PANEL=true` with an `ADMIN_TOKEN` in your environment variables or `.env` file. This feature is still experimental.
-## Features
+Currently, two official plugins are available:
 
-- 🎨 **Modern Interface** - Responsive design built with Vue 3 + Vite
-- 🔐 **Secure Authentication** - Token-based access to Admin API  
-- 📊 **Complete Management** - Full CRUD operations for short links
-- ⚡ **Real-time Updates** - Auto-refresh data after operations
-- 🕐 **Expiration Management** - Visual expiration time setting with local timezone support
-- 💚 **Health Monitoring** - Real-time backend service status display
-- 🔄 **Client-side Routing** - SPA routing system based on Vue Router
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-## Tech Stack
+## React Compiler
 
-- **Frontend Framework**: Vue 3 + TypeScript + Vite
-- **UI Components**: TailwindCSS + Vue
-- **HTTP Client**: Axios
-- **State Management**: Pinia
-- **Routing System**: Vue Router
-- **Package Manager**: Yarn
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-## Completed Features
+## Expanding the ESLint configuration
 
-- ✅ User authentication interface
-- ✅ Short link list management
-- ✅ Create and edit short links
-- ✅ Delete link functionality
-- ✅ Health status monitoring
-- ✅ Local timezone time display
-- ✅ Client-side routing system
-- ✅ Conflict detection and handling
+If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
 
-## Environment Configuration
+```js
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
 
-Supports the following environment variables:
+      // Remove tseslint.configs.recommended and replace with this
+      tseslint.configs.recommendedTypeChecked,
+      // Alternatively, use this for stricter rules
+      tseslint.configs.strictTypeChecked,
+      // Optionally, add this for stylistic rules
+      tseslint.configs.stylisticTypeChecked,
 
-```bash
-# Shortlinker service address
-VITE_API_BASE_URL=http://localhost:8080
-
-# Admin API route prefix
-VITE_ADMIN_ROUTE_PREFIX=/admin
-
-# Health check route prefix
-VITE_HEALTH_ROUTE_PREFIX=/health
+      // Other configs...
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
 ```
 
-## API Integration
+You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
 
-Admin Panel is built on Shortlinker's [Admin API](../src/services/admin.rs), supporting:
+```js
+// eslint.config.js
+import reactX from 'eslint-plugin-react-x'
+import reactDom from 'eslint-plugin-react-dom'
 
-- `GET /admin/link` - Get all short links
-- `POST /admin/link` - Create new short link
-- `GET /admin/link/{code}` - Get specific short link
-- `PUT /admin/link/{code}` - Update short link
-- `DELETE /admin/link/{code}` - Delete short link
-- `GET /health` - Health check
-
-## Authentication
-
-All API requests require Bearer Token in header:
-
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
+      // Enable lint rules for React
+      reactX.configs['recommended-typescript'],
+      // Enable lint rules for React DOM
+      reactDom.configs.recommended,
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
 ```
-Authorization: Bearer {ADMIN_TOKEN}
-```
-
-## Development
-
-```bash
-# Install dependencies
-yarn install
-
-# Development mode
-yarn dev
-
-# Build for production
-yarn build
-```
-
-## Routing System
-
-The admin panel uses Vue Router with the following routes:
-
-- `/admin/login` - User login page
-- `/admin/dashboard` - Main dashboard (link management)
-- `/admin/links` - Link management page
-- `/admin/analytics` - Data analytics page (planned)
-
-### Route Features
-
-- 🔒 **Route Guards** - Automatic authentication status checking
-- 📱 **Responsive** - Mobile and desktop support
-- ⚡ **Fast Navigation** - Instant routing based on Vue Router
-- 🔄 **State Persistence** - Maintain application state during navigation
-
-## Related Documentation
-
-- 📖 [Shortlinker Main Documentation](../README.md)
-- 🔧 [Admin API Source Code](../src/services/admin.rs)
-- ⚙️ [Configuration Guide](../docs/config/index.md)
-
-## License
-
-MIT License - See [LICENSE](../LICENSE) file for details.
