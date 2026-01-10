@@ -1,5 +1,5 @@
 import { format } from 'date-fns'
-import { CalendarIcon, Filter, Plus, Settings2, Trash2, X } from 'lucide-react'
+import { CalendarIcon, Filter, Plus, Search, Settings2, Trash2, X } from 'lucide-react'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import PageHeader from '@/components/layout/PageHeader'
@@ -55,9 +55,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { Input } from '@/components/ui/input'
 import { cn } from '@/lib/utils'
 import { useCopyToClipboard } from '@/hooks/useCopyToClipboard'
 import { useDialog } from '@/hooks/useDialog'
+import { batchService } from '@/services/batchService'
 import type { LinkPayload, SerializableShortLink } from '@/services/types'
 import { useLinksStore } from '@/stores/linksStore'
 import { buildShortUrl } from '@/utils/urlBuilder'
@@ -121,7 +123,7 @@ export default function LinksPage() {
   } = useLinksStore()
 
   // 筛选状态
-  // TODO: 后端需要实现 search 参数支持，然后在这里添加搜索功能
+  const [searchQuery, setSearchQuery] = useState('')
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('all')
   const [createdAfter, setCreatedAfter] = useState<Date | undefined>(undefined)
   const [createdBefore, setCreatedBefore] = useState<Date | undefined>(
@@ -151,12 +153,13 @@ export default function LinksPage() {
 
   // 防止 StrictMode 双重执行 + 筛选变化检测
   const hasFetched = useRef(false)
-  const prevFilter = useRef({ statusFilter, createdAfter, createdBefore })
+  const prevFilter = useRef({ searchQuery, statusFilter, createdAfter, createdBefore })
 
   // 初始化加载 + 筛选变化时重新获取
   // biome-ignore lint/correctness/useExhaustiveDependencies: 仅监听筛选变化
   useEffect(() => {
     const query = {
+      search: searchQuery || undefined,
       only_active: statusFilter === 'active' ? true : undefined,
       only_expired: statusFilter === 'expired' ? true : undefined,
       created_after: createdAfter?.toISOString(),
@@ -167,13 +170,14 @@ export default function LinksPage() {
     // 首次请求
     if (!hasFetched.current) {
       hasFetched.current = true
-      prevFilter.current = { statusFilter, createdAfter, createdBefore }
+      prevFilter.current = { searchQuery, statusFilter, createdAfter, createdBefore }
       fetchLinks(query)
       return
     }
 
     // 检查筛选是否真正变化（排除 StrictMode 重新运行）
     const filterChanged =
+      prevFilter.current.searchQuery !== searchQuery ||
       prevFilter.current.statusFilter !== statusFilter ||
       prevFilter.current.createdAfter !== createdAfter ||
       prevFilter.current.createdBefore !== createdBefore
@@ -181,12 +185,12 @@ export default function LinksPage() {
     if (!filterChanged) return
 
     // 筛选变化，防抖 300ms
-    prevFilter.current = { statusFilter, createdAfter, createdBefore }
+    prevFilter.current = { searchQuery, statusFilter, createdAfter, createdBefore }
     const timer = setTimeout(() => {
       fetchLinks(query)
     }, 300)
     return () => clearTimeout(timer)
-  }, [statusFilter, createdAfter, createdBefore])
+  }, [searchQuery, statusFilter, createdAfter, createdBefore])
 
   // 处理创建
   const handleOpenCreate = useCallback(() => {
@@ -281,18 +285,20 @@ export default function LinksPage() {
   const handleBatchDelete = useCallback(async () => {
     setBatchDeleting(true)
     try {
-      // 逐个删除（后端没有批量删除 API）
-      for (const code of selectedCodes) {
-        await deleteLink(code)
+      const result = await batchService.deleteLinks(Array.from(selectedCodes))
+      if (result.failed.length > 0) {
+        console.warn('Some deletions failed:', result.failed)
       }
       setSelectedCodes(new Set())
       setBatchDeleteOpen(false)
+      // 刷新列表
+      fetchLinks()
     } catch (err) {
       console.error('Batch delete failed:', err)
     } finally {
       setBatchDeleting(false)
     }
-  }, [selectedCodes, deleteLink])
+  }, [selectedCodes, fetchLinks])
 
   // 选中的链接数量
   const selectedCount = selectedCodes.size
@@ -352,8 +358,17 @@ export default function LinksPage() {
       />
 
       {/* Filters */}
-      {/* TODO: 后端需要实现 search 参数支持后，在这里添加搜索框 */}
       <div className="flex flex-wrap items-center gap-4">
+        {/* 搜索框 */}
+        <div className="relative w-[240px]">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Input
+            placeholder={t('links.search.placeholder')}
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="pl-9"
+          />
+        </div>
         {/* 创建时间起始 */}
         <Popover>
           <PopoverTrigger asChild>

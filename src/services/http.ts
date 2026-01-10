@@ -230,8 +230,8 @@ export class HttpClient {
     return response.data
   }
 
-  async delete<T = unknown>(url: string): Promise<T> {
-    const response = await this.client.delete(url)
+  async delete<T = unknown>(url: string, data?: unknown): Promise<T> {
+    const response = await this.client.delete(url, { data })
     return response.data
   }
 }

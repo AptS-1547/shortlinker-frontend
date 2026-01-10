@@ -19,9 +19,21 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 import { cn } from '@/lib/utils'
 import type { UseDialogReturn } from '@/hooks/useDialog'
 import type { LinkPayload, SerializableShortLink } from '@/services/types'
+
+// 生成小时选项 (00-23)
+const HOURS = Array.from({ length: 24 }, (_, i) => i.toString().padStart(2, '0'))
+// 生成分钟选项 (00-59)
+const MINUTES = Array.from({ length: 60 }, (_, i) => i.toString().padStart(2, '0'))
 
 interface LinkFormDialogProps {
   dialog: UseDialogReturn<SerializableShortLink>
@@ -111,6 +123,7 @@ export function LinkFormDialog({
             <div className="space-y-2">
               <Label>{t('links.expiresAtOptional')}</Label>
               <div className="flex items-center gap-2">
+                {/* 日期选择 */}
                 <Popover>
                   <PopoverTrigger asChild>
                     <Button
@@ -123,10 +136,7 @@ export function LinkFormDialog({
                     >
                       <CalendarIcon className="mr-2 h-4 w-4" />
                       {formData.expires_at
-                        ? format(
-                            new Date(formData.expires_at),
-                            'yyyy-MM-dd HH:mm',
-                          )
+                        ? format(new Date(formData.expires_at), 'yyyy-MM-dd')
                         : t('links.permanent')}
                     </Button>
                   </PopoverTrigger>
@@ -140,19 +150,79 @@ export function LinkFormDialog({
                       }
                       onSelect={(date) => {
                         if (date) {
-                          // 设置为当天的 23:59:59
-                          date.setHours(23, 59, 59, 0)
+                          // 保留现有时间，如果没有则默认 23:59
+                          const existingDate = formData.expires_at
+                            ? new Date(formData.expires_at)
+                            : null
+                          const hours = existingDate?.getHours() ?? 23
+                          const minutes = existingDate?.getMinutes() ?? 59
+                          date.setHours(hours, minutes, 0, 0)
                           onFormDataChange({
                             ...formData,
                             expires_at: date.toISOString(),
                           })
                         }
                       }}
-                      disabled={(date) => date < new Date()}
-                      initialFocus
+                      disabled={(date) => {
+                        const today = new Date()
+                        today.setHours(0, 0, 0, 0)
+                        return date < today
+                      }}
                     />
                   </PopoverContent>
                 </Popover>
+
+                {/* 时间选择 */}
+                {formData.expires_at && (
+                  <>
+                    <Select
+                      value={format(new Date(formData.expires_at), 'HH')}
+                      onValueChange={(hour) => {
+                        const date = new Date(formData.expires_at!)
+                        date.setHours(parseInt(hour, 10))
+                        onFormDataChange({
+                          ...formData,
+                          expires_at: date.toISOString(),
+                        })
+                      }}
+                    >
+                      <SelectTrigger className="w-[70px]">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {HOURS.map((h) => (
+                          <SelectItem key={h} value={h}>
+                            {h}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <span className="text-muted-foreground">:</span>
+                    <Select
+                      value={format(new Date(formData.expires_at), 'mm')}
+                      onValueChange={(minute) => {
+                        const date = new Date(formData.expires_at!)
+                        date.setMinutes(parseInt(minute, 10))
+                        onFormDataChange({
+                          ...formData,
+                          expires_at: date.toISOString(),
+                        })
+                      }}
+                    >
+                      <SelectTrigger className="w-[70px]">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {MINUTES.map((m) => (
+                          <SelectItem key={m} value={m}>
+                            {m}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </>
+                )}
+
                 {formData.expires_at && (
                   <Button
                     type="button"

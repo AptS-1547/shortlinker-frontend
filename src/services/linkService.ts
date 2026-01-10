@@ -120,21 +120,24 @@ export class LinkService {
 
   /**
    * 创建链接（带重复检查）
+   * 利用后端的 force 逻辑：如果链接已存在且 force != true，后端返回 409 Conflict
    */
   async createWithCheck(payload: LinkPayload): Promise<LinkCreateResult> {
-    if (payload.code && !payload.force) {
-      const existingLink = await this.fetchOne(payload.code)
-      if (existingLink) {
+    try {
+      await this.create(payload)
+      return { success: true }
+    } catch (error) {
+      // 后端返回 409 Conflict 表示链接已存在
+      if (error instanceof ApiError && error.status === 409) {
+        const existingLink = payload.code ? await this.fetchOne(payload.code) : null
         return {
           success: false,
           exists: true,
-          existingLink,
+          existingLink: existingLink || undefined,
         }
       }
+      throw error
     }
-
-    await this.create(payload)
-    return { success: true }
   }
 
   /**
