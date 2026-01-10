@@ -1,5 +1,13 @@
 import { format } from 'date-fns'
-import { CalendarIcon, Filter, Plus, Search, Settings2, Trash2, X } from 'lucide-react'
+import {
+  CalendarIcon,
+  Filter,
+  Plus,
+  Search,
+  Settings2,
+  Trash2,
+  X,
+} from 'lucide-react'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import PageHeader from '@/components/layout/PageHeader'
@@ -35,6 +43,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { Input } from '@/components/ui/input'
 import {
   Pagination,
   PaginationContent,
@@ -55,15 +64,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { Input } from '@/components/ui/input'
-import { cn } from '@/lib/utils'
 import { useCopyToClipboard } from '@/hooks/useCopyToClipboard'
 import { useDialog } from '@/hooks/useDialog'
+import { cn } from '@/lib/utils'
 import { batchService } from '@/services/batchService'
 import type { LinkPayload, SerializableShortLink } from '@/services/types'
 import { useLinksStore } from '@/stores/linksStore'
+import { STORAGE_KEYS, Storage } from '@/utils/storage'
 import { buildShortUrl } from '@/utils/urlBuilder'
-import { Storage, STORAGE_KEYS } from '@/utils/storage'
 
 type StatusFilter = 'all' | 'active' | 'expired'
 
@@ -153,7 +161,12 @@ export default function LinksPage() {
 
   // 防止 StrictMode 双重执行 + 筛选变化检测
   const hasFetched = useRef(false)
-  const prevFilter = useRef({ searchQuery, statusFilter, createdAfter, createdBefore })
+  const prevFilter = useRef({
+    searchQuery,
+    statusFilter,
+    createdAfter,
+    createdBefore,
+  })
 
   // 初始化加载 + 筛选变化时重新获取
   // biome-ignore lint/correctness/useExhaustiveDependencies: 仅监听筛选变化
@@ -170,7 +183,12 @@ export default function LinksPage() {
     // 首次请求
     if (!hasFetched.current) {
       hasFetched.current = true
-      prevFilter.current = { searchQuery, statusFilter, createdAfter, createdBefore }
+      prevFilter.current = {
+        searchQuery,
+        statusFilter,
+        createdAfter,
+        createdBefore,
+      }
       fetchLinks(query)
       return
     }
@@ -185,7 +203,12 @@ export default function LinksPage() {
     if (!filterChanged) return
 
     // 筛选变化，防抖 300ms
-    prevFilter.current = { searchQuery, statusFilter, createdAfter, createdBefore }
+    prevFilter.current = {
+      searchQuery,
+      statusFilter,
+      createdAfter,
+      createdBefore,
+    }
     const timer = setTimeout(() => {
       fetchLinks(query)
     }, 300)

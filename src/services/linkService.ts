@@ -3,6 +3,7 @@ import type {
   GetLinksQuery,
   LinkCreateResult,
   LinkPayload,
+  LinkStats,
   PaginatedLinksResponse,
   SerializableShortLink,
 } from './types'
@@ -129,7 +130,9 @@ export class LinkService {
     } catch (error) {
       // 后端返回 409 Conflict 表示链接已存在
       if (error instanceof ApiError && error.status === 409) {
-        const existingLink = payload.code ? await this.fetchOne(payload.code) : null
+        const existingLink = payload.code
+          ? await this.fetchOne(payload.code)
+          : null
         return {
           success: false,
           exists: true,
@@ -152,6 +155,22 @@ export class LinkService {
    */
   async delete(code: string): Promise<void> {
     await adminClient.delete(`/link/${code}`)
+  }
+
+  /**
+   * 获取链接统计信息
+   */
+  async fetchStats(): Promise<LinkStats> {
+    const response = await adminClient.get<{ code?: number; data?: LinkStats }>(
+      '/stats',
+    )
+    return (
+      response.data || {
+        total_links: 0,
+        total_clicks: 0,
+        active_links: 0,
+      }
+    )
   }
 }
 

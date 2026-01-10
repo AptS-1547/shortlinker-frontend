@@ -1,6 +1,6 @@
 // ==================== 导出类型 ====================
 
-export { authService as AuthAPI, type AuthResult } from './authService'
+export { type AuthResult, authService as AuthAPI } from './authService'
 export { batchService as BatchAPI } from './batchService'
 export { healthService as HealthAPI } from './healthService'
 // ==================== 导出HTTP相关 ====================
@@ -23,6 +23,7 @@ export const createLink = linkService.create.bind(linkService)
 export const createLinkWithCheck = linkService.createWithCheck.bind(linkService)
 export const updateLink = linkService.update.bind(linkService)
 export const deleteLink = linkService.delete.bind(linkService)
+export const fetchStats = linkService.fetchStats.bind(linkService)
 
 export const login = authService.login.bind(authService)
 export const verifyToken = authService.verifyToken.bind(authService)

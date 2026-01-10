@@ -26,8 +26,8 @@ import {
   changeLanguage,
   getLanguageFlag,
   getLanguageKey,
-  supportedLanguages,
   type SupportedLanguage,
+  supportedLanguages,
 } from '@/i18n'
 import { HealthAPI } from '@/services/api'
 import { useAuthStore } from '@/stores/authStore'

@@ -1,20 +1,20 @@
 import { Languages } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import {
-  changeLanguage,
-  getLanguageDisplayName,
-  getLanguageFlag,
-  getLanguageKey,
-  supportedLanguages,
-  type SupportedLanguage,
-} from '@/i18n'
-import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { SidebarMenuButton } from '@/components/ui/sidebar'
+import {
+  changeLanguage,
+  getLanguageDisplayName,
+  getLanguageFlag,
+  getLanguageKey,
+  type SupportedLanguage,
+  supportedLanguages,
+} from '@/i18n'
 
 export default function LanguageSwitcher() {
   const { t, i18n } = useTranslation()

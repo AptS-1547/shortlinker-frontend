@@ -47,10 +47,9 @@ export class BatchService {
    * 批量删除链接
    */
   async deleteLinks(codes: string[]): Promise<BatchOperationResult> {
-    const response = await adminClient.delete<ApiResponse<BatchOperationResult>>(
-      '/link/batch',
-      { codes } as BatchDeleteRequest,
-    )
+    const response = await adminClient.delete<
+      ApiResponse<BatchOperationResult>
+    >('/link/batch', { codes } as BatchDeleteRequest)
     return response.data
   }
 }

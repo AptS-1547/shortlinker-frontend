@@ -73,3 +73,10 @@ export interface PaginatedLinksResponse {
     total_pages: number
   }
 }
+
+// 链接统计信息
+export interface LinkStats {
+  total_links: number
+  total_clicks: number
+  active_links: number
+}

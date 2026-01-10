@@ -1,13 +1,13 @@
 import { useCallback, useEffect, useState } from 'react'
 import { Outlet } from 'react-router-dom'
-import { useHealthStore } from '@/stores/healthStore'
-import HealthModal from '../HealthModal'
-import AppSidebar from './AppSidebar'
 import {
   SidebarInset,
   SidebarProvider,
   SidebarTrigger,
 } from '@/components/ui/sidebar'
+import { useHealthStore } from '@/stores/healthStore'
+import HealthModal from '../HealthModal'
+import AppSidebar from './AppSidebar'
 
 // 轮询间隔 60 秒
 const POLL_INTERVAL = 60 * 1000

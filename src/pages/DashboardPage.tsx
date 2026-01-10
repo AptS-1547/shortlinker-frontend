@@ -10,8 +10,8 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { useDateFormat } from '@/hooks/useDateFormat'
+import type { LinkStats, SerializableShortLink } from '@/services/api'
 import { LinkAPI } from '@/services/api'
-import type { SerializableShortLink } from '@/services/api'
 import { useHealthStore } from '@/stores/healthStore'
 
 export default function DashboardPage() {
@@ -20,7 +20,11 @@ export default function DashboardPage() {
 
   // 仪表盘独立管理最近链接数据，避免与 LinksPage 的 store 冲突
   const [recentLinks, setRecentLinks] = useState<SerializableShortLink[]>([])
-  const [totalCount, setTotalCount] = useState(0)
+  const [stats, setStats] = useState<LinkStats>({
+    total_links: 0,
+    total_clicks: 0,
+    active_links: 0,
+  })
   // 健康状态由 AdminLayout 负责轮询，这里只读取
   const healthData = useHealthStore((state) => state.status)
 
@@ -31,30 +35,21 @@ export default function DashboardPage() {
     if (hasFetched.current) return
     hasFetched.current = true
 
-    const fetchRecent = async () => {
+    const fetchData = async () => {
       try {
-        const res = await LinkAPI.fetchPaginated({ page: 1, page_size: 5 })
-        setRecentLinks(res.data)
-        setTotalCount(res.pagination.total)
+        // 并行获取统计数据和最近链接
+        const [statsRes, recentRes] = await Promise.all([
+          LinkAPI.fetchStats(),
+          LinkAPI.fetchPaginated({ page: 1, page_size: 5 }),
+        ])
+        setStats(statsRes)
+        setRecentLinks(recentRes.data)
       } catch (err) {
-        console.error('Failed to fetch recent links:', err)
+        console.error('Failed to fetch dashboard data:', err)
       }
     }
-    fetchRecent()
+    fetchData()
   }, [])
-
-  const stats = useMemo(() => {
-    const totalLinks = totalCount
-    const totalClicks = recentLinks.reduce(
-      (sum, link) => sum + (link.click_count || 0),
-      0,
-    )
-    const activeLinks = recentLinks.filter(
-      (link) => !link.expires_at || new Date(link.expires_at) > new Date(),
-    ).length
-
-    return { totalLinks, totalClicks, activeLinks }
-  }, [recentLinks, totalCount])
 
   const formattedUptime = useMemo(() => {
     const uptime = (healthData as { uptime?: number })?.uptime || 0
@@ -86,7 +81,7 @@ export default function DashboardPage() {
             <Link className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stats.totalLinks}</div>
+            <div className="text-2xl font-bold">{stats.total_links}</div>
             <p className="text-xs text-muted-foreground">
               {t('dashboard.stats.linksCreated')}
             </p>
@@ -101,7 +96,7 @@ export default function DashboardPage() {
             <Eye className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stats.totalClicks}</div>
+            <div className="text-2xl font-bold">{stats.total_clicks}</div>
             <p className="text-xs text-muted-foreground">
               {t('dashboard.stats.clicksTracked')}
             </p>
@@ -116,7 +111,7 @@ export default function DashboardPage() {
             <BarChart3 className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stats.activeLinks}</div>
+            <div className="text-2xl font-bold">{stats.active_links}</div>
             <p className="text-xs text-muted-foreground">
               {t('dashboard.stats.notExpired')}
             </p>

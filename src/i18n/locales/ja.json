@@ -319,6 +319,15 @@
     "language": {
       "title": "言語",
       "description": "インターフェースの言語を選択"
+    },
+    "about": {
+      "title": "このアプリについて",
+      "description": "プロジェクト情報とリンク",
+      "tagline": "スピードとスタイルでリンクを管理",
+      "openSource": "オープンソース",
+      "docs": "ドキュメント",
+      "builtWith": "",
+      "forCommunity": "を込めてオープンソースコミュニティのために構築"
     }
   },
   "errors": {

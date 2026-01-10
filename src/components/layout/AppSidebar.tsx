@@ -1,6 +1,7 @@
 import {
   Activity,
   BarChart3,
+  Github,
   LayoutDashboard,
   Link as LinkIcon,
   LogOut,
@@ -8,9 +9,6 @@ import {
 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { NavLink, useLocation, useNavigate } from 'react-router-dom'
-import { cn } from '@/lib/utils'
-import { useAuthStore } from '@/stores/authStore'
-import { useHealthStore } from '@/stores/healthStore'
 import {
   Sidebar,
   SidebarContent,
@@ -25,6 +23,11 @@ import {
   SidebarSeparator,
   useSidebar,
 } from '@/components/ui/sidebar'
+import { useVersion } from '@/hooks/useVersion'
+import { cn } from '@/lib/utils'
+import { useAuthStore } from '@/stores/authStore'
+import { useHealthStore } from '@/stores/healthStore'
+
 const mainNavItems = [
   {
     path: '/dashboard',
@@ -47,6 +50,7 @@ export default function AppSidebar({ onOpenHealthModal }: AppSidebarProps) {
   const logout = useAuthStore((state) => state.logout)
   const healthData = useHealthStore((state) => state.status)
   const { state } = useSidebar()
+  const { displayVersion, versionBadgeColor, versionLabel } = useVersion()
 
   const handleLogout = () => {
     logout()
@@ -153,6 +157,41 @@ export default function AppSidebar({ onOpenHealthModal }: AppSidebarProps) {
 
       <SidebarFooter className="border-t border-sidebar-border">
         <SidebarMenu>
+          {/* Version Info */}
+          <SidebarMenuItem>
+            <div
+              className={cn(
+                'flex items-center gap-2 px-2 py-1.5',
+                isCollapsed ? 'justify-center' : 'justify-between',
+              )}
+            >
+              {!isCollapsed && (
+                <div className="flex items-center gap-2 min-w-0">
+                  <span className="text-xs text-muted-foreground truncate">
+                    {displayVersion}
+                  </span>
+                  <span
+                    className={cn(
+                      'text-[10px] px-1.5 py-0.5 rounded font-medium',
+                      versionBadgeColor,
+                    )}
+                  >
+                    {versionLabel}
+                  </span>
+                </div>
+              )}
+              <a
+                href="https://github.com/AptS-1547/shortlinker"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-muted-foreground hover:text-foreground transition-colors shrink-0"
+                title="GitHub"
+              >
+                <Github className="h-4 w-4" />
+              </a>
+            </div>
+          </SidebarMenuItem>
+
           {/* Logout */}
           <SidebarMenuItem>
             <SidebarMenuButton

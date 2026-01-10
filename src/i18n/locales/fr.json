@@ -321,6 +321,15 @@
     "language": {
       "title": "Langue",
       "description": "Choisissez la langue de l'interface"
+    },
+    "about": {
+      "title": "À propos",
+      "description": "Informations et liens du projet",
+      "tagline": "Gérez vos liens avec rapidité et style",
+      "openSource": "Open Source",
+      "docs": "Documentation",
+      "builtWith": "Construit avec",
+      "forCommunity": "pour la communauté open source"
     }
   },
   "errors": {

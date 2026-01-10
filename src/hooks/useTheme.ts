@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
-import { Storage, STORAGE_KEYS } from '@/utils/storage'
+import { STORAGE_KEYS, Storage } from '@/utils/storage'
 
 export type Theme = 'light' | 'dark' | 'system'
 

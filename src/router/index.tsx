@@ -1,4 +1,6 @@
+import { AlertTriangle, Home, RefreshCw } from 'lucide-react'
 import { lazy, Suspense, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import {
   createBrowserRouter,
   Navigate,
@@ -6,8 +8,6 @@ import {
   useLocation,
   useRouteError,
 } from 'react-router-dom'
-import { useTranslation } from 'react-i18next'
-import { AlertTriangle, Home, RefreshCw } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
   Card,

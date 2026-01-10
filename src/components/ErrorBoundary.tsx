@@ -1,3 +1,4 @@
+import { AlertTriangle, Home, RefreshCw } from 'lucide-react'
 import { Component, type ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Button } from '@/components/ui/button'
@@ -8,7 +9,6 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { AlertTriangle, Home, RefreshCw } from 'lucide-react'
 
 interface Props {
   children: ReactNode

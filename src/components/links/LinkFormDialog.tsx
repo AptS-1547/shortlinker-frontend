@@ -2,7 +2,6 @@ import { format } from 'date-fns'
 import { CalendarIcon, X } from 'lucide-react'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { isValidHttpUrl } from '@/utils/validators'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
 import {
@@ -26,14 +25,19 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { cn } from '@/lib/utils'
 import type { UseDialogReturn } from '@/hooks/useDialog'
+import { cn } from '@/lib/utils'
 import type { LinkPayload, SerializableShortLink } from '@/services/types'
+import { isValidHttpUrl } from '@/utils/validators'
 
 // 生成小时选项 (00-23)
-const HOURS = Array.from({ length: 24 }, (_, i) => i.toString().padStart(2, '0'))
+const HOURS = Array.from({ length: 24 }, (_, i) =>
+  i.toString().padStart(2, '0'),
+)
 // 生成分钟选项 (00-59)
-const MINUTES = Array.from({ length: 60 }, (_, i) => i.toString().padStart(2, '0'))
+const MINUTES = Array.from({ length: 60 }, (_, i) =>
+  i.toString().padStart(2, '0'),
+)
 
 interface LinkFormDialogProps {
   dialog: UseDialogReturn<SerializableShortLink>

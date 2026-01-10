@@ -319,6 +319,15 @@
     "language": {
       "title": "Language",
       "description": "Choose your interface language"
+    },
+    "about": {
+      "title": "About",
+      "description": "Project information and links",
+      "tagline": "Manage links with speed and style",
+      "openSource": "Open Source",
+      "docs": "Documentation",
+      "builtWith": "Built with",
+      "forCommunity": "for the open source community"
     }
   },
   "errors": {

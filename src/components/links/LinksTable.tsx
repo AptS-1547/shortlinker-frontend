@@ -1,5 +1,3 @@
-import { memo, useMemo, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import {
   ArrowDown,
   ArrowUp,
@@ -14,6 +12,8 @@ import {
   MoreHorizontal,
   Trash2,
 } from 'lucide-react'
+import { memo, useMemo, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'

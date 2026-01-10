@@ -319,6 +319,15 @@
     "language": {
       "title": "语言",
       "description": "选择界面语言"
+    },
+    "about": {
+      "title": "关于",
+      "description": "项目信息和链接",
+      "tagline": "快速优雅地管理链接",
+      "openSource": "开源项目",
+      "docs": "文档",
+      "builtWith": "怀着",
+      "forCommunity": "为开源社区构建"
     }
   },
   "errors": {

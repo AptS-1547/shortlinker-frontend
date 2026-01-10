@@ -8,7 +8,7 @@
     <title>ShortLinker Admin</title>
     <!-- 主题初始化 - 必须在第一次绘制前同步执行，防止闪烁 -->
     <script>
-      (function() {
+      (() => {
         try {
           var savedTheme = localStorage.getItem('theme');
           var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
