@@ -1,12 +1,12 @@
 'use client'
 
 import * as SelectPrimitive from '@radix-ui/react-select'
+import type * as React from 'react'
 import {
   FiCheck as CheckIcon,
   FiChevronDown as ChevronDownIcon,
   FiChevronUp as ChevronUpIcon,
 } from 'react-icons/fi'
-import type * as React from 'react'
 
 import { cn } from '@/lib/utils'
 

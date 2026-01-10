@@ -149,7 +149,7 @@ class Config implements AppConfig {
 }
 
 // 导出配置单例
-export const config = new Config()
+export const appConfig = new Config()
 
 // 导出类型
 export type { AppConfig }

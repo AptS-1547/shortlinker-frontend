@@ -314,6 +314,13 @@
   "settings": {
     "title": "Paramètres",
     "description": "Personnalisez vos préférences",
+    "tabs": {
+      "appearance": "Apparence",
+      "language": "Langue",
+      "preferences": "Préférences",
+      "system": "Système",
+      "about": "À propos"
+    },
     "theme": {
       "title": "Thème",
       "description": "Choisissez le thème de l'interface"
@@ -350,5 +357,57 @@
     "serverError": "Erreur serveur - veuillez réessayer plus tard",
     "serviceUnavailable": "Service temporairement indisponible - veuillez réessayer plus tard",
     "unknown": "Une erreur inconnue s'est produite"
+  },
+  "config": {
+    "title": "Configuration Système",
+    "description": "Gérer les paramètres de configuration d'exécution",
+    "groups": {
+      "all": "Tout",
+      "routes": "Routes",
+      "api": "API",
+      "features": "Fonctionnalités",
+      "click": "Suivi des Clics",
+      "other": "Autre"
+    },
+    "keys": {
+      "routes.admin_prefix": "Préfixe API Admin",
+      "routes.health_prefix": "Préfixe Vérification Santé",
+      "routes.frontend_prefix": "Préfixe Panneau Frontend",
+      "api.admin_token": "Token Admin",
+      "api.health_token": "Token Vérification Santé",
+      "api.jwt_secret": "Secret JWT",
+      "api.access_token_minutes": "Durée Access Token (minutes)",
+      "api.refresh_token_days": "Durée Refresh Token (jours)",
+      "api.access_cookie_name": "Nom Cookie Access",
+      "api.refresh_cookie_name": "Nom Cookie Refresh",
+      "api.cookie_secure": "Cookie Sécurisé (HTTPS uniquement)",
+      "api.cookie_same_site": "Politique Cookie SameSite",
+      "api.cookie_domain": "Domaine Cookie",
+      "features.enable_admin_panel": "Activer Panneau Admin",
+      "features.random_code_length": "Longueur Code Aléatoire",
+      "features.default_url": "URL de Redirection par Défaut",
+      "click.enable_tracking": "Activer Suivi des Clics",
+      "click.flush_interval": "Intervalle de Vidage (secondes)",
+      "click.max_clicks_before_flush": "Max Clics Avant Vidage"
+    },
+    "key": "Clé",
+    "value": "Valeur",
+    "type": "Type",
+    "requiresRestart": "Redémarrage",
+    "requiresRestartHint": "Les modifications nécessitent un redémarrage du serveur",
+    "edit": "Modifier",
+    "history": "Historique",
+    "reload": "Recharger",
+    "reloadSuccess": "Configuration rechargée avec succès",
+    "reloadError": "Échec du rechargement de la configuration",
+    "updateSuccess": "Configuration mise à jour avec succès",
+    "editConfig": "Modifier la Configuration",
+    "noConfigs": "Aucune configuration trouvée",
+    "emptyValue": "(non défini)",
+    "noHistory": "Pas d'historique",
+    "historyTitle": "Historique de Configuration",
+    "savedNeedRestart": "Configuration sauvegardée. Veuillez redémarrer le serveur pour appliquer les changements.",
+    "searchPlaceholder": "Rechercher par clé...",
+    "allTypes": "Tous les types"
   }
 }

@@ -1,6 +1,6 @@
 import * as DialogPrimitive from '@radix-ui/react-dialog'
-import { FiX as XIcon } from 'react-icons/fi'
 import type * as React from 'react'
+import { FiX as XIcon } from 'react-icons/fi'
 
 import { cn } from '@/lib/utils'
 

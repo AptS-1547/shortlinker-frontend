@@ -80,3 +80,39 @@ export interface LinkStats {
   total_clicks: number
   active_links: number
 }
+
+// ============ 系统配置管理相关类型 ============
+
+/** 系统配置项 */
+export interface SystemConfigItem {
+  key: string
+  value: string
+  value_type: 'string' | 'int' | 'bool'
+  requires_restart: boolean
+  is_sensitive: boolean
+  updated_at: string
+}
+
+/** 系统配置更新请求 */
+export interface SystemConfigUpdateRequest {
+  value: string
+}
+
+/** 系统配置更新响应 */
+export interface SystemConfigUpdateResponse {
+  key: string
+  value: string
+  requires_restart: boolean
+  is_sensitive: boolean
+  message: string | null
+}
+
+/** 系统配置历史记录 */
+export interface SystemConfigHistory {
+  id: number
+  config_key: string
+  old_value: string | null
+  new_value: string
+  changed_at: string
+  changed_by: string | null
+}

@@ -1,10 +1,10 @@
+import { useTranslation } from 'react-i18next'
 import {
   FiBarChart2 as BarChart3,
   FiGlobe as Globe,
   FiTrendingUp as TrendingUp,
   FiUsers as Users,
 } from 'react-icons/fi'
-import { useTranslation } from 'react-i18next'
 import PageHeader from '@/components/layout/PageHeader'
 import {
   Card,

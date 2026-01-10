@@ -20,7 +20,11 @@
     "next": "Next",
     "yes": "Yes",
     "no": "No",
-    "more": "More"
+    "more": "More",
+    "close": "Close",
+    "enabled": "Enabled",
+    "disabled": "Disabled",
+    "actions": "Actions"
   },
   "auth": {
     "title": "Admin Login",
@@ -252,6 +256,7 @@
       "dashboard": "Dashboard",
       "links": "Links",
       "analytics": "Analytics",
+      "config": "Configuration",
       "settings": "Settings"
     },
     "system": {
@@ -312,6 +317,13 @@
   "settings": {
     "title": "Settings",
     "description": "Customize your preferences",
+    "tabs": {
+      "appearance": "Appearance",
+      "language": "Language",
+      "preferences": "Preferences",
+      "system": "System",
+      "about": "About"
+    },
     "theme": {
       "title": "Theme",
       "description": "Choose your interface theme"
@@ -348,5 +360,57 @@
     "serverError": "Server error - please try again later",
     "serviceUnavailable": "Service temporarily unavailable - please try again later",
     "unknown": "An unknown error occurred"
+  },
+  "config": {
+    "title": "System Configuration",
+    "description": "Manage runtime configuration settings",
+    "groups": {
+      "all": "All",
+      "routes": "Routes",
+      "api": "API",
+      "features": "Features",
+      "click": "Click Tracking",
+      "other": "Other"
+    },
+    "keys": {
+      "routes.admin_prefix": "Admin API Prefix",
+      "routes.health_prefix": "Health Check Prefix",
+      "routes.frontend_prefix": "Frontend Panel Prefix",
+      "api.admin_token": "Admin Token",
+      "api.health_token": "Health Check Token",
+      "api.jwt_secret": "JWT Secret",
+      "api.access_token_minutes": "Access Token Lifetime (minutes)",
+      "api.refresh_token_days": "Refresh Token Lifetime (days)",
+      "api.access_cookie_name": "Access Cookie Name",
+      "api.refresh_cookie_name": "Refresh Cookie Name",
+      "api.cookie_secure": "Cookie Secure (HTTPS only)",
+      "api.cookie_same_site": "Cookie SameSite Policy",
+      "api.cookie_domain": "Cookie Domain",
+      "features.enable_admin_panel": "Enable Admin Panel",
+      "features.random_code_length": "Random Code Length",
+      "features.default_url": "Default Redirect URL",
+      "click.enable_tracking": "Enable Click Tracking",
+      "click.flush_interval": "Flush Interval (seconds)",
+      "click.max_clicks_before_flush": "Max Clicks Before Flush"
+    },
+    "key": "Key",
+    "value": "Value",
+    "type": "Type",
+    "requiresRestart": "Restart",
+    "requiresRestartHint": "Changes require server restart to take effect",
+    "edit": "Edit",
+    "history": "History",
+    "reload": "Reload",
+    "reloadSuccess": "Configuration reloaded successfully",
+    "reloadError": "Failed to reload configuration",
+    "updateSuccess": "Configuration updated successfully",
+    "editConfig": "Edit Configuration",
+    "noConfigs": "No configurations found",
+    "emptyValue": "(not set)",
+    "noHistory": "No history records",
+    "historyTitle": "Configuration History",
+    "savedNeedRestart": "Configuration saved. Please restart the server for changes to take effect.",
+    "searchPlaceholder": "Search by key...",
+    "allTypes": "All types"
   }
 }

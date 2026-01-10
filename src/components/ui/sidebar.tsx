@@ -2,8 +2,8 @@
 
 import { Slot } from '@radix-ui/react-slot'
 import { cva, type VariantProps } from 'class-variance-authority'
-import { FiSidebar as PanelLeftIcon } from 'react-icons/fi'
 import * as React from 'react'
+import { FiSidebar as PanelLeftIcon } from 'react-icons/fi'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'

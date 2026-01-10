@@ -1,3 +1,4 @@
+import { useTheme } from 'next-themes'
 import {
   FiCheckCircle as CircleCheckIcon,
   FiInfo as InfoIcon,
@@ -5,7 +6,6 @@ import {
   FiXOctagon as OctagonXIcon,
   FiAlertTriangle as TriangleAlertIcon,
 } from 'react-icons/fi'
-import { useTheme } from 'next-themes'
 import { Toaster as Sonner, type ToasterProps } from 'sonner'
 
 const Toaster = ({ ...props }: ToasterProps) => {

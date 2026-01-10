@@ -8,6 +8,7 @@ export { ApiError, config } from './http'
 // ==================== 导出服务实例 ====================
 export { linkService as LinkAPI } from './linkService'
 export { qrcodeService as QRCodeAPI } from './qrcodeService'
+export { systemConfigService as SystemConfigAPI } from './systemConfigService'
 export * from './types'
 
 import { authService } from './authService'

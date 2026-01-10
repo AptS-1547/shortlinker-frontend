@@ -1,5 +1,5 @@
-import { FiGlobe as Languages } from 'react-icons/fi'
 import { useTranslation } from 'react-i18next'
+import { FiGlobe as Languages } from 'react-icons/fi'
 import {
   DropdownMenu,
   DropdownMenuContent,

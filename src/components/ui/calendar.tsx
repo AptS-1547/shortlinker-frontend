@@ -1,16 +1,16 @@
 'use client'
 
-import {
-  FiChevronDown as ChevronDownIcon,
-  FiChevronLeft as ChevronLeftIcon,
-  FiChevronRight as ChevronRightIcon,
-} from 'react-icons/fi'
 import * as React from 'react'
 import {
   type DayButton,
   DayPicker,
   getDefaultClassNames,
 } from 'react-day-picker'
+import {
+  FiChevronDown as ChevronDownIcon,
+  FiChevronLeft as ChevronLeftIcon,
+  FiChevronRight as ChevronRightIcon,
+} from 'react-icons/fi'
 import { Button, buttonVariants } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 

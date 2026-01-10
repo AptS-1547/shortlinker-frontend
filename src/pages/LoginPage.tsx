@@ -1,3 +1,5 @@
+import { type FormEvent, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import {
   FiAlertTriangle as AlertTriangle,
   FiGlobe as Languages,
@@ -7,8 +9,6 @@ import {
   FiMoon as Moon,
   FiSun as Sun,
 } from 'react-icons/fi'
-import { type FormEvent, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
@@ -20,7 +20,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { config } from '@/config'
+import { appConfig } from '@/config/app'
 import { useTheme } from '@/hooks/useTheme'
 import {
   changeLanguage,
@@ -43,7 +43,7 @@ export default function LoginPage() {
   const [error, setError] = useState('')
 
   const apiBaseUrl =
-    config.apiBaseUrl ||
+    appConfig.apiBaseUrl ||
     (typeof window !== 'undefined'
       ? window.location.origin
       : 'http://127.0.0.1:8080')

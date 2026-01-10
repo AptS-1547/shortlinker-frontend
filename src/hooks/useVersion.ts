@@ -1,8 +1,8 @@
 import { useMemo } from 'react'
-import { config } from '@/config'
+import { appConfig } from '@/config/app'
 
 export function useVersion() {
-  const version = config.shortlinkerVersion
+  const version = appConfig.shortlinkerVersion
 
   const displayVersion = useMemo(() => {
     const cleanVersion = version.replace('-dirty', '')

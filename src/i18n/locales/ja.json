@@ -312,6 +312,13 @@
   "settings": {
     "title": "設定",
     "description": "お好みの設定をカスタマイズ",
+    "tabs": {
+      "appearance": "外観",
+      "language": "言語",
+      "preferences": "設定",
+      "system": "システム",
+      "about": "情報"
+    },
     "theme": {
       "title": "テーマ",
       "description": "インターフェースのテーマを選択"
@@ -348,5 +355,57 @@
     "serverError": "サーバーエラー - しばらくしてから再試行してください",
     "serviceUnavailable": "サービスが一時的に利用できません - しばらくしてから再試行してください",
     "unknown": "不明なエラーが発生しました"
+  },
+  "config": {
+    "title": "システム設定",
+    "description": "ランタイム設定を管理",
+    "groups": {
+      "all": "すべて",
+      "routes": "ルート",
+      "api": "API",
+      "features": "機能",
+      "click": "クリック追跡",
+      "other": "その他"
+    },
+    "keys": {
+      "routes.admin_prefix": "管理APIプレフィックス",
+      "routes.health_prefix": "ヘルスチェックプレフィックス",
+      "routes.frontend_prefix": "フロントエンドパネルプレフィックス",
+      "api.admin_token": "管理トークン",
+      "api.health_token": "ヘルスチェックトークン",
+      "api.jwt_secret": "JWTシークレット",
+      "api.access_token_minutes": "アクセストークン有効期限(分)",
+      "api.refresh_token_days": "リフレッシュトークン有効期限(日)",
+      "api.access_cookie_name": "アクセスCookie名",
+      "api.refresh_cookie_name": "リフレッシュCookie名",
+      "api.cookie_secure": "Cookie安全転送(HTTPSのみ)",
+      "api.cookie_same_site": "Cookie SameSiteポリシー",
+      "api.cookie_domain": "Cookieドメイン",
+      "features.enable_admin_panel": "管理パネルを有効化",
+      "features.random_code_length": "ランダムコード長",
+      "features.default_url": "デフォルトリダイレクトURL",
+      "click.enable_tracking": "クリック追跡を有効化",
+      "click.flush_interval": "フラッシュ間隔(秒)",
+      "click.max_clicks_before_flush": "フラッシュ前の最大クリック数"
+    },
+    "key": "キー",
+    "value": "値",
+    "type": "タイプ",
+    "requiresRestart": "再起動",
+    "requiresRestartHint": "変更を有効にするにはサーバーの再起動が必要です",
+    "edit": "編集",
+    "history": "履歴",
+    "reload": "リロード",
+    "reloadSuccess": "設定を再読み込みしました",
+    "reloadError": "設定の再読み込みに失敗しました",
+    "updateSuccess": "設定を更新しました",
+    "editConfig": "設定を編集",
+    "noConfigs": "設定項目がありません",
+    "emptyValue": "(未設定)",
+    "noHistory": "履歴がありません",
+    "historyTitle": "設定履歴",
+    "savedNeedRestart": "設定を保存しました。変更を有効にするにはサーバーを再起動してください。",
+    "searchPlaceholder": "キーで検索...",
+    "allTypes": "すべてのタイプ"
   }
 }

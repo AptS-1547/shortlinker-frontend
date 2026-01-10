@@ -314,6 +314,13 @@
   "settings": {
     "title": "Настройки",
     "description": "Настройте ваши предпочтения",
+    "tabs": {
+      "appearance": "Внешний вид",
+      "language": "Язык",
+      "preferences": "Настройки",
+      "system": "Система",
+      "about": "О проекте"
+    },
     "theme": {
       "title": "Тема",
       "description": "Выберите тему интерфейса"
@@ -350,5 +357,57 @@
     "serverError": "Ошибка сервера - попробуйте позже",
     "serviceUnavailable": "Сервис временно недоступен - попробуйте позже",
     "unknown": "Произошла неизвестная ошибка"
+  },
+  "config": {
+    "title": "Системные Настройки",
+    "description": "Управление настройками времени выполнения",
+    "groups": {
+      "all": "Все",
+      "routes": "Маршруты",
+      "api": "API",
+      "features": "Функции",
+      "click": "Отслеживание Кликов",
+      "other": "Другое"
+    },
+    "keys": {
+      "routes.admin_prefix": "Префикс Admin API",
+      "routes.health_prefix": "Префикс Проверки Здоровья",
+      "routes.frontend_prefix": "Префикс Фронтенд Панели",
+      "api.admin_token": "Токен Администратора",
+      "api.health_token": "Токен Проверки Здоровья",
+      "api.jwt_secret": "JWT Секрет",
+      "api.access_token_minutes": "Срок Access Token (минуты)",
+      "api.refresh_token_days": "Срок Refresh Token (дни)",
+      "api.access_cookie_name": "Имя Access Cookie",
+      "api.refresh_cookie_name": "Имя Refresh Cookie",
+      "api.cookie_secure": "Безопасная Cookie (только HTTPS)",
+      "api.cookie_same_site": "Политика Cookie SameSite",
+      "api.cookie_domain": "Домен Cookie",
+      "features.enable_admin_panel": "Включить Админ Панель",
+      "features.random_code_length": "Длина Случайного Кода",
+      "features.default_url": "URL Перенаправления по Умолчанию",
+      "click.enable_tracking": "Включить Отслеживание Кликов",
+      "click.flush_interval": "Интервал Сброса (секунды)",
+      "click.max_clicks_before_flush": "Макс. Кликов до Сброса"
+    },
+    "key": "Ключ",
+    "value": "Значение",
+    "type": "Тип",
+    "requiresRestart": "Перезапуск",
+    "requiresRestartHint": "Изменения требуют перезапуска сервера",
+    "edit": "Редактировать",
+    "history": "История",
+    "reload": "Перезагрузить",
+    "reloadSuccess": "Конфигурация успешно перезагружена",
+    "reloadError": "Ошибка перезагрузки конфигурации",
+    "updateSuccess": "Конфигурация успешно обновлена",
+    "editConfig": "Редактировать Конфигурацию",
+    "noConfigs": "Конфигурации не найдены",
+    "emptyValue": "(не задано)",
+    "noHistory": "Нет истории",
+    "historyTitle": "История Конфигурации",
+    "savedNeedRestart": "Конфигурация сохранена. Перезапустите сервер для применения изменений.",
+    "searchPlaceholder": "Поиск по ключу...",
+    "allTypes": "Все типы"
   }
 }

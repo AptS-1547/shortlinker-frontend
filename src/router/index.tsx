@@ -1,10 +1,10 @@
+import { lazy, Suspense, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import {
   FiAlertTriangle as AlertTriangle,
   FiHome as Home,
   FiRefreshCw as RefreshCw,
 } from 'react-icons/fi'
-import { lazy, Suspense, useEffect } from 'react'
-import { useTranslation } from 'react-i18next'
 import {
   createBrowserRouter,
   Navigate,

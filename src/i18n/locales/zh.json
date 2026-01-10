@@ -20,7 +20,11 @@
     "next": "下一页",
     "yes": "是",
     "no": "否",
-    "more": "更多"
+    "more": "更多",
+    "close": "关闭",
+    "enabled": "已启用",
+    "disabled": "已禁用",
+    "actions": "操作"
   },
   "auth": {
     "title": "管理员登录",
@@ -252,6 +256,7 @@
       "dashboard": "仪表板",
       "links": "链接管理",
       "analytics": "数据分析",
+      "config": "系统配置",
       "settings": "设置"
     },
     "system": {
@@ -312,6 +317,13 @@
   "settings": {
     "title": "设置",
     "description": "自定义您的偏好设置",
+    "tabs": {
+      "appearance": "外观",
+      "language": "语言",
+      "preferences": "偏好设置",
+      "system": "系统",
+      "about": "关于"
+    },
     "theme": {
       "title": "主题",
       "description": "选择界面主题"
@@ -348,5 +360,57 @@
     "serverError": "服务器错误 - 请稍后重试",
     "serviceUnavailable": "服务暂时不可用 - 请稍后重试",
     "unknown": "发生未知错误"
+  },
+  "config": {
+    "title": "系统配置",
+    "description": "管理系统运行时配置",
+    "groups": {
+      "all": "全部",
+      "routes": "路由",
+      "api": "API",
+      "features": "功能",
+      "click": "点击追踪",
+      "other": "其他"
+    },
+    "keys": {
+      "routes.admin_prefix": "管理 API 前缀",
+      "routes.health_prefix": "健康检查前缀",
+      "routes.frontend_prefix": "前端面板前缀",
+      "api.admin_token": "管理 Token",
+      "api.health_token": "健康检查 Token",
+      "api.jwt_secret": "JWT 密钥",
+      "api.access_token_minutes": "Access Token 有效期(分钟)",
+      "api.refresh_token_days": "Refresh Token 有效期(天)",
+      "api.access_cookie_name": "Access Cookie 名称",
+      "api.refresh_cookie_name": "Refresh Cookie 名称",
+      "api.cookie_secure": "Cookie 安全传输",
+      "api.cookie_same_site": "Cookie SameSite 策略",
+      "api.cookie_domain": "Cookie 域名",
+      "features.enable_admin_panel": "启用管理面板",
+      "features.random_code_length": "随机短码长度",
+      "features.default_url": "默认跳转 URL",
+      "click.enable_tracking": "启用点击统计",
+      "click.flush_interval": "刷新间隔(秒)",
+      "click.max_clicks_before_flush": "刷新阈值(点击数)"
+    },
+    "key": "配置键",
+    "value": "配置值",
+    "type": "类型",
+    "requiresRestart": "需要重启",
+    "requiresRestartHint": "此配置修改后需要重启服务才能生效",
+    "edit": "编辑",
+    "history": "历史",
+    "reload": "重载配置",
+    "reloadSuccess": "配置已重新加载",
+    "reloadError": "重载配置失败",
+    "updateSuccess": "配置更新成功",
+    "editConfig": "编辑配置",
+    "noConfigs": "暂无配置项",
+    "emptyValue": "(未设置)",
+    "noHistory": "暂无历史记录",
+    "historyTitle": "配置历史",
+    "savedNeedRestart": "配置已保存，请重启服务以使更改生效",
+    "searchPlaceholder": "搜索配置键...",
+    "allTypes": "所有类型"
   }
 }
