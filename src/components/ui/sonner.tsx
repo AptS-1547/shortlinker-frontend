@@ -1,10 +1,10 @@
 import {
-  CircleCheckIcon,
-  InfoIcon,
-  Loader2Icon,
-  OctagonXIcon,
-  TriangleAlertIcon,
-} from 'lucide-react'
+  FiCheckCircle as CircleCheckIcon,
+  FiInfo as InfoIcon,
+  FiLoader as Loader2Icon,
+  FiXOctagon as OctagonXIcon,
+  FiAlertTriangle as TriangleAlertIcon,
+} from 'react-icons/fi'
 import { useTheme } from 'next-themes'
 import { Toaster as Sonner, type ToasterProps } from 'sonner'
 

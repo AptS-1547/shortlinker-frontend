@@ -1,5 +1,5 @@
 import { format } from 'date-fns'
-import { CalendarIcon, X } from 'lucide-react'
+import { FiCalendar as CalendarIcon, FiX as X } from 'react-icons/fi'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Button } from '@/components/ui/button'

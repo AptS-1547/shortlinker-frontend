@@ -1,13 +1,13 @@
 import { format } from 'date-fns'
 import {
-  CalendarIcon,
-  Filter,
-  Plus,
-  Search,
-  Settings2,
-  Trash2,
-  X,
-} from 'lucide-react'
+  FiCalendar as CalendarIcon,
+  FiFilter as Filter,
+  FiPlus as Plus,
+  FiSearch as Search,
+  FiSettings as Settings2,
+  FiTrash2 as Trash2,
+  FiX as X,
+} from 'react-icons/fi'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import PageHeader from '@/components/layout/PageHeader'

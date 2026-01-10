@@ -1,4 +1,4 @@
-import { Languages } from 'lucide-react'
+import { FiGlobe as Languages } from 'react-icons/fi'
 import { useTranslation } from 'react-i18next'
 import {
   DropdownMenu,

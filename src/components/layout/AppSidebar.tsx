@@ -1,12 +1,12 @@
 import {
-  Activity,
-  BarChart3,
-  Github,
-  LayoutDashboard,
-  Link as LinkIcon,
-  LogOut,
-  Settings,
-} from 'lucide-react'
+  FiActivity as Activity,
+  FiBarChart2 as BarChart3,
+  FiGithub as Github,
+  FiGrid as LayoutDashboard,
+  FiLink as LinkIcon,
+  FiLogOut as LogOut,
+  FiSettings as Settings,
+} from 'react-icons/fi'
 import { useTranslation } from 'react-i18next'
 import { NavLink, useLocation, useNavigate } from 'react-router-dom'
 import {

@@ -1,12 +1,12 @@
 import {
-  AlertTriangle,
-  Languages,
-  Link,
-  Loader2,
-  Monitor,
-  Moon,
-  Sun,
-} from 'lucide-react'
+  FiAlertTriangle as AlertTriangle,
+  FiGlobe as Languages,
+  FiLink as Link,
+  FiLoader as Loader2,
+  FiMonitor as Monitor,
+  FiMoon as Moon,
+  FiSun as Sun,
+} from 'react-icons/fi'
 import { type FormEvent, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'

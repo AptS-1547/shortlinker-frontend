@@ -1,17 +1,17 @@
 import {
-  ArrowDown,
-  ArrowUp,
-  ArrowUpDown,
-  Check,
-  ChevronDown,
-  ChevronRight,
-  Copy,
-  Edit,
-  ExternalLink,
-  Lock,
-  MoreHorizontal,
-  Trash2,
-} from 'lucide-react'
+  FiArrowDown as ArrowDown,
+  FiArrowUp as ArrowUp,
+  FiCheck as Check,
+  FiChevronDown as ChevronDown,
+  FiChevronRight as ChevronRight,
+  FiCopy as Copy,
+  FiEdit as Edit,
+  FiExternalLink as ExternalLink,
+  FiLock as Lock,
+  FiMoreHorizontal as MoreHorizontal,
+  FiTrash2 as Trash2,
+} from 'react-icons/fi'
+import { HiSelector as ArrowUpDown } from 'react-icons/hi'
 import { memo, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Badge } from '@/components/ui/badge'

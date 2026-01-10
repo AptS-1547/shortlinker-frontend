@@ -1,10 +1,10 @@
 'use client'
 
 import {
-  ChevronDownIcon,
-  ChevronLeftIcon,
-  ChevronRightIcon,
-} from 'lucide-react'
+  FiChevronDown as ChevronDownIcon,
+  FiChevronLeft as ChevronLeftIcon,
+  FiChevronRight as ChevronRightIcon,
+} from 'react-icons/fi'
 import * as React from 'react'
 import {
   type DayButton,

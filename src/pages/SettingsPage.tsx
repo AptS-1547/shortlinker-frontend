@@ -1,16 +1,16 @@
 import {
-  BookOpen,
-  ExternalLink,
-  Github,
-  Heart,
-  Info,
-  Languages,
-  Link as LinkIcon,
-  Monitor,
-  Moon,
-  Palette,
-  Sun,
-} from 'lucide-react'
+  FiBookOpen as BookOpen,
+  FiExternalLink as ExternalLink,
+  FiGithub as Github,
+  FiHeart as Heart,
+  FiInfo as Info,
+  FiGlobe as Languages,
+  FiLink as LinkIcon,
+  FiMonitor as Monitor,
+  FiMoon as Moon,
+  FiDroplet as Palette,
+  FiSun as Sun,
+} from 'react-icons/fi'
 import { useTranslation } from 'react-i18next'
 import PageHeader from '@/components/layout/PageHeader'
 import {
@@ -262,7 +262,10 @@ export default function SettingsPage() {
               <p className="text-sm text-muted-foreground flex items-center gap-1">
                 © {new Date().getFullYear()} ShortLinker.{' '}
                 {t('settings.about.builtWith')}{' '}
-                <Heart className="h-3 w-3 text-red-500 fill-red-500" />{' '}
+                <Heart
+                  className="h-3 w-3 text-red-500"
+                  style={{ fill: 'currentColor' }}
+                />{' '}
                 {t('settings.about.forCommunity')}
               </p>
               <p className="text-sm text-muted-foreground">

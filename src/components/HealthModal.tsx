@@ -1,13 +1,13 @@
 import {
-  Activity,
-  CheckCircle2,
-  Clock,
-  Database,
-  Link,
-  Loader2,
-  RefreshCw,
-  XCircle,
-} from 'lucide-react'
+  FiActivity as Activity,
+  FiCheckCircle as CheckCircle2,
+  FiClock as Clock,
+  FiDatabase as Database,
+  FiLink as Link,
+  FiLoader as Loader2,
+  FiRefreshCw as RefreshCw,
+  FiXCircle as XCircle,
+} from 'react-icons/fi'
 import { memo, useCallback, useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Badge } from '@/components/ui/badge'
