@@ -46,6 +46,7 @@ export class SystemConfigService {
         key,
         value,
         requires_restart: false,
+        is_sensitive: false,
         message: null,
       }
     )
