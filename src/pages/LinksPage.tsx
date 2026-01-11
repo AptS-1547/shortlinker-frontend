@@ -17,7 +17,6 @@ import {
   LinkFormDialog,
   LinksTable,
 } from '@/components/links'
-import { Skeleton } from '@/components/ui/skeleton'
 import type {
   ColumnKey,
   SortDirection,
@@ -66,6 +65,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { Skeleton } from '@/components/ui/skeleton'
 import { useCopyToClipboard } from '@/hooks/useCopyToClipboard'
 import { useDialog } from '@/hooks/useDialog'
 import { cn } from '@/lib/utils'
