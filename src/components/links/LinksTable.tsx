@@ -126,6 +126,10 @@ const LinkRow = memo(function LinkRow({
               size="icon"
               className="h-6 w-6"
               onClick={() => setIsExpanded(!isExpanded)}
+              aria-label={
+                isExpanded ? t('common.collapse') : t('common.expand')
+              }
+              aria-expanded={isExpanded}
             >
               {isExpanded ? (
                 <ChevronDown className="w-4 h-4" />
@@ -224,6 +228,7 @@ const LinkRow = memo(function LinkRow({
                   size="icon"
                   className="h-8 w-8"
                   onClick={() => onEdit(link)}
+                  aria-label={t('common.edit')}
                 >
                   <Edit className="w-4 h-4" />
                 </Button>
@@ -236,7 +241,12 @@ const LinkRow = memo(function LinkRow({
               <Tooltip>
                 <TooltipTrigger asChild>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="icon" className="h-8 w-8">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8"
+                      aria-label={t('common.more')}
+                    >
                       <MoreHorizontal className="w-4 h-4" />
                     </Button>
                   </DropdownMenuTrigger>
