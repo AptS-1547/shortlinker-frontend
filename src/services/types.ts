@@ -87,7 +87,7 @@ export interface LinkStats {
 export interface SystemConfigItem {
   key: string
   value: string
-  value_type: 'string' | 'int' | 'bool'
+  value_type: 'string' | 'int' | 'bool' | 'json'
   requires_restart: boolean
   is_sensitive: boolean
   updated_at: string

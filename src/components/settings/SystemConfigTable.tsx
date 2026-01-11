@@ -18,22 +18,12 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip'
 import type { SystemConfigItem } from '@/services/api'
+import { getConfigKeyLabel } from '@/utils/configUtils'
 
 interface SystemConfigTableProps {
   configs: SystemConfigItem[]
   onEdit: (config: SystemConfigItem) => void
   onHistory: (config: SystemConfigItem) => void
-}
-
-/** 获取配置键的翻译名称 */
-function getKeyLabel(
-  key: string,
-  t: ReturnType<typeof useTranslation>['t'],
-): string {
-  const translationKey = `config.keys.${key}`
-  const translated = t(translationKey as never)
-  // 如果翻译结果和 key 相同，说明没有翻译
-  return translated === translationKey ? key : translated
 }
 
 /** 类型 Badge 颜色 */
@@ -97,7 +87,7 @@ export function SystemConfigTable({
             >
               <TableCell className="font-mono text-sm">
                 <span className="font-medium">
-                  {getKeyLabel(config.key, t)}
+                  {getConfigKeyLabel(config.key, t)}
                 </span>
               </TableCell>
               <TableCell className="font-mono text-sm max-w-[300px] truncate">

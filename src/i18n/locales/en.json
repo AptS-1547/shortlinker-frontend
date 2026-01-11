@@ -118,6 +118,8 @@
     "clearEdit": "Clear Edit",
     "shortLinks": "Short Links",
     "noLinks": "No links yet",
+    "noLinksTitle": "No links yet",
+    "noLinksDescription": "Get started by creating your first short link",
     "noMatchingLinks": "No matching links",
     "noLinksYet": "No links yet",
     "noMatchingLinksDesc": "Try adjusting your filters or create a new link.",
@@ -126,6 +128,17 @@
     "createFirstLink": "Create Your First Link",
     "createNewLink": "Create New Link",
     "deleteLink": "Delete Link",
+    "deleteSuccess": "Link deleted successfully",
+    "deleteError": "Failed to delete link",
+    "createSuccess": "Link created successfully",
+    "createError": "Failed to create link",
+    "updateSuccess": "Link updated successfully",
+    "updateError": "Failed to update link",
+    "copySuccess": "Link copied to clipboard",
+    "copyError": "Failed to copy link",
+    "batchDeleteSuccess": "Successfully deleted {{count}} links",
+    "batchDeletePartial": "Deleted {{success}} links, {{failed}} failed",
+    "batchDeleteError": "Failed to delete links",
     "openInNewTab": "Open in New Tab",
     "deleteConfirmation": "Are you sure you want to delete the link {{code}}? This action cannot be undone.",
     "deleting": "Deleting...",
@@ -194,7 +207,9 @@
       "delete": "Delete",
       "clear": "Clear selection",
       "deleteTitle": "Confirm Batch Delete",
-      "deleteDescription": "Are you sure you want to delete {{count}} selected links? This action cannot be undone."
+      "deleteDescription": "Are you sure you want to delete {{count}} selected links? This action cannot be undone.",
+      "deletePartial": "Deleted {{success}} links, {{failed}} failed",
+      "deleteSuccess": "Successfully deleted {{count}} links"
     },
     "columns": {
       "configure": "Columns",
@@ -370,6 +385,7 @@
       "api": "API",
       "features": "Features",
       "click": "Click Tracking",
+      "cors": "CORS",
       "other": "Other"
     },
     "keys": {
@@ -391,7 +407,13 @@
       "features.default_url": "Default Redirect URL",
       "click.enable_tracking": "Enable Click Tracking",
       "click.flush_interval": "Flush Interval (seconds)",
-      "click.max_clicks_before_flush": "Max Clicks Before Flush"
+      "click.max_clicks_before_flush": "Max Clicks Before Flush",
+      "cors.enabled": "Enable CORS",
+      "cors.allow_credentials": "Allow Credentials",
+      "cors.allowed_origins": "Allowed Origins",
+      "cors.allowed_methods": "Allowed Methods",
+      "cors.allowed_headers": "Allowed Headers",
+      "cors.max_age": "Max Age (seconds)"
     },
     "key": "Key",
     "value": "Value",
@@ -405,6 +427,7 @@
     "reloadError": "Failed to reload configuration",
     "updateSuccess": "Configuration updated successfully",
     "editConfig": "Edit Configuration",
+    "formatJSON": "Format JSON",
     "noConfigs": "No configurations found",
     "emptyValue": "(not set)",
     "noHistory": "No history records",

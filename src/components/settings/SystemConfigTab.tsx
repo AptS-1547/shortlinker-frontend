@@ -7,6 +7,7 @@ import {
   FiMoreHorizontal,
   FiMousePointer,
   FiRefreshCw,
+  FiShield,
   FiToggleRight,
 } from 'react-icons/fi'
 import { toast } from 'sonner'
@@ -30,6 +31,7 @@ const CONFIG_GROUPS = [
   { key: 'api', icon: FiKey },
   { key: 'features', icon: FiToggleRight },
   { key: 'click', icon: FiMousePointer },
+  { key: 'cors', icon: FiShield },
   { key: 'other', icon: FiMoreHorizontal },
 ] as const
 
@@ -73,7 +75,11 @@ export function SystemConfigTab() {
   )
 
   useEffect(() => {
-    fetchConfigs()
+    const controller = new AbortController()
+    fetchConfigs(controller.signal).catch(() => {
+      // Error is handled by the store
+    })
+    return () => controller.abort()
   }, [fetchConfigs])
 
   // 按分组整理配置
@@ -83,6 +89,7 @@ export function SystemConfigTab() {
       api: [],
       features: [],
       click: [],
+      cors: [],
       other: [],
     }
 
@@ -119,12 +126,13 @@ export function SystemConfigTab() {
   // 按分组筛选后的配置列表
   const filteredConfigs = useMemo(() => {
     if (activeGroup === 'all') {
-      // 按分组顺序排列：routes -> api -> features -> click -> other
+      // 按分组顺序排列：routes -> api -> features -> click -> cors -> other
       return [
         ...groupedConfigs.routes,
         ...groupedConfigs.api,
         ...groupedConfigs.features,
         ...groupedConfigs.click,
+        ...groupedConfigs.cors,
         ...groupedConfigs.other,
       ]
     }

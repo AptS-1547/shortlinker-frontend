@@ -10,22 +10,25 @@ export class SystemConfigService {
   /**
    * 获取所有配置
    */
-  async fetchAll(): Promise<SystemConfigItem[]> {
+  async fetchAll(signal?: AbortSignal): Promise<SystemConfigItem[]> {
     const response = await adminClient.get<{
       code?: number
       data?: SystemConfigItem[]
-    }>('/config')
+    }>('/config', { signal })
     return response.data || []
   }
 
   /**
    * 获取单个配置
    */
-  async fetchOne(key: string): Promise<SystemConfigItem | null> {
+  async fetchOne(
+    key: string,
+    signal?: AbortSignal,
+  ): Promise<SystemConfigItem | null> {
     const response = await adminClient.get<{
       code?: number
       data?: SystemConfigItem
-    }>(`/config/${encodeURIComponent(key)}`)
+    }>(`/config/${encodeURIComponent(key)}`, { signal })
     return response.data || null
   }
 
@@ -58,11 +61,12 @@ export class SystemConfigService {
   async fetchHistory(
     key: string,
     limit: number = 20,
+    signal?: AbortSignal,
   ): Promise<SystemConfigHistory[]> {
     const response = await adminClient.get<{
       code?: number
       data?: SystemConfigHistory[]
-    }>(`/config/${encodeURIComponent(key)}/history?limit=${limit}`)
+    }>(`/config/${encodeURIComponent(key)}/history?limit=${limit}`, { signal })
     return response.data || []
   }
 

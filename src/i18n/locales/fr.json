@@ -20,7 +20,11 @@
     "next": "Suivant",
     "yes": "Oui",
     "no": "Non",
-    "more": "Plus"
+    "more": "Plus",
+    "close": "Fermer",
+    "enabled": "Activé",
+    "disabled": "Désactivé",
+    "actions": "Actions"
   },
   "auth": {
     "title": "Connexion administrateur",
@@ -114,6 +118,8 @@
     "clearEdit": "Effacer la modification",
     "shortLinks": "Liens courts",
     "noLinks": "Aucun lien",
+    "noLinksTitle": "Aucun lien",
+    "noLinksDescription": "Commencez par créer votre premier lien court",
     "noMatchingLinks": "Aucun lien correspondant",
     "noLinksYet": "Aucun lien pour le moment",
     "noMatchingLinksDesc": "Essayez d'ajuster les critères de filtrage ou créez un nouveau lien.",
@@ -122,6 +128,17 @@
     "createFirstLink": "Créez votre premier lien",
     "createNewLink": "Créer un nouveau lien",
     "deleteLink": "Supprimer le lien",
+    "deleteSuccess": "Lien supprimé avec succès",
+    "deleteError": "Échec de la suppression du lien",
+    "createSuccess": "Lien créé avec succès",
+    "createError": "Échec de la création du lien",
+    "updateSuccess": "Lien mis à jour avec succès",
+    "updateError": "Échec de la mise à jour du lien",
+    "copySuccess": "Lien copié dans le presse-papiers",
+    "copyError": "Échec de la copie du lien",
+    "batchDeleteSuccess": "{{count}} liens supprimés avec succès",
+    "batchDeletePartial": "{{success}} liens supprimés, {{failed}} échecs",
+    "batchDeleteError": "Échec de la suppression des liens",
     "openInNewTab": "Ouvrir dans un nouvel onglet",
     "deleteConfirmation": "Êtes-vous sûr de vouloir supprimer le lien {{code}} ? Cette action est irréversible.",
     "deleting": "Suppression...",
@@ -190,7 +207,9 @@
       "delete": "Supprimer",
       "clear": "Effacer la sélection",
       "deleteTitle": "Confirmer la suppression en lot",
-      "deleteDescription": "Êtes-vous sûr de vouloir supprimer {{count}} lien(s) sélectionné(s) ? Cette action est irréversible."
+      "deleteDescription": "Êtes-vous sûr de vouloir supprimer {{count}} lien(s) sélectionné(s) ? Cette action est irréversible.",
+      "deletePartial": "{{success}} liens supprimés, {{failed}} échecs",
+      "deleteSuccess": "{{count}} liens supprimés avec succès"
     },
     "columns": {
       "configure": "Colonnes",
@@ -252,6 +271,7 @@
       "dashboard": "Tableau de bord",
       "links": "Gestion des liens",
       "analytics": "Analyse des données",
+      "config": "Configuration",
       "settings": "Paramètres"
     },
     "system": {
@@ -367,6 +387,7 @@
       "api": "API",
       "features": "Fonctionnalités",
       "click": "Suivi des Clics",
+      "cors": "CORS",
       "other": "Autre"
     },
     "keys": {
@@ -388,7 +409,13 @@
       "features.default_url": "URL de Redirection par Défaut",
       "click.enable_tracking": "Activer Suivi des Clics",
       "click.flush_interval": "Intervalle de Vidage (secondes)",
-      "click.max_clicks_before_flush": "Max Clics Avant Vidage"
+      "click.max_clicks_before_flush": "Max Clics Avant Vidage",
+      "cors.enabled": "Activer CORS",
+      "cors.allow_credentials": "Autoriser les Informations d'Identification",
+      "cors.allowed_origins": "Origines Autorisées",
+      "cors.allowed_methods": "Méthodes Autorisées",
+      "cors.allowed_headers": "En-têtes Autorisés",
+      "cors.max_age": "Durée Maximale (secondes)"
     },
     "key": "Clé",
     "value": "Valeur",
@@ -402,6 +429,7 @@
     "reloadError": "Échec du rechargement de la configuration",
     "updateSuccess": "Configuration mise à jour avec succès",
     "editConfig": "Modifier la Configuration",
+    "formatJSON": "Formater JSON",
     "noConfigs": "Aucune configuration trouvée",
     "emptyValue": "(non défini)",
     "noHistory": "Pas d'historique",

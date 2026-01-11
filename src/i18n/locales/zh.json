@@ -118,6 +118,8 @@
     "clearEdit": "清除编辑",
     "shortLinks": "短链接",
     "noLinks": "暂无链接",
+    "noLinksTitle": "暂无链接",
+    "noLinksDescription": "创建您的第一个短链接以开始使用",
     "noMatchingLinks": "没有匹配的链接",
     "noLinksYet": "暂无链接",
     "noMatchingLinksDesc": "尝试调整筛选条件或创建新链接。",
@@ -126,6 +128,17 @@
     "createFirstLink": "创建您的第一个链接",
     "createNewLink": "创建新链接",
     "deleteLink": "删除链接",
+    "deleteSuccess": "链接删除成功",
+    "deleteError": "删除链接失败",
+    "createSuccess": "链接创建成功",
+    "createError": "创建链接失败",
+    "updateSuccess": "链接更新成功",
+    "updateError": "更新链接失败",
+    "copySuccess": "链接已复制到剪贴板",
+    "copyError": "复制链接失败",
+    "batchDeleteSuccess": "成功删除 {{count}} 个链接",
+    "batchDeletePartial": "已删除 {{success}} 个链接，{{failed}} 个失败",
+    "batchDeleteError": "批量删除失败",
     "openInNewTab": "在新标签页中打开",
     "deleteConfirmation": "确定要删除链接 {{code}} 吗？此操作无法撤销。",
     "deleting": "删除中...",
@@ -194,7 +207,9 @@
       "delete": "删除",
       "clear": "取消选择",
       "deleteTitle": "确认批量删除",
-      "deleteDescription": "确定要删除选中的 {{count}} 个链接吗？此操作无法撤销。"
+      "deleteDescription": "确定要删除选中的 {{count}} 个链接吗？此操作无法撤销。",
+      "deletePartial": "已删除 {{success}} 个链接，{{failed}} 个失败",
+      "deleteSuccess": "成功删除 {{count}} 个链接"
     },
     "columns": {
       "configure": "列",
@@ -370,6 +385,7 @@
       "api": "API",
       "features": "功能",
       "click": "点击追踪",
+      "cors": "跨域配置",
       "other": "其他"
     },
     "keys": {
@@ -391,7 +407,13 @@
       "features.default_url": "默认跳转 URL",
       "click.enable_tracking": "启用点击统计",
       "click.flush_interval": "刷新间隔(秒)",
-      "click.max_clicks_before_flush": "刷新阈值(点击数)"
+      "click.max_clicks_before_flush": "刷新阈值(点击数)",
+      "cors.enabled": "启用 CORS",
+      "cors.allow_credentials": "允许凭据",
+      "cors.allowed_origins": "允许的来源",
+      "cors.allowed_methods": "允许的方法",
+      "cors.allowed_headers": "允许的请求头",
+      "cors.max_age": "最大缓存时间(秒)"
     },
     "key": "配置键",
     "value": "配置值",
@@ -405,6 +427,7 @@
     "reloadError": "重载配置失败",
     "updateSuccess": "配置更新成功",
     "editConfig": "编辑配置",
+    "formatJSON": "格式化 JSON",
     "noConfigs": "暂无配置项",
     "emptyValue": "(未设置)",
     "noHistory": "暂无历史记录",

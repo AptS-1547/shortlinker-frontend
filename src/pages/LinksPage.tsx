@@ -10,12 +10,14 @@ import {
   FiTrash2 as Trash2,
   FiX as X,
 } from 'react-icons/fi'
+import { toast } from 'sonner'
 import PageHeader from '@/components/layout/PageHeader'
 import {
   LinkDeleteDialog,
   LinkFormDialog,
   LinksTable,
 } from '@/components/links'
+import { Skeleton } from '@/components/ui/skeleton'
 import type {
   ColumnKey,
   SortDirection,
@@ -240,26 +242,35 @@ export default function LinksPage() {
     try {
       if (formDialog.isEditMode && formDialog.data) {
         await updateLink(formDialog.data.code, formData)
+        toast.success(t('links.updateSuccess', 'Link updated successfully'))
       } else {
         await createLink(formData)
+        toast.success(t('links.createSuccess', 'Link created successfully'))
       }
       formDialog.close()
     } catch (err) {
       console.error('Save failed:', err)
+      toast.error(
+        formDialog.isEditMode
+          ? t('links.updateError', 'Failed to update link')
+          : t('links.createError', 'Failed to create link'),
+      )
     }
-  }, [formDialog, formData, updateLink, createLink])
+  }, [formDialog, formData, updateLink, createLink, t])
 
   // 删除
   const handleDelete = useCallback(async () => {
     if (deleteDialog.data) {
       try {
         await deleteLink(deleteDialog.data.code)
+        toast.success(t('links.deleteSuccess', 'Link deleted successfully'))
         deleteDialog.close()
       } catch (err) {
         console.error('Delete failed:', err)
+        toast.error(t('links.deleteError', 'Failed to delete link'))
       }
     }
-  }, [deleteDialog, deleteLink])
+  }, [deleteDialog, deleteLink, t])
 
   // 复制链接
   const handleCopy = useCallback(
@@ -269,9 +280,12 @@ export default function LinksPage() {
       if (success) {
         setCopiedCode(code)
         setTimeout(() => setCopiedCode(null), 2000)
+        toast.success(t('links.copySuccess', 'Link copied to clipboard'))
+      } else {
+        toast.error(t('links.copyError', 'Failed to copy link'))
       }
     },
-    [copy],
+    [copy, t],
   )
 
   // 选择单个链接
@@ -311,6 +325,19 @@ export default function LinksPage() {
       const result = await batchService.deleteLinks(Array.from(selectedCodes))
       if (result.failed.length > 0) {
         console.warn('Some deletions failed:', result.failed)
+        toast.warning(
+          t(
+            'links.batchDeletePartial',
+            `Deleted ${result.success.length} links, ${result.failed.length} failed`,
+          ),
+        )
+      } else {
+        toast.success(
+          t(
+            'links.batchDeleteSuccess',
+            `Successfully deleted ${result.success.length} links`,
+          ),
+        )
       }
       setSelectedCodes(new Set())
       setBatchDeleteOpen(false)
@@ -318,10 +345,11 @@ export default function LinksPage() {
       fetchLinks()
     } catch (err) {
       console.error('Batch delete failed:', err)
+      toast.error(t('links.batchDeleteError', 'Failed to delete links'))
     } finally {
       setBatchDeleting(false)
     }
-  }, [selectedCodes, fetchLinks])
+  }, [selectedCodes, fetchLinks, t])
 
   // 选中的链接数量
   const selectedCount = selectedCodes.size
@@ -560,8 +588,17 @@ export default function LinksPage() {
         </CardHeader>
         <CardContent>
           {fetching ? (
-            <div className="flex items-center justify-center py-8">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
+            <div className="space-y-3">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <div key={i} className="flex items-center gap-4">
+                  <Skeleton className="h-5 w-5" />
+                  <Skeleton className="h-5 w-24" />
+                  <Skeleton className="h-5 flex-1" />
+                  <Skeleton className="h-5 w-32" />
+                  <Skeleton className="h-5 w-20" />
+                  <Skeleton className="h-8 w-24" />
+                </div>
+              ))}
             </div>
           ) : links.length > 0 ? (
             <>
@@ -653,8 +690,23 @@ export default function LinksPage() {
               </div>
             </>
           ) : (
-            <div className="text-center py-8 text-muted-foreground">
-              {t('links.noLinks')}
+            <div className="flex flex-col items-center justify-center py-12 text-center">
+              <div className="rounded-full bg-muted p-3 mb-4">
+                <Plus className="h-8 w-8 text-muted-foreground" />
+              </div>
+              <h3 className="text-lg font-medium mb-2">
+                {t('links.noLinksTitle', 'No links yet')}
+              </h3>
+              <p className="text-sm text-muted-foreground mb-4 max-w-sm">
+                {t(
+                  'links.noLinksDescription',
+                  'Get started by creating your first short link',
+                )}
+              </p>
+              <Button onClick={handleOpenCreate}>
+                <Plus className="mr-2 h-4 w-4" />
+                {t('links.createLink', 'Create Link')}
+              </Button>
             </div>
           )}
         </CardContent>

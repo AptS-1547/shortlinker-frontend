@@ -3,6 +3,18 @@
  */
 
 /**
+ * 危险协议列表
+ */
+const DANGEROUS_PROTOCOLS = [
+  'javascript:',
+  'data:',
+  'file:',
+  'vbscript:',
+  'about:',
+  'blob:',
+]
+
+/**
  * 验证是否是有效的 URL
  * @param url - URL 字符串
  * @returns 是否有效
@@ -21,21 +33,56 @@ export function isValidUrl(url: string): boolean {
 }
 
 /**
- * 验证是否是有效的 HTTP/HTTPS URL
- * @param url - URL 字符串
- * @returns 是否有效
+ * URL 验证结果
  */
-export function isValidHttpUrl(url: string): boolean {
-  if (!isValidUrl(url)) {
-    return false
+export interface UrlValidationResult {
+  isValid: boolean
+  error?: string
+}
+
+/**
+ * 验证是否是安全的 HTTP/HTTPS URL
+ * @param url - URL 字符串
+ * @returns 验证结果
+ */
+export function validateSafeUrl(url: string): UrlValidationResult {
+  if (!url || typeof url !== 'string') {
+    return { isValid: false, error: 'URL is required' }
+  }
+
+  const trimmedUrl = url.trim().toLowerCase()
+
+  // 检查危险协议
+  for (const proto of DANGEROUS_PROTOCOLS) {
+    if (trimmedUrl.startsWith(proto)) {
+      return { isValid: false, error: `Dangerous protocol blocked: ${proto}` }
+    }
   }
 
   try {
     const parsed = new URL(url)
-    return parsed.protocol === 'http:' || parsed.protocol === 'https:'
+
+    // 只允许 http 和 https
+    if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') {
+      return {
+        isValid: false,
+        error: `Invalid protocol: ${parsed.protocol}. Only http:// and https:// are allowed`,
+      }
+    }
+
+    return { isValid: true }
   } catch {
-    return false
+    return { isValid: false, error: 'Invalid URL format' }
   }
+}
+
+/**
+ * 验证是否是有效的 HTTP/HTTPS URL（向后兼容）
+ * @param url - URL 字符串
+ * @returns 是否有效
+ */
+export function isValidHttpUrl(url: string): boolean {
+  return validateSafeUrl(url).isValid
 }
 
 /**

@@ -20,7 +20,11 @@
     "next": "Следующая",
     "yes": "Да",
     "no": "Нет",
-    "more": "Ещё"
+    "more": "Ещё",
+    "close": "Закрыть",
+    "enabled": "Включено",
+    "disabled": "Отключено",
+    "actions": "Действия"
   },
   "auth": {
     "title": "Вход администратора",
@@ -114,6 +118,8 @@
     "clearEdit": "Очистить редактирование",
     "shortLinks": "Короткие ссылки",
     "noLinks": "Нет ссылок",
+    "noLinksTitle": "Ссылок пока нет",
+    "noLinksDescription": "Начните с создания вашей первой короткой ссылки",
     "noMatchingLinks": "Нет соответствующих ссылок",
     "noLinksYet": "Пока нет ссылок",
     "noMatchingLinksDesc": "Попробуйте изменить критерии фильтрации или создать новую ссылку.",
@@ -122,6 +128,17 @@
     "createFirstLink": "Создайте вашу первую ссылку",
     "createNewLink": "Создать новую ссылку",
     "deleteLink": "Удалить ссылку",
+    "deleteSuccess": "Ссылка успешно удалена",
+    "deleteError": "Не удалось удалить ссылку",
+    "createSuccess": "Ссылка успешно создана",
+    "createError": "Не удалось создать ссылку",
+    "updateSuccess": "Ссылка успешно обновлена",
+    "updateError": "Не удалось обновить ссылку",
+    "copySuccess": "Ссылка скопирована в буфер обмена",
+    "copyError": "Не удалось скопировать ссылку",
+    "batchDeleteSuccess": "Успешно удалено {{count}} ссылок",
+    "batchDeletePartial": "Удалено {{success}} ссылок, {{failed}} не удалось",
+    "batchDeleteError": "Не удалось удалить ссылки",
     "openInNewTab": "Открыть в новой вкладке",
     "deleteConfirmation": "Вы уверены, что хотите удалить ссылку {{code}}? Это действие нельзя отменить.",
     "deleting": "Удаление...",
@@ -131,7 +148,6 @@
     "passwordParameterAdded": "Защищенная ссылка скопирована с паролем",
     "createdAfter": "Создано после",
     "createdBefore": "Создано до",
-    "pageSize": "Размер страницы",
     "searchPlaceholder": "Поиск ссылок...",
     "tableTitle": "Ссылки",
     "filterOptions": {
@@ -190,7 +206,9 @@
       "delete": "Удалить",
       "clear": "Снять выбор",
       "deleteTitle": "Подтверждение массового удаления",
-      "deleteDescription": "Вы уверены, что хотите удалить {{count}} выбранных ссылок? Это действие нельзя отменить."
+      "deleteDescription": "Вы уверены, что хотите удалить {{count}} выбранных ссылок? Это действие нельзя отменить.",
+      "deletePartial": "Удалено {{success}} ссылок, {{failed}} не удалось",
+      "deleteSuccess": "Успешно удалено {{count}} ссылок"
     },
     "columns": {
       "configure": "Столбцы",
@@ -252,6 +270,7 @@
       "dashboard": "Панель управления",
       "links": "Управление ссылками",
       "analytics": "Анализ данных",
+      "config": "Конфигурация",
       "settings": "Настройки"
     },
     "system": {
@@ -367,6 +386,7 @@
       "api": "API",
       "features": "Функции",
       "click": "Отслеживание Кликов",
+      "cors": "CORS",
       "other": "Другое"
     },
     "keys": {
@@ -388,7 +408,13 @@
       "features.default_url": "URL Перенаправления по Умолчанию",
       "click.enable_tracking": "Включить Отслеживание Кликов",
       "click.flush_interval": "Интервал Сброса (секунды)",
-      "click.max_clicks_before_flush": "Макс. Кликов до Сброса"
+      "click.max_clicks_before_flush": "Макс. Кликов до Сброса",
+      "cors.enabled": "Включить CORS",
+      "cors.allow_credentials": "Разрешить Учетные Данные",
+      "cors.allowed_origins": "Разрешенные Источники",
+      "cors.allowed_methods": "Разрешенные Методы",
+      "cors.allowed_headers": "Разрешенные Заголовки",
+      "cors.max_age": "Макс. Время Кэша (секунды)"
     },
     "key": "Ключ",
     "value": "Значение",
@@ -402,6 +428,7 @@
     "reloadError": "Ошибка перезагрузки конфигурации",
     "updateSuccess": "Конфигурация успешно обновлена",
     "editConfig": "Редактировать Конфигурацию",
+    "formatJSON": "Форматировать JSON",
     "noConfigs": "Конфигурации не найдены",
     "emptyValue": "(не задано)",
     "noHistory": "Нет истории",

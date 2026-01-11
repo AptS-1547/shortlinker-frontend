@@ -20,7 +20,11 @@
     "next": "次へ",
     "yes": "はい",
     "no": "いいえ",
-    "more": "その他"
+    "more": "その他",
+    "close": "閉じる",
+    "enabled": "有効",
+    "disabled": "無効",
+    "actions": "アクション"
   },
   "auth": {
     "title": "管理者ログイン",
@@ -114,6 +118,8 @@
     "clearEdit": "編集をクリア",
     "shortLinks": "ショートリンク",
     "noLinks": "リンクがありません",
+    "noLinksTitle": "リンクがありません",
+    "noLinksDescription": "最初の短縮リンクを作成して始めましょう",
     "noMatchingLinks": "一致するリンクがありません",
     "noLinksYet": "リンクがありません",
     "noMatchingLinksDesc": "フィルター条件を調整するか、新しいリンクを作成してください。",
@@ -122,6 +128,17 @@
     "createFirstLink": "最初のリンクを作成",
     "createNewLink": "新しいリンクを作成",
     "deleteLink": "リンクを削除",
+    "deleteSuccess": "リンクを削除しました",
+    "deleteError": "リンクの削除に失敗しました",
+    "createSuccess": "リンクを作成しました",
+    "createError": "リンクの作成に失敗しました",
+    "updateSuccess": "リンクを更新しました",
+    "updateError": "リンクの更新に失敗しました",
+    "copySuccess": "リンクをクリップボードにコピーしました",
+    "copyError": "リンクのコピーに失敗しました",
+    "batchDeleteSuccess": "{{count}}件のリンクを削除しました",
+    "batchDeletePartial": "{{success}}件のリンクを削除、{{failed}}件が失敗",
+    "batchDeleteError": "リンクの削除に失敗しました",
     "openInNewTab": "新しいタブで開く",
     "deleteConfirmation": "リンク {{code}} を削除してもよろしいですか？この操作は取り消せません。",
     "deleting": "削除中...",
@@ -190,7 +207,9 @@
       "delete": "削除",
       "clear": "選択解除",
       "deleteTitle": "一括削除の確認",
-      "deleteDescription": "選択した{{count}}件のリンクを削除してもよろしいですか？この操作は取り消せません。"
+      "deleteDescription": "選択した{{count}}件のリンクを削除してもよろしいですか？この操作は取り消せません。",
+      "deletePartial": "{{success}}件のリンクを削除、{{failed}}件が失敗",
+      "deleteSuccess": "{{count}}件のリンクを削除しました"
     },
     "columns": {
       "configure": "列",
@@ -252,6 +271,7 @@
       "dashboard": "ダッシュボード",
       "links": "リンク",
       "analytics": "分析",
+      "config": "設定",
       "settings": "設定"
     },
     "system": {
@@ -365,6 +385,7 @@
       "api": "API",
       "features": "機能",
       "click": "クリック追跡",
+      "cors": "CORS",
       "other": "その他"
     },
     "keys": {
@@ -386,7 +407,13 @@
       "features.default_url": "デフォルトリダイレクトURL",
       "click.enable_tracking": "クリック追跡を有効化",
       "click.flush_interval": "フラッシュ間隔(秒)",
-      "click.max_clicks_before_flush": "フラッシュ前の最大クリック数"
+      "click.max_clicks_before_flush": "フラッシュ前の最大クリック数",
+      "cors.enabled": "CORSを有効化",
+      "cors.allow_credentials": "資格情報を許可",
+      "cors.allowed_origins": "許可されたオリジン",
+      "cors.allowed_methods": "許可されたメソッド",
+      "cors.allowed_headers": "許可されたヘッダー",
+      "cors.max_age": "最大キャッシュ時間(秒)"
     },
     "key": "キー",
     "value": "値",
@@ -400,6 +427,7 @@
     "reloadError": "設定の再読み込みに失敗しました",
     "updateSuccess": "設定を更新しました",
     "editConfig": "設定を編集",
+    "formatJSON": "JSONをフォーマット",
     "noConfigs": "設定項目がありません",
     "emptyValue": "(未設定)",
     "noHistory": "履歴がありません",

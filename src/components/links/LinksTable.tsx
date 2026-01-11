@@ -155,7 +155,7 @@ const LinkRow = memo(function LinkRow({
               {copiedCode === link.code ? (
                 <Check className="w-3 h-3 text-green-500" />
               ) : (
-                <Copy className="w-3 h-3 opacity-0 group-hover/code:opacity-50 transition-opacity" />
+                <Copy className="w-3 h-3 opacity-50 md:opacity-0 md:group-hover/code:opacity-50 transition-opacity" />
               )}
             </button>
           </TableCell>
