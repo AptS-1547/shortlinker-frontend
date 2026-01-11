@@ -221,3 +221,28 @@ export const useLinksLoading = () =>
     (state) =>
       state.fetching || state.creating || state.updating || state.deleting,
   )
+
+// 细粒度 Selectors - 避免不必要的重渲染
+export const useLinks = () => useLinksStore((state) => state.links)
+
+export const usePagination = () => useLinksStore((state) => state.pagination)
+
+export const useLinksFetching = () => useLinksStore((state) => state.fetching)
+
+export const useLinksError = () => useLinksStore((state) => state.error)
+
+export const useCurrentQuery = () =>
+  useLinksStore((state) => state.currentQuery)
+
+// Actions selector - 稳定引用，不会导致重渲染
+export const useLinkActions = () =>
+  useLinksStore((state) => ({
+    fetchLinks: state.fetchLinks,
+    applyFilter: state.applyFilter,
+    resetFilter: state.resetFilter,
+    goToPage: state.goToPage,
+    setPageSize: state.setPageSize,
+    createLink: state.createLink,
+    updateLink: state.updateLink,
+    deleteLink: state.deleteLink,
+  }))

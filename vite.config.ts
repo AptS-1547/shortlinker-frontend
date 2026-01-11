@@ -12,6 +12,31 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          // React 核心
+          if (id.includes('node_modules/react') ||
+              id.includes('node_modules/react-dom') ||
+              id.includes('node_modules/react-router')) {
+            return 'react-vendor'
+          }
+          // Radix UI 组件库
+          if (id.includes('node_modules/@radix-ui')) {
+            return 'ui-vendor'
+          }
+          // 工具库
+          if (id.includes('node_modules/axios') ||
+              id.includes('node_modules/date-fns') ||
+              id.includes('node_modules/zustand') ||
+              id.includes('node_modules/i18next')) {
+            return 'utils'
+          }
+        },
+      },
+    },
+  },
   server: {
     port: 3000,
     proxy: {
