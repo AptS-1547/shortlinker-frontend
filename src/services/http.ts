@@ -289,18 +289,30 @@ export class HttpClient {
       const status = axiosError.response?.status
       const context = this.context
 
+      // 优先提取后端返回的错误消息
+      let backendMessage: string | undefined
+      if (axiosError.response?.data) {
+        const data = axiosError.response.data as {
+          error?: string
+          message?: string
+        }
+        backendMessage = data.error || data.message
+      }
+
       switch (status) {
         case 400:
           throw new ApiError(
-            `400: Bad Request${context ? ` for ${context}` : ''}`,
+            backendMessage ||
+              `400: Bad Request${context ? ` for ${context}` : ''}`,
             400,
             'BAD_REQUEST',
           )
         case 401:
           throw new ApiError(
-            axiosError.config?.url?.includes('/auth/login')
-              ? 'Invalid credentials'
-              : `401: Unauthorized access${context ? ` to ${context}` : ''}`,
+            backendMessage ||
+              (axiosError.config?.url?.includes('/auth/login')
+                ? 'Invalid credentials'
+                : `401: Unauthorized access${context ? ` to ${context}` : ''}`),
             401,
             axiosError.config?.url?.includes('/auth/login')
               ? 'INVALID_CREDENTIALS'
@@ -308,37 +320,40 @@ export class HttpClient {
           )
         case 403:
           throw new ApiError(
-            `403: Forbidden${context ? ` - insufficient permissions for ${context}` : ''}`,
+            backendMessage ||
+              `403: Forbidden${context ? ` - insufficient permissions for ${context}` : ''}`,
             403,
             'FORBIDDEN',
           )
         case 404:
           throw new ApiError(
-            `404: ${context || 'Resource'} not found`,
+            backendMessage || `404: ${context || 'Resource'} not found`,
             404,
             'NOT_FOUND',
           )
         case 429:
           throw new ApiError(
-            '429: Too many requests - please try again later',
+            backendMessage || '429: Too many requests - please try again later',
             429,
             'TOO_MANY_REQUESTS',
           )
         case 500:
           throw new ApiError(
-            `500: ${context ? `${context} failed` : 'Internal server error'}`,
+            backendMessage ||
+              `500: ${context ? `${context} failed` : 'Internal server error'}`,
             500,
             'SERVER_ERROR',
           )
         case 503:
           throw new ApiError(
-            '503: Service temporarily unavailable',
+            backendMessage || '503: Service temporarily unavailable',
             503,
             'SERVICE_UNAVAILABLE',
           )
         default:
           throw new ApiError(
-            `${status}: ${axiosError.response?.statusText || 'Unknown error'}`,
+            backendMessage ||
+              `${status}: ${axiosError.response?.statusText || 'Unknown error'}`,
             status,
             'HTTP_ERROR',
           )
