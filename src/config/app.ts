@@ -6,6 +6,8 @@
  * 3. 默认值
  */
 
+import { configLogger } from '@/utils/logger'
+
 interface AppConfig {
   basePath: string
   adminRoutePrefix: string
@@ -58,7 +60,7 @@ function getConfigValue(
   if (import.meta.env.DEV) {
     const envValue = getEnvValue(envKey || key)
     if (envValue !== undefined) {
-      console.log(`[Config] Using ${key} from env:`, envValue)
+      configLogger.info(`Using ${key} from env:`, envValue)
       return envValue
     }
   }
@@ -66,12 +68,12 @@ function getConfigValue(
   // 运行时注入配置（生产模式主要使用这个）
   const runtimeValue = getRuntimeValue(key)
   if (runtimeValue !== undefined) {
-    console.log(`[Config] Using ${key} from runtime:`, runtimeValue)
+    configLogger.info(`Using ${key} from runtime:`, runtimeValue)
     return runtimeValue
   }
 
   // 默认值
-  console.log(`[Config] Using ${key} from default:`, defaultValue)
+  configLogger.info(`Using ${key} from default:`, defaultValue)
   return defaultValue
 }
 
@@ -99,7 +101,7 @@ class Config implements AppConfig {
 
     // 打印配置信息（仅开发模式）
     if (import.meta.env.DEV) {
-      console.log('[Config] Application configuration loaded:', {
+      configLogger.info('Application configuration loaded:', {
         basePath: this._basePath,
         adminRoutePrefix: this._adminRoutePrefix,
         healthRoutePrefix: this._healthRoutePrefix,
@@ -144,7 +146,7 @@ class Config implements AppConfig {
     )
     this._apiBaseUrl = getConfigValue('apiBaseUrl', '', 'API_BASE_URL')
 
-    console.log('[Config] Configuration reloaded')
+    configLogger.info('Configuration reloaded')
   }
 }
 

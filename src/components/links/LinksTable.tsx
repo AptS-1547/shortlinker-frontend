@@ -466,77 +466,79 @@ export const LinksTable = memo(function LinksTable({
 
   return (
     <TooltipProvider>
-      <Table>
-        <TableHeader>
-          <TableRow>
-            {/* 展开按钮 + 全选 Checkbox */}
-            <TableHead className="w-[70px]">
-              <div className="flex items-center gap-1 pl-7">
-                <Checkbox
-                  checked={headerCheckState}
-                  onCheckedChange={(checked) => onSelectAll(!!checked)}
-                  aria-label={t('links.batch.selectAll')}
-                />
-              </div>
-            </TableHead>
-            {isVisible('code') && (
-              <TableHead>{t('links.table.code')}</TableHead>
-            )}
-            {isVisible('target') && (
-              <TableHead>{t('links.table.target')}</TableHead>
-            )}
-            {isVisible('clicks') && (
-              <SortableHeader
-                field="clicks"
-                currentField={sortField}
-                direction={sortDirection}
-                onSort={onSort}
-                className="hidden md:table-cell"
-              >
-                {t('links.table.clicks')}
-              </SortableHeader>
-            )}
-            {isVisible('status') && (
-              <TableHead>{t('links.table.status')}</TableHead>
-            )}
-            {isVisible('created') && (
-              <SortableHeader
-                field="created_at"
-                currentField={sortField}
-                direction={sortDirection}
-                onSort={onSort}
-                className="hidden lg:table-cell"
-              >
-                {t('links.table.created')}
-              </SortableHeader>
-            )}
-            {isVisible('expires') && (
-              <TableHead className="hidden lg:table-cell">
-                {t('links.table.expires')}
+      <div className="overflow-x-auto">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              {/* 展开按钮 + 全选 Checkbox */}
+              <TableHead className="w-[70px]">
+                <div className="flex items-center gap-1 pl-7">
+                  <Checkbox
+                    checked={headerCheckState}
+                    onCheckedChange={(checked) => onSelectAll(!!checked)}
+                    aria-label={t('links.batch.selectAll')}
+                  />
+                </div>
               </TableHead>
-            )}
-            <TableHead className="text-right">
-              {t('links.table.actions')}
-            </TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {links.map((link) => (
-            <LinkRow
-              key={link.code}
-              link={link}
-              copiedCode={copiedCode}
-              isSelected={selectedCodes.has(link.code)}
-              visibleColumns={visibleColumns}
-              columnCount={columnCount}
-              onCopy={onCopy}
-              onEdit={onEdit}
-              onDelete={onDelete}
-              onSelectChange={onSelectChange}
-            />
-          ))}
-        </TableBody>
-      </Table>
+              {isVisible('code') && (
+                <TableHead>{t('links.table.code')}</TableHead>
+              )}
+              {isVisible('target') && (
+                <TableHead>{t('links.table.target')}</TableHead>
+              )}
+              {isVisible('clicks') && (
+                <SortableHeader
+                  field="clicks"
+                  currentField={sortField}
+                  direction={sortDirection}
+                  onSort={onSort}
+                  className="hidden md:table-cell"
+                >
+                  {t('links.table.clicks')}
+                </SortableHeader>
+              )}
+              {isVisible('status') && (
+                <TableHead>{t('links.table.status')}</TableHead>
+              )}
+              {isVisible('created') && (
+                <SortableHeader
+                  field="created_at"
+                  currentField={sortField}
+                  direction={sortDirection}
+                  onSort={onSort}
+                  className="hidden lg:table-cell"
+                >
+                  {t('links.table.created')}
+                </SortableHeader>
+              )}
+              {isVisible('expires') && (
+                <TableHead className="hidden lg:table-cell">
+                  {t('links.table.expires')}
+                </TableHead>
+              )}
+              <TableHead className="text-right">
+                {t('links.table.actions')}
+              </TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {links.map((link) => (
+              <LinkRow
+                key={link.code}
+                link={link}
+                copiedCode={copiedCode}
+                isSelected={selectedCodes.has(link.code)}
+                visibleColumns={visibleColumns}
+                columnCount={columnCount}
+                onCopy={onCopy}
+                onEdit={onEdit}
+                onDelete={onDelete}
+                onSelectChange={onSelectChange}
+              />
+            ))}
+          </TableBody>
+        </Table>
+      </div>
     </TooltipProvider>
   )
 })

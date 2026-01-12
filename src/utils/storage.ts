@@ -3,6 +3,8 @@
  * 提供类型安全的存储操作，统一错误处理
  */
 
+import { storageLogger } from './logger'
+
 // 存储键常量
 export const STORAGE_KEYS = {
   LANGUAGE: 'preferred-language',
@@ -41,7 +43,7 @@ export const Storage = {
     try {
       return localStorage.getItem(key)
     } catch (error) {
-      console.error(`[Storage] Failed to get "${key}":`, error)
+      storageLogger.error(`Failed to get "${key}":`, error)
       return null
     }
   },
@@ -55,7 +57,7 @@ export const Storage = {
       localStorage.setItem(key, value)
       return true
     } catch (error) {
-      console.error(`[Storage] Failed to set "${key}":`, error)
+      storageLogger.error(`Failed to set "${key}":`, error)
       return false
     }
   },
@@ -69,7 +71,7 @@ export const Storage = {
       localStorage.removeItem(key)
       return true
     } catch (error) {
-      console.error(`[Storage] Failed to remove "${key}":`, error)
+      storageLogger.error(`Failed to remove "${key}":`, error)
       return false
     }
   },
@@ -83,7 +85,7 @@ export const Storage = {
     try {
       return JSON.parse(value) as T
     } catch (error) {
-      console.error(`[Storage] Failed to parse JSON for "${key}":`, error)
+      storageLogger.error(`Failed to parse JSON for "${key}":`, error)
       return null
     }
   },
@@ -95,7 +97,7 @@ export const Storage = {
     try {
       return this.set(key, JSON.stringify(value))
     } catch (error) {
-      console.error(`[Storage] Failed to stringify JSON for "${key}":`, error)
+      storageLogger.error(`Failed to stringify JSON for "${key}":`, error)
       return false
     }
   },
@@ -118,7 +120,7 @@ export const Storage = {
       }
       return true
     } catch (error) {
-      console.error('[Storage] Failed to clear all:', error)
+      storageLogger.error('Failed to clear all:', error)
       return false
     }
   },

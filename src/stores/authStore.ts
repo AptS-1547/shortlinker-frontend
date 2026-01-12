@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { AuthAPI } from '@/services/api'
+import { authLogger } from '@/utils/logger'
 
 // Token 刷新提前量（秒）- 在过期前多少秒刷新
 const REFRESH_BUFFER_SECONDS = 120
@@ -71,17 +72,17 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   checkAuthStatus: async () => {
     // Skip if already checking
     if (get().isChecking) {
-      console.log('[Auth] checkAuthStatus: already checking, skipping')
+      authLogger.info('checkAuthStatus: already checking, skipping')
       return get().isAuthenticated
     }
 
-    console.log('[Auth] checkAuthStatus: starting verification')
+    authLogger.info('checkAuthStatus: starting verification')
 
     // 尝试从 sessionStorage 恢复 expiresAt
     if (!get().expiresAt) {
       const savedExpiresAt = loadExpiresAt()
       if (savedExpiresAt) {
-        console.log('[Auth] checkAuthStatus: restored expiresAt from storage')
+        authLogger.info('checkAuthStatus: restored expiresAt from storage')
         set({ expiresAt: savedExpiresAt })
       }
     }
@@ -90,7 +91,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     try {
       // Verify token via API call - cookie is automatically sent
       const isValid = await AuthAPI.verifyToken()
-      console.log('[Auth] checkAuthStatus: verify result =', isValid)
+      authLogger.info('checkAuthStatus: verify result =', isValid)
       set({ isAuthenticated: isValid, hasChecked: true })
 
       // 如果验证成功，检查是否需要刷新 token
@@ -101,31 +102,28 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         const shouldRefreshNow =
           !expiresAt || expiresAt - now < REFRESH_BUFFER_SECONDS * 1000
 
-        console.log('[Auth] checkAuthStatus: expiresAt =', expiresAt)
-        console.log(
-          '[Auth] checkAuthStatus: timeUntilExpiry =',
+        authLogger.info('checkAuthStatus: expiresAt =', expiresAt)
+        authLogger.info(
+          'checkAuthStatus: timeUntilExpiry =',
           timeUntilExpiry ? Math.round(timeUntilExpiry / 1000) + 's' : 'null',
         )
-        console.log(
-          '[Auth] checkAuthStatus: shouldRefreshNow =',
-          shouldRefreshNow,
-        )
+        authLogger.info('checkAuthStatus: shouldRefreshNow =', shouldRefreshNow)
 
         if (shouldRefreshNow) {
           // 没有过期时间信息或快过期了，需要刷新
-          console.log('[Auth] checkAuthStatus: triggering immediate refresh')
+          authLogger.info('checkAuthStatus: triggering immediate refresh')
           try {
             await get().refreshToken()
           } catch {
             // 刷新失败不影响当前认证状态
-            console.warn(
-              '[Auth] checkAuthStatus: refresh failed, will retry on next check',
+            authLogger.warn(
+              'checkAuthStatus: refresh failed, will retry on next check',
             )
           }
         } else {
           // token 还很新，只启动定时器等待下次刷新
-          console.log(
-            '[Auth] checkAuthStatus: token still valid, scheduling refresh',
+          authLogger.info(
+            'checkAuthStatus: token still valid, scheduling refresh',
           )
           get().startAutoRefresh()
         }
@@ -133,7 +131,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
       return isValid
     } catch (error) {
-      console.error('[Auth] checkAuthStatus: failed', error)
+      authLogger.error('checkAuthStatus: failed', error)
       set({ isAuthenticated: false, hasChecked: true })
       return false
     } finally {
@@ -142,30 +140,30 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   },
 
   login: async (password: string) => {
-    console.log('[Auth] login: attempting login')
+    authLogger.info('login: attempting login')
     try {
       const result = await AuthAPI.login({ password })
       const expiresAt = Date.now() + result.expiresIn * 1000
-      console.log('[Auth] login: success, expiresIn =', result.expiresIn, 's')
+      authLogger.info('login: success, expiresIn =', result.expiresIn, 's')
       set({ isAuthenticated: true, hasChecked: true, expiresAt })
       saveExpiresAt(expiresAt)
       get().startAutoRefresh()
     } catch (error) {
-      console.error('[Auth] login: failed', error)
+      authLogger.error('login: failed', error)
       set({ isAuthenticated: false })
       throw error
     }
   },
 
   logout: async () => {
-    console.log('[Auth] logout: logging out')
+    authLogger.info('logout: logging out')
     get().stopAutoRefresh()
     clearExpiresAt()
     try {
       await AuthAPI.logout()
-      console.log('[Auth] logout: API call success')
+      authLogger.info('logout: API call success')
     } catch (error) {
-      console.error('[Auth] logout: API call failed', error)
+      authLogger.error('logout: API call failed', error)
     } finally {
       // Always set as logged out regardless of API result
       set({ isAuthenticated: false, expiresAt: null })
@@ -173,14 +171,14 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   },
 
   refreshToken: async () => {
-    console.log('[Auth] refreshToken: starting refresh')
+    authLogger.info('refreshToken: starting refresh')
     try {
       const result = await AuthAPI.refreshToken()
       const expiresAt = Date.now() + result.expiresIn * 1000
       set({ expiresAt })
       saveExpiresAt(expiresAt)
-      console.log(
-        '[Auth] refreshToken: success, expiresIn =',
+      authLogger.info(
+        'refreshToken: success, expiresIn =',
         result.expiresIn,
         's, next refresh in',
         result.expiresIn - REFRESH_BUFFER_SECONDS,
@@ -188,7 +186,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       )
       get().startAutoRefresh()
     } catch (error) {
-      console.error('[Auth] refreshToken: failed', error)
+      authLogger.error('refreshToken: failed', error)
       get().stopAutoRefresh()
       clearExpiresAt()
       set({ isAuthenticated: false, expiresAt: null })
@@ -199,13 +197,13 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   startAutoRefresh: () => {
     const expiresAt = get().expiresAt
     if (!expiresAt) {
-      console.log('[Auth] startAutoRefresh: no expiresAt, skipping')
+      authLogger.info('startAutoRefresh: no expiresAt, skipping')
       return
     }
 
     // 清除现有定时器
     if (refreshTimer) {
-      console.log('[Auth] startAutoRefresh: clearing existing timer')
+      authLogger.info('startAutoRefresh: clearing existing timer')
       clearTimeout(refreshTimer)
       refreshTimer = null
     }
@@ -214,20 +212,20 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     const refreshIn = expiresAt - Date.now() - REFRESH_BUFFER_SECONDS * 1000
     if (refreshIn <= 0) {
       // 已经过期或即将过期，立即刷新
-      console.log(
-        '[Auth] startAutoRefresh: token expired or expiring soon, refreshing now',
+      authLogger.info(
+        'startAutoRefresh: token expired or expiring soon, refreshing now',
       )
       get().refreshToken()
       return
     }
 
-    console.log(
-      '[Auth] startAutoRefresh: scheduled in',
+    authLogger.info(
+      'startAutoRefresh: scheduled in',
       Math.round(refreshIn / 1000),
       's',
     )
     refreshTimer = setTimeout(() => {
-      console.log('[Auth] startAutoRefresh: timer triggered, refreshing')
+      authLogger.info('startAutoRefresh: timer triggered, refreshing')
       get().refreshToken()
     }, refreshIn)
   },
@@ -236,7 +234,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     if (refreshTimer) {
       clearTimeout(refreshTimer)
       refreshTimer = null
-      console.log('[Auth] Auto refresh stopped')
+      authLogger.info('Auto refresh stopped')
     }
   },
 }))

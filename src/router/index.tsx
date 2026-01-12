@@ -21,6 +21,7 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { useAuthStore } from '@/stores/authStore'
+import { routerLogger } from '@/utils/logger'
 
 // 从运行时配置或环境变量获取基础路径
 const getBasePath = () => {
@@ -33,7 +34,7 @@ const getBasePath = () => {
   if (window.__APP_CONFIG__) {
     const config = window.__APP_CONFIG__
     if (config.basePath && config.basePath !== '%BASE_PATH%') {
-      console.warn('Using base path from Rust config:', config.basePath)
+      routerLogger.warn('Using base path from Rust config:', config.basePath)
       return config.basePath
     }
   }
@@ -43,12 +44,12 @@ const getBasePath = () => {
     .querySelector('meta[name="base-path"]')
     ?.getAttribute('content')
   if (metaBase && metaBase !== '%BASE_PATH%') {
-    console.warn('Using base path from meta tag:', metaBase)
+    routerLogger.warn('Using base path from meta tag:', metaBase)
     return metaBase
   }
 
   // 最后使用构建时的配置
-  console.warn(
+  routerLogger.warn(
     'Using base path from import.meta.env:',
     import.meta.env.BASE_URL,
   )

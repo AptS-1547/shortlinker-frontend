@@ -30,9 +30,27 @@ export interface AuthResponse {
   expires_in?: number
 }
 
+export interface HealthStorageBackend {
+  storage_type: string
+  support_click: boolean
+}
+
+export interface HealthStorageCheck {
+  status: string
+  links_count: number
+  backend: HealthStorageBackend
+}
+
+export interface HealthChecks {
+  storage: HealthStorageCheck
+}
+
 export interface HealthResponse {
   status: string
-  [key: string]: unknown
+  timestamp: string
+  uptime: number
+  response_time_ms: number
+  checks: HealthChecks
 }
 
 export interface BatchOperationResult {

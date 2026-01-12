@@ -6,6 +6,7 @@ import type {
 } from '@/services/api'
 import { LinkAPI } from '@/services/api'
 import { extractErrorMessage } from '@/utils/errorHandler'
+import { linksLogger } from '@/utils/logger'
 import { STORAGE_KEYS, Storage } from '@/utils/storage'
 
 // 模块级 AbortController
@@ -115,12 +116,12 @@ export const useLinksStore = create<LinksState>((set, get) => ({
           links: [],
           pagination: { ...initialPagination },
         })
-        console.warn('Unexpected API response format:', response)
+        linksLogger.warn('Unexpected API response format:', response)
       }
     } catch (err) {
       // 忽略被取消的请求
       if (err instanceof Error && err.name === 'AbortError') {
-        console.log('[Links] Request aborted')
+        linksLogger.info('[Links] Request aborted')
         return
       }
 
@@ -129,7 +130,7 @@ export const useLinksStore = create<LinksState>((set, get) => ({
         links: [],
         pagination: { ...initialPagination },
       })
-      console.error('Failed to fetch links:', err)
+      linksLogger.error('Failed to fetch links:', err)
     } finally {
       // 只有当前请求没被取消时才更新 fetching 状态
       if (!signal.aborted) {

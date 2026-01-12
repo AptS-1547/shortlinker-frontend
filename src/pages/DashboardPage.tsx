@@ -18,6 +18,7 @@ import { useDateFormat } from '@/hooks/useDateFormat'
 import type { LinkStats, SerializableShortLink } from '@/services/api'
 import { LinkAPI } from '@/services/api'
 import { useHealthStore } from '@/stores/healthStore'
+import { dashboardLogger } from '@/utils/logger'
 
 export default function DashboardPage() {
   const { t } = useTranslation()
@@ -50,7 +51,7 @@ export default function DashboardPage() {
         setStats(statsRes)
         setRecentLinks(recentRes.data)
       } catch (err) {
-        console.error('Failed to fetch dashboard data:', err)
+        dashboardLogger.error('Failed to fetch dashboard data:', err)
       }
     }
     fetchData()

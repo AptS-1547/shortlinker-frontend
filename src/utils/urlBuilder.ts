@@ -2,6 +2,8 @@
  * URL 参数构建工具函数
  */
 
+import { urlLogger } from './logger'
+
 /**
  * 将对象转换为 URLSearchParams
  * 自动过滤掉 undefined、null 和空字符串的值
@@ -51,7 +53,7 @@ export function buildUrlParams(
     try {
       searchParams.append(key, JSON.stringify(value))
     } catch (error) {
-      console.warn(`Failed to serialize parameter "${key}":`, error)
+      urlLogger.warn(`Failed to serialize parameter "${key}":`, error)
     }
   }
 
@@ -117,7 +119,7 @@ export function parseUrlParams(url: string): Record<string, string | string[]> {
       }
     }
   } catch (error) {
-    console.error('Failed to parse URL params:', error)
+    urlLogger.error('Failed to parse URL params:', error)
   }
 
   return params

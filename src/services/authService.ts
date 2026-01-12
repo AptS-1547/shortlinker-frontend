@@ -1,5 +1,6 @@
 import { adminClient } from './http'
 import type { AuthRequest } from './types'
+import { authLogger } from '@/utils/logger'
 
 interface AuthApiResponse {
   code: number
@@ -37,7 +38,7 @@ export class AuthService {
     try {
       await adminClient.post('/auth/logout', {})
     } catch (error) {
-      console.error('Logout API failed:', error)
+      authLogger.error('Logout API failed:', error)
       throw error
     }
   }

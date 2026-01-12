@@ -1,5 +1,6 @@
 import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
+import { i18nLogger } from '@/utils/logger'
 import { STORAGE_KEYS, Storage } from '@/utils/storage'
 
 // 语言配置映射
@@ -87,7 +88,7 @@ export async function loadLanguage(lang: SupportedLanguage): Promise<void> {
     i18n.addResourceBundle(lang, 'translation', translations, true, true)
     loadedLanguages.add(lang)
   } catch (error) {
-    console.error(`[i18n] Failed to load language: ${lang}`, error)
+    i18nLogger.error(`[i18n] Failed to load language: ${lang}`, error)
   }
 }
 

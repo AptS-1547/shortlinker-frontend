@@ -31,6 +31,7 @@ import {
 } from '@/i18n'
 import { HealthAPI } from '@/services/api'
 import { useAuthStore } from '@/stores/authStore'
+import { authLogger } from '@/utils/logger'
 
 export default function LoginPage() {
   const { t, i18n } = useTranslation()
@@ -72,7 +73,7 @@ export default function LoginPage() {
 
       navigate('/dashboard')
     } catch (err) {
-      console.error('Authentication failed:', err)
+      authLogger.error('Authentication failed:', err)
 
       if (err instanceof Error) {
         if (

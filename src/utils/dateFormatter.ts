@@ -2,6 +2,8 @@
  * 日期格式化工具函数
  */
 
+import { dateLogger } from './logger'
+
 /**
  * 格式化日期为友好的显示格式
  * @param dateString - ISO 8601 日期字符串
@@ -19,7 +21,7 @@ export function formatDate(
       day: 'numeric',
     })
   } catch (error) {
-    console.error('Failed to format date:', error)
+    dateLogger.error('Failed to format date:', error)
     return dateString
   }
 }
@@ -43,7 +45,7 @@ export function formatDateTime(
       minute: '2-digit',
     })
   } catch (error) {
-    console.error('Failed to format datetime:', error)
+    dateLogger.error('Failed to format datetime:', error)
     return dateString
   }
 }
@@ -62,7 +64,7 @@ export function formatDateTimeLocal(rfc3339Time: string): string {
     // 转换为 YYYY-MM-DDTHH:mm 格式
     return localDate.toISOString().slice(0, 16)
   } catch (error) {
-    console.error('Failed to format datetime-local:', error)
+    dateLogger.error('Failed to format datetime-local:', error)
     return ''
   }
 }
@@ -77,7 +79,7 @@ export function formatToRFC3339(datetimeLocal: string): string {
     const date = new Date(datetimeLocal)
     return date.toISOString()
   } catch (error) {
-    console.error('Failed to format to RFC3339:', error)
+    dateLogger.error('Failed to format to RFC3339:', error)
     return ''
   }
 }
@@ -91,7 +93,7 @@ export function isExpired(expiresAt: string): boolean {
   try {
     return new Date(expiresAt) < new Date()
   } catch (error) {
-    console.error('Failed to check expiration:', error)
+    dateLogger.error('Failed to check expiration:', error)
     return false
   }
 }
@@ -112,7 +114,7 @@ export function daysDifference(
     const diffTime = d2.getTime() - d1.getTime()
     return Math.ceil(diffTime / (1000 * 60 * 60 * 24))
   } catch (error) {
-    console.error('Failed to calculate days difference:', error)
+    dateLogger.error('Failed to calculate days difference:', error)
     return 0
   }
 }
@@ -148,7 +150,7 @@ export function formatRelativeTime(
       return rtf.format(-diffSec, 'second')
     }
   } catch (error) {
-    console.error('Failed to format relative time:', error)
+    dateLogger.error('Failed to format relative time:', error)
     return dateString
   }
 }

@@ -1,5 +1,6 @@
 import { ApiError, config } from './http'
 import type { QRCodeOptions } from './types'
+import { qrcodeLogger } from '@/utils/logger'
 
 export class QRCodeService {
   /**
@@ -22,7 +23,7 @@ export class QRCodeService {
         },
       })
     } catch (error) {
-      console.error('Failed to generate QR code:', error)
+      qrcodeLogger.error('Failed to generate QR code:', error)
       // 备用方案：使用在线服务
       const encodedUrl = encodeURIComponent(url)
       return `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&data=${encodedUrl}&format=png&ecc=${errorCorrectionLevel}&bgcolor=ffffff&color=000000&qzone=4`
@@ -75,7 +76,7 @@ export class QRCodeService {
         window.URL.revokeObjectURL(downloadUrl)
       }
     } catch (error) {
-      console.error('Failed to download QR code:', error)
+      qrcodeLogger.error('Failed to download QR code:', error)
       throw new ApiError('Failed to download QR code')
     }
   }

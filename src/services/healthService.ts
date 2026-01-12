@@ -1,5 +1,6 @@
 import { healthClient } from './http'
 import type { HealthResponse } from './types'
+import { healthLogger } from '@/utils/logger'
 
 interface HealthApiResponse {
   code: number
@@ -16,7 +17,7 @@ export class HealthService {
       // 解包 { code, data } 格式，返回 data 部分
       return response.data
     } catch (error) {
-      console.error('Health check failed:', error)
+      healthLogger.error('Health check failed:', error)
       throw error
     }
   }

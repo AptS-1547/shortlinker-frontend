@@ -5,6 +5,7 @@ import axios, {
 } from 'axios'
 import { appConfig } from '@/config/app'
 import { forceLogout, refreshTokenFromHttp } from '@/stores/authStore'
+import { httpLogger } from '@/utils/logger'
 
 // ==================== 错误处理 ====================
 export class ApiError extends Error {
@@ -65,7 +66,7 @@ export class HttpClient {
 
         // Handle 401 errors
         if (error.response?.status === 401) {
-          console.log('[HTTP] 401 intercepted for:', originalRequest?.url)
+          httpLogger.info('401 intercepted for:', originalRequest?.url)
 
           // Don't retry for auth endpoints
           if (
@@ -73,36 +74,36 @@ export class HttpClient {
             originalRequest?.url?.includes('/auth/refresh') ||
             originalRequest?.url?.includes('/auth/verify')
           ) {
-            console.log('[HTTP] 401 on auth endpoint, not retrying')
+            httpLogger.info('401 on auth endpoint, not retrying')
             return this.handleHttpError(error)
           }
 
           // Already retried, redirect to login
           if (originalRequest?._retry) {
-            console.log('[HTTP] 401 already retried, redirecting to login')
+            httpLogger.info('401 already retried, redirecting to login')
             handleAuthError()
             return this.handleHttpError(error)
           }
 
           // Try to refresh token using authStore's unified refresh logic
           if (!isRefreshing) {
-            console.log('[HTTP] 401 triggering token refresh')
+            httpLogger.info('401 triggering token refresh')
             isRefreshing = true
             refreshPromise = refreshTokenFromHttp()
               .then(() => {
-                console.log('[HTTP] Token refresh success, retrying request')
+                httpLogger.info('Token refresh success, retrying request')
                 isRefreshing = false
                 refreshPromise = null
               })
               .catch(() => {
-                console.log('[HTTP] Token refresh failed, redirecting to login')
+                httpLogger.info('Token refresh failed, redirecting to login')
                 isRefreshing = false
                 refreshPromise = null
                 handleAuthError()
                 throw error
               })
           } else {
-            console.log('[HTTP] 401 waiting for ongoing refresh')
+            httpLogger.info('401 waiting for ongoing refresh')
           }
 
           // Wait for refresh to complete
@@ -110,10 +111,7 @@ export class HttpClient {
             await refreshPromise
             // Mark as retried and retry original request
             originalRequest._retry = true
-            console.log(
-              '[HTTP] Retrying original request:',
-              originalRequest?.url,
-            )
+            httpLogger.info('Retrying original request:', originalRequest?.url)
             return this.client.request(originalRequest)
           } catch {
             return this.handleHttpError(error)

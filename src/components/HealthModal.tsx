@@ -179,19 +179,18 @@ export default function HealthModal({
     })
   }, [])
 
-  // biome-ignore lint/suspicious/noExplicitAny: HealthResponse doesn't include nested fields
-  const data = healthData as Record<string, any> | null
-
   const formattedUptime = useMemo(
-    () => formatUptime(data?.uptime || 0),
-    [data?.uptime, formatUptime],
+    () => formatUptime(healthData?.uptime || 0),
+    [healthData?.uptime, formatUptime],
   )
 
-  const responseTime = data?.response_time_ms || 0
-  const linksCount = data?.checks?.storage?.links_count || 0
-  const storageType = data?.checks?.storage?.backend?.storage_type || 'Unknown'
-  const storageStatus = data?.checks?.storage?.status || 'unknown'
-  const supportClick = data?.checks?.storage?.backend?.support_click || false
+  const responseTime = healthData?.response_time_ms || 0
+  const linksCount = healthData?.checks?.storage?.links_count || 0
+  const storageType =
+    healthData?.checks?.storage?.backend?.storage_type || 'Unknown'
+  const storageStatus = healthData?.checks?.storage?.status || 'unknown'
+  const supportClick =
+    healthData?.checks?.storage?.backend?.support_click || false
 
   return (
     <Dialog open={open} onOpenChange={onClose}>

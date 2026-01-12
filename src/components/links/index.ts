@@ -1,3 +1,6 @@
+export { ColumnConfigDropdown } from './ColumnConfigDropdown'
 export { LinkDeleteDialog } from './LinkDeleteDialog'
 export { LinkFormDialog } from './LinkFormDialog'
+export { LinksBatchActions } from './LinksBatchActions'
+export { LinksFilterBar } from './LinksFilterBar'
 export { LinksTable } from './LinksTable'

@@ -1,4 +1,5 @@
 import { useCallback, useRef, useState } from 'react'
+import { hookLogger } from '@/utils/logger'
 
 export interface ConfirmOptions {
   title: string
@@ -32,7 +33,7 @@ export function useConfirm() {
           await onConfirm()
           resolveRef.current?.(true)
         } catch (error) {
-          console.error('Confirm action failed:', error)
+          hookLogger.error('Confirm action failed:', error)
           resolveRef.current?.(false)
         } finally {
           setLoading(false)

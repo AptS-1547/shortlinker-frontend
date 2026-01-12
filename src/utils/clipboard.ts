@@ -2,6 +2,8 @@
  * 剪贴板操作工具函数
  */
 
+import { clipboardLogger } from './logger'
+
 /**
  * 复制文本到剪贴板的结果
  */
@@ -71,10 +73,10 @@ export async function readFromClipboard(): Promise<string | null> {
     }
 
     // 旧浏览器不支持读取剪贴板
-    console.warn('Clipboard API not available')
+    clipboardLogger.warn('Clipboard API not available')
     return null
   } catch (error) {
-    console.error('Failed to read from clipboard:', error)
+    clipboardLogger.error('Failed to read from clipboard:', error)
     return null
   }
 }
