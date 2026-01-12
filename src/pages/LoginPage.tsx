@@ -22,6 +22,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { appConfig } from '@/config/app'
 import { useTheme } from '@/hooks/useTheme'
+import { useVersion } from '@/hooks/useVersion'
 import {
   changeLanguage,
   getLanguageFlag,
@@ -38,6 +39,7 @@ export default function LoginPage() {
   const navigate = useNavigate()
   const login = useAuthStore((state) => state.login)
   const { isDark, setTheme } = useTheme()
+  const { displayVersion, versionBadgeColor, versionLabel } = useVersion()
 
   const [password, setPassword] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -226,6 +228,18 @@ export default function LoginPage() {
         <p className="text-center text-xs text-muted-foreground mt-6">
           {t('auth.serverConnectionDesc', { url: apiBaseUrl })}
         </p>
+
+        {/* Version info */}
+        <div className="flex items-center justify-center gap-2 mt-2">
+          <span className="text-xs text-muted-foreground">
+            {displayVersion}
+          </span>
+          <span
+            className={`text-[10px] px-1.5 py-0.5 rounded font-medium ${versionBadgeColor}`}
+          >
+            {versionLabel}
+          </span>
+        </div>
       </div>
     </div>
   )
