@@ -39,7 +39,7 @@ const STATIC_RESERVED_CODES = [
 
 /**
  * 提取路径的第一段（去掉前导斜杠）
- * 例如: '/admin/link' → 'admin', '/health' → 'health'
+ * 例如: '/admin/links' → 'admin', '/health' → 'health'
  */
 function extractFirstSegment(path: string): string | null {
   const normalized = path.startsWith('/') ? path.slice(1) : path

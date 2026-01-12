@@ -43,7 +43,7 @@ export class BatchService {
   async deleteLinks(codes: string[]): Promise<BatchOperationResult> {
     const response = await adminClient.delete<
       ApiResponse<BatchOperationResult>
-    >('/link/batch', { codes } satisfies BatchDeleteRequest)
+    >('/links/batch', { codes } satisfies BatchDeleteRequest)
     return response.data
   }
 }
