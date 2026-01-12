@@ -54,12 +54,15 @@ export function useLinksBatch(
       if (result.failed.length > 0) {
         toast.warning(
           t('links.batchDeletePartial', {
+            success: result.success.length,
+            failed: result.failed.length,
             defaultValue: `Deleted ${result.success.length} links, ${result.failed.length} failed`,
           }),
         )
       } else {
         toast.success(
           t('links.batchDeleteSuccess', {
+            count: result.success.length,
             defaultValue: `Successfully deleted ${result.success.length} links`,
           }),
         )
