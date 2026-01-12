@@ -2,6 +2,18 @@
  * 表单验证工具函数
  */
 
+// TypeScript 全局类型声明
+declare global {
+  interface Window {
+    __APP_CONFIG__?: {
+      basePath?: string
+      adminRoutePrefix?: string
+      healthRoutePrefix?: string
+      shortlinkerVersion?: string
+    }
+  }
+}
+
 /**
  * 危险协议列表
  */
@@ -13,6 +25,61 @@ const DANGEROUS_PROTOCOLS = [
   'about:',
   'blob:',
 ]
+
+/**
+ * 静态保留字列表 - 前端路由路径（固定）
+ */
+const STATIC_RESERVED_CODES = [
+  'login',
+  'dashboard',
+  'links',
+  'analytics',
+  'settings',
+] as const
+
+/**
+ * 提取路径的第一段（去掉前导斜杠）
+ * 例如: '/admin/link' → 'admin', '/health' → 'health'
+ */
+function extractFirstSegment(path: string): string | null {
+  const normalized = path.startsWith('/') ? path.slice(1) : path
+  const firstSegment = normalized.split('/')[0]
+  return firstSegment || null
+}
+
+/**
+ * 获取完整的保留字列表（静态 + 动态）
+ * 动态部分从 window.__APP_CONFIG__ 运行时配置读取
+ * @returns 保留字数组（小写）
+ */
+export function getReservedShortCodes(): string[] {
+  const reserved: string[] = [...STATIC_RESERVED_CODES]
+
+  // 从运行时配置读取 API 前缀
+  if (typeof window !== 'undefined' && window.__APP_CONFIG__) {
+    const config = window.__APP_CONFIG__
+
+    const adminSegment = extractFirstSegment(
+      config.adminRoutePrefix || '/admin',
+    )
+    const healthSegment = extractFirstSegment(
+      config.healthRoutePrefix || '/health',
+    )
+
+    if (adminSegment && !reserved.includes(adminSegment)) {
+      reserved.push(adminSegment)
+    }
+    if (healthSegment && !reserved.includes(healthSegment)) {
+      reserved.push(healthSegment)
+    }
+  } else {
+    // 非浏览器环境或配置未加载，使用默认值
+    if (!reserved.includes('admin')) reserved.push('admin')
+    if (!reserved.includes('health')) reserved.push('health')
+  }
+
+  return reserved
+}
 
 /**
  * 验证是否是有效的 URL
@@ -86,8 +153,11 @@ export function isValidHttpUrl(url: string): boolean {
 }
 
 /**
- * 验证是否是有效的短链接代码
+ * 验证是否是有效的短链接代码（仅检查格式）
  * 只允许字母、数字、下划线和短横线
+ *
+ * 注意：此函数不检查保留字，使用 validateShortCode() 进行完整验证
+ *
  * @param code - 短链接代码
  * @param minLength - 最小长度（默认 1）
  * @param maxLength - 最大长度（默认 50）
@@ -109,6 +179,61 @@ export function isValidShortCode(
   // 只允许字母、数字、下划线和短横线
   const pattern = /^[a-zA-Z0-9_-]+$/
   return pattern.test(code)
+}
+
+/**
+ * 检查短链接代码是否为保留字（大小写不敏感）
+ * @param code - 短链接代码
+ * @returns 是否为保留字
+ */
+export function isReservedShortCode(code: string): boolean {
+  if (!code || typeof code !== 'string') {
+    return false
+  }
+
+  const lowerCode = code.toLowerCase()
+  const reserved = getReservedShortCodes()
+  return reserved.includes(lowerCode)
+}
+
+/**
+ * 短链接代码验证结果
+ */
+export interface ShortCodeValidationResult {
+  isValid: boolean
+  error?: string
+}
+
+/**
+ * 验证短链接代码（包含格式检查和保留字检查）
+ * @param code - 短链接代码
+ * @param minLength - 最小长度（默认 1）
+ * @param maxLength - 最大长度（默认 50）
+ * @returns 验证结果
+ */
+export function validateShortCode(
+  code: string,
+  minLength: number = 1,
+  maxLength: number = 50,
+): ShortCodeValidationResult {
+  // 基本格式检查
+  if (!isValidShortCode(code, minLength, maxLength)) {
+    return {
+      isValid: false,
+      error:
+        'Invalid short code format. Use only letters, numbers, underscores and hyphens',
+    }
+  }
+
+  // 保留字检查
+  if (isReservedShortCode(code)) {
+    return {
+      isValid: false,
+      error: `"${code}" is a reserved keyword and cannot be used`,
+    }
+  }
+
+  return { isValid: true }
 }
 
 /**

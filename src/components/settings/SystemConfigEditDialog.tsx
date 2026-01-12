@@ -25,7 +25,10 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
-import { createConfigFormSchema } from '@/schemas/systemConfigSchema'
+import {
+  type ConfigValueType,
+  createConfigFormSchema,
+} from '@/schemas/systemConfigSchema'
 import type { SystemConfigItem } from '@/services/api'
 import { formatJSON, getConfigKeyLabel } from '@/utils/configUtils'
 
@@ -52,7 +55,7 @@ export function SystemConfigEditDialog({
 
   // 动态创建 schema
   const schema = config
-    ? createConfigFormSchema(config.value_type)
+    ? createConfigFormSchema(config.value_type as ConfigValueType)
     : createConfigFormSchema('string')
 
   type FormValues = z.infer<typeof schema>

@@ -46,7 +46,15 @@ export default function DashboardPage() {
         // 并行获取统计数据和最近链接
         const [statsRes, recentRes] = await Promise.all([
           LinkAPI.fetchStats(),
-          LinkAPI.fetchPaginated({ page: 1, page_size: 5 }),
+          LinkAPI.fetchPaginated({
+            page: 1,
+            page_size: 5,
+            created_after: null,
+            created_before: null,
+            only_expired: null,
+            only_active: null,
+            search: null,
+          }),
         ])
         setStats(statsRes)
         setRecentLinks(recentRes.data)
@@ -58,7 +66,7 @@ export default function DashboardPage() {
   }, [])
 
   const formattedUptime = useMemo(() => {
-    const uptime = (healthData as { uptime?: number })?.uptime || 0
+    const uptime = healthData?.uptime ?? 0
     const days = Math.floor(uptime / 86400)
     const hours = Math.floor((uptime % 86400) / 3600)
     const minutes = Math.floor((uptime % 3600) / 60)

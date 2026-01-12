@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
+import type { GetLinksQuery } from '@/services/types'
 
 export type StatusFilter = 'all' | 'active' | 'expired'
 
@@ -9,17 +10,8 @@ export interface LinksFilterState {
   createdBefore: Date | undefined
 }
 
-export interface LinksFilterQuery {
-  search?: string
-  only_active?: boolean
-  only_expired?: boolean
-  created_after?: string
-  created_before?: string
-  page?: number
-}
-
 interface UseLinksFiltersOptions {
-  onFilterChange: (query: LinksFilterQuery) => void
+  onFilterChange: (query: GetLinksQuery) => void
   debounceMs?: number
 }
 
@@ -42,14 +34,15 @@ export function useLinksFilters({
     createdBefore,
   })
 
-  const buildQuery = useCallback((): LinksFilterQuery => {
+  const buildQuery = useCallback((): GetLinksQuery => {
     return {
-      search: searchQuery || undefined,
-      only_active: statusFilter === 'active' ? true : undefined,
-      only_expired: statusFilter === 'expired' ? true : undefined,
-      created_after: createdAfter?.toISOString(),
-      created_before: createdBefore?.toISOString(),
+      search: searchQuery || null,
+      only_active: statusFilter === 'active' ? true : null,
+      only_expired: statusFilter === 'expired' ? true : null,
+      created_after: createdAfter?.toISOString() ?? null,
+      created_before: createdBefore?.toISOString() ?? null,
       page: 1,
+      page_size: null,
     }
   }, [searchQuery, statusFilter, createdAfter, createdBefore])
 

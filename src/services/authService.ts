@@ -1,6 +1,6 @@
+import { authLogger } from '@/utils/logger'
 import { adminClient } from './http'
 import type { AuthRequest } from './types'
-import { authLogger } from '@/utils/logger'
 
 interface AuthApiResponse {
   code: number

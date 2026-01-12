@@ -90,7 +90,7 @@ class Config implements AppConfig {
   constructor() {
     // 初始化所有配置
     this._basePath = getConfigValue('basePath', '/', 'BASE_URL')
-    this._adminRoutePrefix = getConfigValue('adminRoutePrefix', '/admin')
+    this._adminRoutePrefix = getConfigValue('adminRoutePrefix', '/admin/v1')
     this._healthRoutePrefix = getConfigValue('healthRoutePrefix', '/health')
     this._shortlinkerVersion = getConfigValue(
       'shortlinkerVersion',
@@ -137,7 +137,7 @@ class Config implements AppConfig {
    */
   reload(): void {
     this._basePath = getConfigValue('basePath', '/', 'BASE_URL')
-    this._adminRoutePrefix = getConfigValue('adminRoutePrefix', '/admin')
+    this._adminRoutePrefix = getConfigValue('adminRoutePrefix', '/admin/v1')
     this._healthRoutePrefix = getConfigValue('healthRoutePrefix', '/health')
     this._shortlinkerVersion = getConfigValue(
       'shortlinkerVersion',

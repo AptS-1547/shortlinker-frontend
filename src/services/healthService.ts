@@ -1,6 +1,6 @@
+import { healthLogger } from '@/utils/logger'
 import { healthClient } from './http'
 import type { HealthResponse } from './types'
-import { healthLogger } from '@/utils/logger'
 
 interface HealthApiResponse {
   code: number

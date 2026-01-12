@@ -1,6 +1,8 @@
 import { z } from 'zod'
+import type { ValueType } from '@/services/types'
 
-export type ConfigValueType = 'string' | 'int' | 'bool' | 'json'
+// 为了兼容性保留，使用后端生成的 ValueType
+export type ConfigValueType = ValueType
 
 /**
  * 根据配置类型创建动态验证 schema

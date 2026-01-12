@@ -1,6 +1,6 @@
+import { qrcodeLogger } from '@/utils/logger'
 import { ApiError, config } from './http'
 import type { QRCodeOptions } from './types'
-import { qrcodeLogger } from '@/utils/logger'
 
 export class QRCodeService {
   /**

@@ -58,6 +58,17 @@ const initialPagination: PaginationState = {
   hasPrev: false,
 }
 
+// 默认查询参数，所有可选字段显式为 null
+const defaultQuery: GetLinksQuery = {
+  page: null,
+  page_size: null,
+  created_after: null,
+  created_before: null,
+  only_expired: null,
+  only_active: null,
+  search: null,
+}
+
 export const useLinksStore = create<LinksState>((set, get) => ({
   links: [],
   fetching: false,
@@ -66,7 +77,7 @@ export const useLinksStore = create<LinksState>((set, get) => ({
   deleting: false,
   error: null,
   pagination: { ...initialPagination },
-  currentQuery: {},
+  currentQuery: { ...defaultQuery },
 
   fetchLinks: async (query?: GetLinksQuery) => {
     const state = get()
@@ -146,8 +157,11 @@ export const useLinksStore = create<LinksState>((set, get) => ({
   },
 
   resetFilter: async () => {
-    set({ currentQuery: {}, pagination: { ...initialPagination, page: 1 } })
-    await get().fetchLinks({})
+    set({
+      currentQuery: { ...defaultQuery },
+      pagination: { ...initialPagination, page: 1 },
+    })
+    await get().fetchLinks({ ...defaultQuery })
   },
 
   goToPage: async (page: number) => {

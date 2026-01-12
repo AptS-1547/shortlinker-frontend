@@ -40,6 +40,19 @@ export const useHealthStore = create<HealthState>((set, get) => ({
         status: {
           status: 'unhealthy',
           timestamp: new Date().toISOString(),
+          uptime: 0,
+          response_time_ms: 0,
+          checks: {
+            storage: {
+              status: 'unhealthy',
+              links_count: 0,
+              backend: {
+                storage_type: 'unknown',
+                support_click: false,
+              },
+              error: null,
+            },
+          },
         },
       })
     } finally {

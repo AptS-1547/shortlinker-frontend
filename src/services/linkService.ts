@@ -15,15 +15,15 @@ function buildLinkQueryParams(query?: GetLinksQuery): URLSearchParams {
   const params = new URLSearchParams()
 
   if (query) {
-    if (query.page !== undefined) params.append('page', query.page.toString())
-    if (query.page_size !== undefined)
+    if (query.page != null) params.append('page', query.page.toString())
+    if (query.page_size != null)
       params.append('page_size', query.page_size.toString())
     if (query.created_after) params.append('created_after', query.created_after)
     if (query.created_before)
       params.append('created_before', query.created_before)
-    if (query.only_expired !== undefined)
+    if (query.only_expired != null)
       params.append('only_expired', query.only_expired.toString())
-    if (query.only_active !== undefined)
+    if (query.only_active != null)
       params.append('only_active', query.only_active.toString())
     if (query.search) params.append('search', query.search)
   }
@@ -36,7 +36,7 @@ function buildLinkQueryParams(query?: GetLinksQuery): URLSearchParams {
  */
 function buildLinkUrl(query?: GetLinksQuery): string {
   const params = buildLinkQueryParams(query)
-  return params.toString() ? `/link?${params.toString()}` : '/link'
+  return params.toString() ? `/links?${params.toString()}` : '/links'
 }
 
 export class LinkService {
@@ -101,7 +101,7 @@ export class LinkService {
   async fetchOne(code: string): Promise<SerializableShortLink | null> {
     try {
       const response = await adminClient.get<{ data?: SerializableShortLink }>(
-        `/link/${code}`,
+        `/links/${code}`,
       )
       return response.data || null
     } catch (error) {
@@ -116,7 +116,9 @@ export class LinkService {
    * 创建链接
    */
   async create(payload: LinkPayload): Promise<void> {
-    await adminClient.post('/link', payload)
+    await adminClient.post('/links', payload)
+    // 清除链接列表缓存
+    adminClient.clearCache('/links')
   }
 
   /**
@@ -147,14 +149,18 @@ export class LinkService {
    * 更新链接
    */
   async update(code: string, payload: LinkPayload): Promise<void> {
-    await adminClient.put(`/link/${code}`, payload)
+    await adminClient.put(`/links/${code}`, payload)
+    // 清除相关缓存
+    adminClient.clearCache('/links')
   }
 
   /**
    * 删除链接
    */
   async delete(code: string): Promise<void> {
-    await adminClient.delete(`/link/${code}`)
+    await adminClient.delete(`/links/${code}`)
+    // 清除相关缓存
+    adminClient.clearCache('/links')
   }
 
   /**

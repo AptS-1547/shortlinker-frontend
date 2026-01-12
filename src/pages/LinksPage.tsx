@@ -11,7 +11,6 @@ import {
   LinksFilterBar,
   LinksTable,
 } from '@/components/links'
-import type { ColumnKey } from '@/components/links/LinksTable'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -50,13 +49,6 @@ import type { LinkPayload, SerializableShortLink } from '@/services/types'
 import { useLinksStore } from '@/stores/linksStore'
 import { buildShortUrl } from '@/utils/urlBuilder'
 
-const INITIAL_FORM_DATA: LinkPayload = {
-  code: '',
-  target: '',
-  expires_at: null,
-  password: null,
-}
-
 export default function LinksPage() {
   const { t } = useTranslation()
   const { copy } = useCopyToClipboard()
@@ -90,46 +82,41 @@ export default function LinksPage() {
   // Dialog state
   const formDialog = useDialog<SerializableShortLink>()
   const deleteDialog = useDialog<SerializableShortLink>()
-  const [formData, setFormData] = useState<LinkPayload>(INITIAL_FORM_DATA)
   const [copiedCode, setCopiedCode] = useState<string | null>(null)
 
   // Handlers
   const handleOpenCreate = useCallback(() => {
-    setFormData(INITIAL_FORM_DATA)
     formDialog.open()
   }, [formDialog])
 
   const handleOpenEdit = useCallback(
     (link: SerializableShortLink) => {
-      setFormData({
-        code: link.code,
-        target: link.target,
-        expires_at: link.expires_at,
-        password: null,
-      })
       formDialog.open(link)
     },
     [formDialog],
   )
 
-  const handleSave = useCallback(async () => {
-    try {
-      if (formDialog.isEditMode && formDialog.data) {
-        await updateLink(formDialog.data.code, formData)
-        toast.success(t('links.updateSuccess', 'Link updated successfully'))
-      } else {
-        await createLink(formData)
-        toast.success(t('links.createSuccess', 'Link created successfully'))
+  const handleSave = useCallback(
+    async (data: LinkPayload) => {
+      try {
+        if (formDialog.isEditMode && formDialog.data) {
+          await updateLink(formDialog.data.code, data)
+          toast.success(t('links.updateSuccess', 'Link updated successfully'))
+        } else {
+          await createLink(data)
+          toast.success(t('links.createSuccess', 'Link created successfully'))
+        }
+        formDialog.close()
+      } catch {
+        toast.error(
+          formDialog.isEditMode
+            ? t('links.updateError', 'Failed to update link')
+            : t('links.createError', 'Failed to create link'),
+        )
       }
-      formDialog.close()
-    } catch {
-      toast.error(
-        formDialog.isEditMode
-          ? t('links.updateError', 'Failed to update link')
-          : t('links.createError', 'Failed to create link'),
-      )
-    }
-  }, [formDialog, formData, updateLink, createLink, t])
+    },
+    [formDialog, updateLink, createLink, t],
+  )
 
   const handleDelete = useCallback(async () => {
     if (deleteDialog.data) {
@@ -240,8 +227,6 @@ export default function LinksPage() {
       {/* Dialogs */}
       <LinkFormDialog
         dialog={formDialog}
-        formData={formData}
-        onFormDataChange={setFormData}
         onSave={handleSave}
         isSaving={creating || updating}
       />

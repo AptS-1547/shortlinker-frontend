@@ -20,6 +20,142 @@ export class ApiError extends Error {
   }
 }
 
+// ==================== 请求缓存管理 ====================
+
+/**
+ * 缓存条目
+ */
+interface CacheEntry<T> {
+  data: T
+  timestamp: number
+}
+
+/**
+ * 请求缓存管理器
+ */
+class RequestCache {
+  private cache = new Map<string, CacheEntry<unknown>>()
+  private maxSize = 100 // 最大缓存条目数
+  private defaultTtl = 5 * 60 * 1000 // 5分钟
+
+  /**
+   * 生成缓存 key
+   */
+  private generateKey(url: string): string {
+    return url
+  }
+
+  /**
+   * 获取缓存数据
+   */
+  get<T>(url: string, ttl?: number): T | null {
+    const key = this.generateKey(url)
+    const entry = this.cache.get(key) as CacheEntry<T> | undefined
+
+    if (!entry) return null
+
+    const maxAge = ttl ?? this.defaultTtl
+    const age = Date.now() - entry.timestamp
+
+    if (age > maxAge) {
+      this.cache.delete(key)
+      return null
+    }
+
+    return entry.data
+  }
+
+  /**
+   * 设置缓存数据
+   */
+  set<T>(url: string, data: T): void {
+    const key = this.generateKey(url)
+
+    // 如果缓存已满，删除最旧的条目
+    if (this.cache.size >= this.maxSize) {
+      const firstKey = this.cache.keys().next().value
+      if (firstKey) this.cache.delete(firstKey)
+    }
+
+    this.cache.set(key, {
+      data,
+      timestamp: Date.now(),
+    })
+  }
+
+  /**
+   * 清除匹配模式的缓存
+   */
+  clear(pattern?: string): void {
+    if (!pattern) {
+      this.cache.clear()
+      return
+    }
+
+    const keysToDelete: string[] = []
+    for (const key of this.cache.keys()) {
+      if (key.includes(pattern)) {
+        keysToDelete.push(key)
+      }
+    }
+    for (const key of keysToDelete) {
+      this.cache.delete(key)
+    }
+  }
+
+  /**
+   * 清除所有缓存
+   */
+  clearAll(): void {
+    this.cache.clear()
+  }
+}
+
+/**
+ * 进行中的请求管理器（防止重复请求）
+ */
+class PendingRequestManager {
+  private pending = new Map<string, Promise<unknown>>()
+
+  /**
+   * 生成请求 key
+   */
+  private generateKey(url: string): string {
+    return url
+  }
+
+  /**
+   * 添加进行中的请求
+   */
+  add<T>(url: string, promise: Promise<T>): Promise<T> {
+    const key = this.generateKey(url)
+    this.pending.set(key, promise)
+
+    // 请求完成后自动移除
+    promise.finally(() => {
+      this.pending.delete(key)
+    })
+
+    return promise
+  }
+
+  /**
+   * 获取进行中的请求
+   */
+  get<T>(url: string): Promise<T> | undefined {
+    const key = this.generateKey(url)
+    return this.pending.get(key) as Promise<T> | undefined
+  }
+
+  /**
+   * 检查是否有进行中的请求
+   */
+  has(url: string): boolean {
+    const key = this.generateKey(url)
+    return this.pending.has(key)
+  }
+}
+
 const handleAuthError = (): void => {
   if (typeof window !== 'undefined') {
     // 同步更新 authStore 状态
@@ -40,9 +176,13 @@ let refreshPromise: Promise<void> | null = null
 export class HttpClient {
   private client: AxiosInstance
   private context: string
+  private cache: RequestCache
+  private pendingRequests: PendingRequestManager
 
   constructor(baseURL: string, context: string = '') {
     this.context = context
+    this.cache = new RequestCache()
+    this.pendingRequests = new PendingRequestManager()
     this.client = axios.create({
       baseURL,
       withCredentials: true, // Important: send cookies automatically
@@ -212,10 +352,52 @@ export class HttpClient {
 
   async get<T = unknown>(
     url: string,
-    options?: { signal?: AbortSignal },
+    options?: { signal?: AbortSignal; ttl?: number; skipCache?: boolean },
   ): Promise<T> {
-    const response = await this.client.get(url, { signal: options?.signal })
-    return response.data
+    const { signal, ttl, skipCache = false } = options || {}
+
+    // 1. 检查缓存
+    if (!skipCache) {
+      const cached = this.cache.get<T>(url, ttl)
+      if (cached !== null) {
+        httpLogger.info('Cache hit:', url)
+        return cached
+      }
+    }
+
+    // 2. 检查是否有进行中的相同请求
+    const pendingRequest = this.pendingRequests.get<T>(url)
+    if (pendingRequest) {
+      httpLogger.info('Request deduplication:', url)
+      return pendingRequest
+    }
+
+    // 3. 发起新请求
+    const promise = this.client.get(url, { signal }).then((response) => {
+      const data = response.data
+      // 缓存响应数据
+      if (!skipCache) {
+        this.cache.set(url, data)
+      }
+      return data
+    })
+
+    // 4. 添加到进行中的请求
+    return this.pendingRequests.add(url, promise)
+  }
+
+  /**
+   * 清除缓存
+   */
+  clearCache(pattern?: string): void {
+    this.cache.clear(pattern)
+  }
+
+  /**
+   * 清除所有缓存
+   */
+  clearAllCache(): void {
+    this.cache.clearAll()
   }
 
   async post<T = unknown>(url: string, data?: unknown): Promise<T> {

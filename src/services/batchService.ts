@@ -1,17 +1,11 @@
 import { adminClient } from './http'
-import type { BatchOperationResult, LinkPayload } from './types'
-
-interface BatchCreateRequest {
-  links: LinkPayload[]
-}
-
-interface BatchUpdateRequest {
-  updates: { code: string; payload: LinkPayload }[]
-}
-
-interface BatchDeleteRequest {
-  codes: string[]
-}
+import type {
+  BatchCreateRequest,
+  BatchDeleteRequest,
+  BatchOperationResult,
+  BatchUpdateRequest,
+  LinkPayload,
+} from './types'
 
 interface ApiResponse<T> {
   code: number
@@ -24,8 +18,8 @@ export class BatchService {
    */
   async createLinks(links: LinkPayload[]): Promise<BatchOperationResult> {
     const response = await adminClient.post<ApiResponse<BatchOperationResult>>(
-      '/link/batch',
-      { links } as BatchCreateRequest,
+      '/links/batch',
+      { links } satisfies BatchCreateRequest,
     )
     return response.data
   }
@@ -37,8 +31,8 @@ export class BatchService {
     updates: { code: string; payload: LinkPayload }[],
   ): Promise<BatchOperationResult> {
     const response = await adminClient.put<ApiResponse<BatchOperationResult>>(
-      '/link/batch',
-      { updates } as BatchUpdateRequest,
+      '/links/batch',
+      { updates } satisfies BatchUpdateRequest,
     )
     return response.data
   }
@@ -49,7 +43,7 @@ export class BatchService {
   async deleteLinks(codes: string[]): Promise<BatchOperationResult> {
     const response = await adminClient.delete<
       ApiResponse<BatchOperationResult>
-    >('/link/batch', { codes } as BatchDeleteRequest)
+    >('/link/batch', { codes } satisfies BatchDeleteRequest)
     return response.data
   }
 }
