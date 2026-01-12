@@ -3,6 +3,7 @@ import axios, {
   type AxiosInstance,
   type InternalAxiosRequestConfig,
 } from 'axios'
+import { LRUCache } from 'lru-cache'
 import { appConfig } from '@/config/app'
 import { forceLogout, refreshTokenFromHttp } from '@/stores/authStore'
 import { httpLogger } from '@/utils/logger'
@@ -23,72 +24,93 @@ export class ApiError extends Error {
 // ==================== 请求缓存管理 ====================
 
 /**
- * 缓存条目
+ * 缓存条目（包含标签）
  */
 interface CacheEntry<T> {
   data: T
-  timestamp: number
+  tags: Set<string>
 }
 
 /**
- * 请求缓存管理器
+ * 缓存策略配置
+ */
+interface CachePolicy {
+  ttl?: number // 缓存时间（毫秒）
+  enabled?: boolean // 是否启用缓存
+  tags?: string[] | ((params: Record<string, string>) => string[]) // 标签（静态或动态）
+}
+
+/**
+ * 请求缓存管理器（基于 lru-cache）
  */
 class RequestCache {
-  private cache = new Map<string, CacheEntry<unknown>>()
-  private maxSize = 100 // 最大缓存条目数
-  private defaultTtl = 5 * 60 * 1000 // 5分钟
+  private cache: LRUCache<string, CacheEntry<unknown>>
+  private tagIndex: Map<string, Set<string>> // 标签 → URL 映射
 
-  /**
-   * 生成缓存 key
-   */
-  private generateKey(url: string): string {
-    return url
+  constructor() {
+    this.cache = new LRUCache({
+      max: 500, // 最大条目数（从 100 提升到 500）
+      ttl: 5 * 60 * 1000, // 默认 TTL 5 分钟
+      updateAgeOnGet: false, // 不续命，按固定时间过期（防抖场景）
+      updateAgeOnHas: false,
+    })
+    this.tagIndex = new Map()
   }
 
   /**
    * 获取缓存数据
    */
-  get<T>(url: string, ttl?: number): T | null {
-    const key = this.generateKey(url)
-    const entry = this.cache.get(key) as CacheEntry<T> | undefined
-
+  get<T>(url: string): T | null {
+    const entry = this.cache.get(url) as CacheEntry<T> | undefined
     if (!entry) return null
-
-    const maxAge = ttl ?? this.defaultTtl
-    const age = Date.now() - entry.timestamp
-
-    if (age > maxAge) {
-      this.cache.delete(key)
-      return null
-    }
-
     return entry.data
   }
 
   /**
-   * 设置缓存数据
+   * 设置缓存数据（带标签）
    */
-  set<T>(url: string, data: T): void {
-    const key = this.generateKey(url)
+  set<T>(
+    url: string,
+    data: T,
+    options?: { ttl?: number; tags?: string[] },
+  ): void {
+    const tags = new Set(options?.tags || [])
+    const entry: CacheEntry<T> = { data, tags }
 
-    // 如果缓存已满，删除最旧的条目
-    if (this.cache.size >= this.maxSize) {
-      const firstKey = this.cache.keys().next().value
-      if (firstKey) this.cache.delete(firstKey)
+    // 存入缓存
+    this.cache.set(url, entry, { ttl: options?.ttl })
+
+    // 更新标签索引
+    for (const tag of tags) {
+      if (!this.tagIndex.has(tag)) {
+        this.tagIndex.set(tag, new Set())
+      }
+      this.tagIndex.get(tag)!.add(url)
     }
-
-    this.cache.set(key, {
-      data,
-      timestamp: Date.now(),
-    })
   }
 
   /**
-   * 清除匹配模式的缓存
+   * 按标签失效缓存（精细控制）
+   */
+  invalidateTags(tags: string[]): void {
+    for (const tag of tags) {
+      const urls = this.tagIndex.get(tag)
+      if (urls) {
+        for (const url of urls) {
+          this.cache.delete(url)
+        }
+        this.tagIndex.delete(tag)
+      }
+    }
+  }
+
+  /**
+   * 清除匹配模式的缓存（兼容旧接口）
    */
   clear(pattern?: string): void {
     if (!pattern) {
       this.cache.clear()
+      this.tagIndex.clear()
       return
     }
 
@@ -98,7 +120,15 @@ class RequestCache {
         keysToDelete.push(key)
       }
     }
+
     for (const key of keysToDelete) {
+      const entry = this.cache.get(key) as CacheEntry<unknown> | undefined
+      if (entry) {
+        // 清理标签索引
+        for (const tag of entry.tags) {
+          this.tagIndex.get(tag)?.delete(key)
+        }
+      }
       this.cache.delete(key)
     }
   }
@@ -108,7 +138,126 @@ class RequestCache {
    */
   clearAll(): void {
     this.cache.clear()
+    this.tagIndex.clear()
   }
+
+  /**
+   * 获取缓存统计信息（调试用）
+   */
+  getStats() {
+    return {
+      size: this.cache.size,
+      maxSize: this.cache.max,
+      tags: this.tagIndex.size,
+    }
+  }
+}
+
+// ==================== 缓存策略配置 ====================
+
+/**
+ * 缓存策略映射表
+ *
+ * 定位：防抖机制，防止快速重复请求
+ * TTL 策略：短 TTL，优先数据新鲜度
+ */
+const CACHE_POLICIES: Record<string, CachePolicy> = {
+  // 链接管理（频繁修改，短 TTL）
+  'GET /links': {
+    ttl: 30 * 1000, // 30 秒（从 2 分钟缩短）
+    enabled: true,
+    tags: ['links-list'],
+  },
+  'GET /links/:code': {
+    ttl: 1 * 60 * 1000, // 1 分钟（从 5 分钟缩短）
+    enabled: true,
+    tags: (params) => [`link:${params.code}`],
+  },
+  'GET /stats': {
+    ttl: 30 * 1000, // 30 秒（从 1 分钟缩短）
+    enabled: true,
+    tags: ['stats'],
+  },
+
+  // 系统配置（读多写少，适度缓存）
+  'GET /config': {
+    ttl: 5 * 60 * 1000, // 5 分钟（从 10 分钟缩短）
+    enabled: true,
+    tags: ['config-all'],
+  },
+  'GET /config/:key': {
+    ttl: 5 * 60 * 1000, // 5 分钟（从 10 分钟缩短）
+    enabled: true,
+    tags: (params) => [`config:${params.key}`, 'config-all'],
+  },
+  'GET /config/:key/history': {
+    ttl: 2 * 60 * 1000, // 2 分钟（从 5 分钟缩短）
+    enabled: true,
+    tags: (params) => [`config:${params.key}:history`],
+  },
+
+  // 健康检查（典型防抖场景）
+  'GET /health': {
+    ttl: 10 * 1000, // 10 秒（从 30 秒缩短）
+    enabled: true,
+  },
+
+  // 认证（不缓存）
+  'GET /auth/verify': {
+    enabled: false,
+  },
+}
+
+/**
+ * 根据 URL 匹配缓存策略
+ */
+function matchCachePolicy(method: string, url: string): CachePolicy | null {
+  // 提取路径（去掉查询参数）
+  const path = url.split('?')[0]
+
+  // 精确匹配
+  const exactKey = `${method} ${path}`
+  if (CACHE_POLICIES[exactKey]) {
+    return CACHE_POLICIES[exactKey]
+  }
+
+  // 参数匹配（如 /links/:code）
+  for (const [pattern, policy] of Object.entries(CACHE_POLICIES)) {
+    const [pMethod, pPath] = pattern.split(' ')
+    if (pMethod !== method) continue
+
+    const regex = new RegExp('^' + pPath.replace(/:[^/]+/g, '([^/]+)') + '$')
+    if (regex.test(path)) {
+      return policy
+    }
+  }
+
+  return null
+}
+
+/**
+ * 从 URL 提取路径参数
+ */
+function extractPathParams(url: string): Record<string, string> {
+  // 简化实现：提取最后一个路径段作为通用参数
+  const path = url.split('?')[0]
+  const segments = path.split('/').filter(Boolean)
+
+  // 提取常见参数
+  const params: Record<string, string> = {}
+
+  // /links/:code 或 /config/:key
+  if (segments.length >= 2) {
+    const lastSegment = segments[segments.length - 1]
+    // 假设最后一段是参数（code 或 key）
+    if (segments[segments.length - 2] === 'links') {
+      params.code = lastSegment
+    } else if (segments[segments.length - 2] === 'config') {
+      params.key = lastSegment
+    }
+  }
+
+  return params
 }
 
 /**
@@ -367,15 +516,24 @@ export class HttpClient {
 
   async get<T = unknown>(
     url: string,
-    options?: { signal?: AbortSignal; ttl?: number; skipCache?: boolean },
+    options?: {
+      signal?: AbortSignal
+      ttl?: number
+      skipCache?: boolean
+      tags?: string[]
+    },
   ): Promise<T> {
-    const { signal, ttl, skipCache = false } = options || {}
+    const { signal, ttl, skipCache = false, tags } = options || {}
+
+    // 匹配缓存策略
+    const policy = matchCachePolicy('GET', url)
+    const shouldCache = !skipCache && policy?.enabled !== false
 
     // 1. 检查缓存
-    if (!skipCache) {
-      const cached = this.cache.get<T>(url, ttl)
+    if (shouldCache) {
+      const cached = this.cache.get<T>(url)
       if (cached !== null) {
-        httpLogger.info('Cache hit:', url)
+        httpLogger.info(`Cache hit: ${url}`)
         return cached
       }
     }
@@ -390,10 +548,27 @@ export class HttpClient {
     // 3. 发起新请求
     const promise = this.client.get(url, { signal }).then((response) => {
       const data = response.data
+
       // 缓存响应数据
-      if (!skipCache) {
-        this.cache.set(url, data)
+      if (shouldCache) {
+        // 解析标签（支持动态标签）
+        let cacheTags = tags || []
+        if (policy?.tags) {
+          if (typeof policy.tags === 'function') {
+            // 提取路径参数
+            const params = extractPathParams(url)
+            cacheTags = [...cacheTags, ...policy.tags(params)]
+          } else {
+            cacheTags = [...cacheTags, ...policy.tags]
+          }
+        }
+
+        this.cache.set(url, data, {
+          ttl: ttl || policy?.ttl,
+          tags: cacheTags,
+        })
       }
+
       return data
     })
 
@@ -402,7 +577,14 @@ export class HttpClient {
   }
 
   /**
-   * 清除缓存
+   * 按标签失效缓存（新增）
+   */
+  invalidateTags(tags: string[]): void {
+    this.cache.invalidateTags(tags)
+  }
+
+  /**
+   * 清除缓存（模式匹配，兼容旧接口）
    */
   clearCache(pattern?: string): void {
     this.cache.clear(pattern)
@@ -453,7 +635,4 @@ export const adminClient = new HttpClient(
   `${baseUrl}${appConfig.adminRoutePrefix}`,
   'admin',
 )
-export const healthClient = new HttpClient(
-  `${baseUrl}${appConfig.healthRoutePrefix}`,
-  'health',
-)
+export const healthClient = new HttpClient(baseUrl, 'health')

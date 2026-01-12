@@ -212,14 +212,13 @@ export const useLinksStore = create<LinksState>((set, get) => ({
     set({ deleting: true, error: null })
     try {
       await LinkAPI.delete(code)
-      const currentLinks = get().links
-      const currentPagination = get().pagination
-      set({
-        links: currentLinks.filter((link) => link.code !== code),
-        pagination: {
-          ...currentPagination,
-          total: Math.max(0, currentPagination.total - 1),
-        },
+
+      // ✅ 新实现：重新请求列表（和批量删除保持一致，修复分页 bug）
+      const { currentQuery, pagination } = get()
+      await get().fetchLinks({
+        ...currentQuery,
+        page: pagination.page,
+        page_size: pagination.pageSize,
       })
     } catch (err) {
       set({ error: extractErrorMessage(err, 'Failed to delete link') })

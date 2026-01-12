@@ -117,8 +117,8 @@ export class LinkService {
    */
   async create(payload: LinkPayload): Promise<void> {
     await adminClient.post('/links', payload)
-    // 清除链接列表缓存
-    adminClient.clearCache('/links')
+    // 使用标签清理（更精细）
+    adminClient.invalidateTags(['links-list', 'stats'])
   }
 
   /**
@@ -150,8 +150,8 @@ export class LinkService {
    */
   async update(code: string, payload: LinkPayload): Promise<void> {
     await adminClient.put(`/links/${code}`, payload)
-    // 清除相关缓存
-    adminClient.clearCache('/links')
+    // 清除该链接 + 列表缓存 + 统计缓存
+    adminClient.invalidateTags([`link:${code}`, 'links-list', 'stats'])
   }
 
   /**
@@ -159,8 +159,8 @@ export class LinkService {
    */
   async delete(code: string): Promise<void> {
     await adminClient.delete(`/links/${code}`)
-    // 清除相关缓存
-    adminClient.clearCache('/links')
+    // 清除该链接 + 列表缓存 + 统计缓存
+    adminClient.invalidateTags([`link:${code}`, 'links-list', 'stats'])
   }
 
   /**

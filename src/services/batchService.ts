@@ -21,6 +21,10 @@ export class BatchService {
       '/links/batch',
       { links } satisfies BatchCreateRequest,
     )
+
+    // 清除链接列表和统计缓存
+    adminClient.invalidateTags(['links-list', 'stats'])
+
     return response.data
   }
 
@@ -34,6 +38,11 @@ export class BatchService {
       '/links/batch',
       { updates } satisfies BatchUpdateRequest,
     )
+
+    // 清除链接列表 + 被更新的链接缓存 + 统计缓存
+    const linkTags = updates.map((u) => `link:${u.code}`)
+    adminClient.invalidateTags(['links-list', 'stats', ...linkTags])
+
     return response.data
   }
 
@@ -44,6 +53,11 @@ export class BatchService {
     const response = await adminClient.delete<
       ApiResponse<BatchOperationResult>
     >('/links/batch', { codes } satisfies BatchDeleteRequest)
+
+    // 清除链接列表 + 被删除的链接缓存 + 统计缓存
+    const linkTags = codes.map((code) => `link:${code}`)
+    adminClient.invalidateTags(['links-list', 'stats', ...linkTags])
+
     return response.data
   }
 }

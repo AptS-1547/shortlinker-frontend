@@ -44,6 +44,10 @@ export class SystemConfigService {
       code?: number
       data?: SystemConfigUpdateResponse
     }>(`/config/${encodeURIComponent(key)}`, payload)
+
+    // 清除该配置项 + 全部配置列表的缓存
+    adminClient.invalidateTags([`config:${key}`, 'config-all'])
+
     return (
       response.data || {
         key,
@@ -78,6 +82,9 @@ export class SystemConfigService {
       '/config/reload',
       {},
     )
+
+    // 清除所有配置缓存
+    adminClient.invalidateTags(['config-all'])
   }
 }
 

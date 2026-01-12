@@ -13,7 +13,7 @@ export class HealthService {
    */
   async check(): Promise<HealthResponse> {
     try {
-      const response = await healthClient.get<HealthApiResponse>('')
+      const response = await healthClient.get<HealthApiResponse>('/health')
       // 解包 { code, data } 格式，返回 data 部分
       return response.data
     } catch (error) {

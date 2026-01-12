@@ -64,7 +64,8 @@ export class AuthService {
    */
   async verifyToken(): Promise<boolean> {
     try {
-      await adminClient.get('/auth/verify')
+      // 认证验证必须实时，跳过缓存
+      await adminClient.get('/auth/verify', { skipCache: true })
       return true
     } catch {
       // 401 或其他错误都视为未认证
