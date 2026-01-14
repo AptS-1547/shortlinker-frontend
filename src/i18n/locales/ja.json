@@ -219,7 +219,27 @@
       "shortUrl": "短縮URL",
       "passwordProtection": "パスワード保護"
     },
-    "pageSize": "表示件数"
+    "import": {
+      "button": "インポート",
+      "title": "リンクをインポート",
+      "file": "CSVファイル",
+      "dragOrClick": "CSVファイルをここにドラッグ＆ドロップ、またはクリックして選択",
+      "mode": "インポートモード",
+      "modeSkip": "重複をスキップ - 既存のリンクをスキップ",
+      "modeOverwrite": "上書き - 既存のリンクを置き換え（created_atとクリック数を保持）",
+      "modeError": "エラー - 既存のリンクでエラーを返す",
+      "import": "インポート",
+      "importing": "インポート中...",
+      "success": "インポート完了",
+      "error": "インポート失敗",
+      "totalRows": "総行数: {{count}}",
+      "successCount": "成功: {{count}}",
+      "skippedCount": "スキップ: {{count}}",
+      "failedCount": "失敗: {{count}}",
+      "failedDetails": "失敗の詳細:",
+      "failedItem": "行 {{row}}: {{code}} - {{error}}",
+      "andMore": "...他 {{count}} 件"
+    }
   },
   "analytics": {
     "title": "分析",

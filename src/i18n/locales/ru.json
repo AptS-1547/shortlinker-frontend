@@ -218,6 +218,27 @@
       "shortUrl": "Короткая ссылка",
       "passwordProtection": "Защита паролем"
     },
+    "import": {
+      "button": "Импорт",
+      "title": "Импорт ссылок",
+      "file": "CSV файл",
+      "dragOrClick": "Перетащите CSV файл сюда или нажмите для выбора",
+      "mode": "Режим импорта",
+      "modeSkip": "Пропустить дубликаты - Пропустить существующие ссылки",
+      "modeOverwrite": "Перезаписать - Заменить существующие ссылки (сохранить created_at и клики)",
+      "modeError": "Ошибка - Вернуть ошибку для существующих ссылок",
+      "import": "Импорт",
+      "importing": "Импорт...",
+      "success": "Импорт завершён",
+      "error": "Ошибка импорта",
+      "totalRows": "Всего строк: {{count}}",
+      "successCount": "Успешно: {{count}}",
+      "skippedCount": "Пропущено: {{count}}",
+      "failedCount": "Неудачно: {{count}}",
+      "failedDetails": "Детали ошибок:",
+      "failedItem": "Строка {{row}}: {{code}} - {{error}}",
+      "andMore": "...и ещё {{count}}"
+    },
     "pageSize": "Показать"
   },
   "analytics": {

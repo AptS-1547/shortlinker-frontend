@@ -219,7 +219,27 @@
       "shortUrl": "URL courte",
       "passwordProtection": "Protection par mot de passe"
     },
-    "pageSize": "Afficher"
+    "import": {
+      "button": "Importer",
+      "title": "Importer des liens",
+      "file": "Fichier CSV",
+      "dragOrClick": "Glissez-déposez le fichier CSV ici, ou cliquez pour sélectionner",
+      "mode": "Mode d'importation",
+      "modeSkip": "Ignorer les doublons - Ignorer les liens existants",
+      "modeOverwrite": "Écraser - Remplacer les liens existants (conserver created_at et clics)",
+      "modeError": "Erreur - Retourner une erreur pour les liens existants",
+      "import": "Importer",
+      "importing": "Importation...",
+      "success": "Importation terminée",
+      "error": "Échec de l'importation",
+      "totalRows": "Total des lignes: {{count}}",
+      "successCount": "Succès: {{count}}",
+      "skippedCount": "Ignorés: {{count}}",
+      "failedCount": "Échoués: {{count}}",
+      "failedDetails": "Détails des échecs:",
+      "failedItem": "Ligne {{row}}: {{code}} - {{error}}",
+      "andMore": "...et {{count}} de plus"
+    }
   },
   "analytics": {
     "title": "Analytiques",

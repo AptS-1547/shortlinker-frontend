@@ -58,6 +58,17 @@ export type ConfigUpdateResponse = {
   message: string | null
 }
 
+/**
+ * 导出查询参数
+ */
+export type ExportQuery = {
+  search: string | null
+  created_after: string | null
+  created_before: string | null
+  only_expired: boolean | null
+  only_active: boolean | null
+}
+
 export type GetLinksQuery = {
   page: number | null
   page_size: number | null
@@ -100,6 +111,27 @@ export type HealthStorageCheck = {
   links_count: number | null
   backend: HealthStorageBackend
   error: string | null
+}
+
+/**
+ * 导入失败项
+ */
+export type ImportFailedItem = { row: number; code: string; error: string }
+
+/**
+ * 导入模式
+ */
+export type ImportMode = 'skip' | 'overwrite' | 'error'
+
+/**
+ * 导入响应
+ */
+export type ImportResponse = {
+  total_rows: number
+  success_count: number
+  skipped_count: number
+  failed_count: number
+  failed_items: Array<ImportFailedItem>
 }
 
 export type LinkResponse = {

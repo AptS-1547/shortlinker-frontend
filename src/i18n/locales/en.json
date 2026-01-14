@@ -219,7 +219,33 @@
       "shortUrl": "Short URL",
       "passwordProtection": "Password Protection"
     },
-    "pageSize": "Show"
+    "import": {
+      "button": "Import",
+      "title": "Import Links",
+      "file": "CSV File",
+      "dragOrClick": "Drag and drop CSV file here, or click to select",
+      "mode": "Import Mode",
+      "modeSkip": "Skip duplicates - Skip existing links",
+      "modeOverwrite": "Overwrite - Replace existing links (preserve created_at and clicks)",
+      "modeError": "Error - Return error on existing links",
+      "import": "Import",
+      "importing": "Importing...",
+      "success": "Import completed",
+      "error": "Import failed",
+      "totalRows": "Total rows: {{count}}",
+      "successCount": "Success: {{count}}",
+      "skippedCount": "Skipped: {{count}}",
+      "failedCount": "Failed: {{count}}",
+      "failedDetails": "Failed details:",
+      "failedItem": "Row {{row}} ({{code}}): {{error}}",
+      "andMore": "...and {{count}} more"
+    },
+    "export": {
+      "button": "Export",
+      "exporting": "Exporting...",
+      "success": "Export successful",
+      "error": "Export failed"
+    }
   },
   "analytics": {
     "title": "Analytics",

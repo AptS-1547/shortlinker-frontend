@@ -1,12 +1,17 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { FiPlus as Plus } from 'react-icons/fi'
+import {
+  FiDownload as Download,
+  FiPlus as Plus,
+  FiUpload as Upload,
+} from 'react-icons/fi'
 import { toast } from 'sonner'
 import PageHeader from '@/components/layout/PageHeader'
 import {
   ColumnConfigDropdown,
   LinkDeleteDialog,
   LinkFormDialog,
+  LinkImportDialog,
   LinksBatchActions,
   LinksFilterBar,
   LinksTable,
@@ -45,6 +50,7 @@ import { useDialog } from '@/hooks/useDialog'
 import { useLinksBatch } from '@/hooks/useLinksBatch'
 import { useLinksFilters } from '@/hooks/useLinksFilters'
 import { useLinksSort } from '@/hooks/useLinksSort'
+import { batchService } from '@/services/batchService'
 import type { LinkPayload, SerializableShortLink } from '@/services/types'
 import { useLinksStore } from '@/stores/linksStore'
 import { buildShortUrl } from '@/utils/urlBuilder'
@@ -79,10 +85,67 @@ export default function LinksPage() {
     { onBatchDeleteSuccess: fetchLinks },
   )
 
+  // 过滤条件变化时清除批量选择
+  const prevFilters = useRef({
+    searchQuery: filters.searchQuery,
+    statusFilter: filters.statusFilter,
+    createdAfter: filters.createdAfter,
+    createdBefore: filters.createdBefore,
+  })
+
+  useEffect(() => {
+    const filtersChanged =
+      prevFilters.current.searchQuery !== filters.searchQuery ||
+      prevFilters.current.statusFilter !== filters.statusFilter ||
+      prevFilters.current.createdAfter !== filters.createdAfter ||
+      prevFilters.current.createdBefore !== filters.createdBefore
+
+    if (filtersChanged) {
+      batch.handleClearSelection()
+      prevFilters.current = {
+        searchQuery: filters.searchQuery,
+        statusFilter: filters.statusFilter,
+        createdAfter: filters.createdAfter,
+        createdBefore: filters.createdBefore,
+      }
+    }
+  }, [
+    filters.searchQuery,
+    filters.statusFilter,
+    filters.createdAfter,
+    filters.createdBefore,
+    batch,
+  ])
+
+  // 分页/页面大小变更时清除批量选择的包装函数
+  const handlePageChange = useCallback(
+    (page: number) => {
+      batch.handleClearSelection()
+      goToPage(page)
+    },
+    [batch, goToPage],
+  )
+
+  const handlePageSizeChange = useCallback(
+    (size: number) => {
+      batch.handleClearSelection()
+      setPageSize(size)
+    },
+    [batch, setPageSize],
+  )
+
+  // 导入成功时清除批量选择并刷新
+  const handleImportSuccess = useCallback(() => {
+    batch.handleClearSelection()
+    fetchLinks()
+  }, [batch, fetchLinks])
+
   // Dialog state
   const formDialog = useDialog<SerializableShortLink>()
   const deleteDialog = useDialog<SerializableShortLink>()
   const [copiedCode, setCopiedCode] = useState<string | null>(null)
+  const [importOpen, setImportOpen] = useState(false)
+  const [exporting, setExporting] = useState(false)
 
   // Handlers
   const handleOpenCreate = useCallback(() => {
@@ -123,12 +186,13 @@ export default function LinksPage() {
       try {
         await deleteLink(deleteDialog.data.code)
         toast.success(t('links.deleteSuccess', 'Link deleted successfully'))
+        batch.handleClearSelection()
         deleteDialog.close()
       } catch {
         toast.error(t('links.deleteError', 'Failed to delete link'))
       }
     }
-  }, [deleteDialog, deleteLink, t])
+  }, [deleteDialog, deleteLink, t, batch])
 
   const handleCopy = useCallback(
     async (code: string) => {
@@ -145,16 +209,69 @@ export default function LinksPage() {
     [copy, t],
   )
 
+  const handleExport = useCallback(async () => {
+    setExporting(true)
+    try {
+      // 构建当前过滤条件
+      const query = {
+        search: filters.searchQuery || undefined,
+        created_after: filters.createdAfter?.toISOString(),
+        created_before: filters.createdBefore?.toISOString(),
+        only_active: filters.statusFilter === 'active' || undefined,
+        only_expired: filters.statusFilter === 'expired' || undefined,
+      }
+
+      const blob = await batchService.exportLinks(query)
+
+      // 下载文件
+      const url = URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      link.href = url
+      link.download = `shortlinks_export_${new Date().toISOString().slice(0, 19).replace(/:/g, '-')}.csv`
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      URL.revokeObjectURL(url)
+
+      toast.success(t('links.export.success'))
+    } catch {
+      toast.error(t('links.export.error'))
+    } finally {
+      setExporting(false)
+    }
+  }, [filters, t])
+
   return (
     <div className="space-y-6">
       <PageHeader
         title={t('links.title')}
         description={t('links.description')}
         actions={
-          <Button onClick={handleOpenCreate} className="gap-2">
-            <Plus className="w-4 h-4" />
-            {t('links.createNew')}
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              onClick={handleExport}
+              disabled={exporting}
+              className="gap-2"
+            >
+              <Download className="w-4 h-4" />
+              {exporting
+                ? t('links.export.exporting')
+                : t('links.export.button')}
+            </Button>
+            <Button
+              variant="outline"
+              onClick={() => setImportOpen(true)}
+              className="gap-2"
+            >
+              <Upload className="w-4 h-4" />
+              {t('links.import.button')}
+            </Button>
+            <Button onClick={handleOpenCreate} className="gap-2">
+              <Plus className="w-4 h-4" />
+              {t('links.createNew')}
+            </Button>
+          </div>
         }
       />
 
@@ -214,8 +331,8 @@ export default function LinksPage() {
               />
               <PaginationControls
                 pagination={pagination}
-                onPageChange={goToPage}
-                onPageSizeChange={setPageSize}
+                onPageChange={handlePageChange}
+                onPageSizeChange={handlePageSizeChange}
               />
             </>
           ) : (
@@ -265,6 +382,13 @@ export default function LinksPage() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      {/* 导入对话框 */}
+      <LinkImportDialog
+        open={importOpen}
+        onOpenChange={setImportOpen}
+        onSuccess={handleImportSuccess}
+      />
     </div>
   )
 }
