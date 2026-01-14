@@ -455,5 +455,51 @@
     "savedNeedRestart": "設定を保存しました。変更を有効にするにはサーバーを再起動してください。",
     "searchPlaceholder": "キーで検索...",
     "allTypes": "すべてのタイプ"
+  },
+  "enums": {
+    "sameSite": {
+      "strict": {
+        "label": "Strict",
+        "description": "最も安全、同一サイトのリクエストのみCookieを送信"
+      },
+      "lax": {
+        "label": "Lax",
+        "description": "デフォルト、トップレベルナビゲーションでCookieを送信可能"
+      },
+      "none": {
+        "label": "None",
+        "description": "制限なし、Secure属性と併用が必要"
+      }
+    },
+    "httpMethod": {
+      "get": {
+        "label": "GET",
+        "description": "サーバーからデータを取得"
+      },
+      "post": {
+        "label": "POST",
+        "description": "サーバーにデータを送信"
+      },
+      "put": {
+        "label": "PUT",
+        "description": "既存のリソースを更新"
+      },
+      "delete": {
+        "label": "DELETE",
+        "description": "サーバーからリソースを削除"
+      },
+      "patch": {
+        "label": "PATCH",
+        "description": "リソースを部分的に更新"
+      },
+      "head": {
+        "label": "HEAD",
+        "description": "ヘッダーのみを取得"
+      },
+      "options": {
+        "label": "OPTIONS",
+        "description": "サポートされているメソッドを取得"
+      }
+    }
   }
 }

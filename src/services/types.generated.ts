@@ -43,6 +43,26 @@ export type ConfigItemResponse = {
 }
 
 /**
+ * 配置项的 schema 元信息
+ */
+export type ConfigSchema = {
+  key: string
+  value_type: ValueType
+  default_value: string
+  description: string
+  /**
+   * 如果是 enum 类型，这里是可选值列表
+   */
+  enum_options?: Array<EnumOption>
+  /**
+   * 如果是 JSON 数组类型且每个元素是 enum，这里是可选值列表
+   */
+  array_item_options?: Array<EnumOption>
+  requires_restart: boolean
+  editable: boolean
+}
+
+/**
  * 配置更新请求
  */
 export type ConfigUpdateRequest = { value: string }
@@ -56,6 +76,26 @@ export type ConfigUpdateResponse = {
   requires_restart: boolean
   is_sensitive: boolean
   message: string | null
+}
+
+/**
+ * 单个 enum 选项
+ */
+export type EnumOption = {
+  value: string
+  label: string
+  /**
+   * 标签翻译键（如 "enums.sameSite.strict.label"）
+   */
+  label_i18n_key?: string
+  /**
+   * 描述文本（英文，作为 fallback）
+   */
+  description?: string
+  /**
+   * 描述翻译键（如 "enums.sameSite.strict.description"）
+   */
+  description_i18n_key?: string
 }
 
 /**
@@ -114,6 +154,18 @@ export type HealthStorageCheck = {
 }
 
 /**
+ * HTTP 方法枚举
+ */
+export type HttpMethod =
+  | 'GET'
+  | 'POST'
+  | 'PUT'
+  | 'DELETE'
+  | 'PATCH'
+  | 'HEAD'
+  | 'OPTIONS'
+
+/**
  * 导入失败项
  */
 export type ImportFailedItem = { row: number; code: string; error: string }
@@ -161,6 +213,11 @@ export type PostNewLink = {
 }
 
 /**
+ * Cookie SameSite 策略
+ */
+export type SameSitePolicy = 'Strict' | 'Lax' | 'None'
+
+/**
  * 统计信息响应
  */
 export type StatsResponse = {
@@ -172,4 +229,4 @@ export type StatsResponse = {
 /**
  * 配置值类型枚举
  */
-export type ValueType = 'string' | 'int' | 'bool' | 'json'
+export type ValueType = 'string' | 'int' | 'bool' | 'json' | 'enum'

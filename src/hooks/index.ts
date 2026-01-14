@@ -1,3 +1,4 @@
+export { useConfigSchema, useConfigSchemaByKey } from './useConfigSchema'
 export { type ConfirmOptions, useConfirm } from './useConfirm'
 export { useCopyToClipboard } from './useCopyToClipboard'
 export { useDateFormat } from './useDateFormat'

@@ -457,5 +457,51 @@
     "savedNeedRestart": "Configuration sauvegardée. Veuillez redémarrer le serveur pour appliquer les changements.",
     "searchPlaceholder": "Rechercher par clé...",
     "allTypes": "Tous les types"
+  },
+  "enums": {
+    "sameSite": {
+      "strict": {
+        "label": "Strict",
+        "description": "Le plus sécurisé, seules les requêtes du même site envoient des cookies"
+      },
+      "lax": {
+        "label": "Lax",
+        "description": "Par défaut, permet la navigation de niveau supérieur d'envoyer des cookies"
+      },
+      "none": {
+        "label": "None",
+        "description": "Aucune restriction, nécessite l'attribut Secure"
+      }
+    },
+    "httpMethod": {
+      "get": {
+        "label": "GET",
+        "description": "Récupérer des données du serveur"
+      },
+      "post": {
+        "label": "POST",
+        "description": "Soumettre des données au serveur"
+      },
+      "put": {
+        "label": "PUT",
+        "description": "Mettre à jour une ressource existante"
+      },
+      "delete": {
+        "label": "DELETE",
+        "description": "Supprimer une ressource du serveur"
+      },
+      "patch": {
+        "label": "PATCH",
+        "description": "Mettre à jour partiellement une ressource"
+      },
+      "head": {
+        "label": "HEAD",
+        "description": "Récupérer uniquement les en-têtes"
+      },
+      "options": {
+        "label": "OPTIONS",
+        "description": "Obtenir les méthodes supportées"
+      }
+    }
   }
 }

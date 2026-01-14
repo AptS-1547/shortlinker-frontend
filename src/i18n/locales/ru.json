@@ -457,5 +457,51 @@
     "savedNeedRestart": "Конфигурация сохранена. Перезапустите сервер для применения изменений.",
     "searchPlaceholder": "Поиск по ключу...",
     "allTypes": "Все типы"
+  },
+  "enums": {
+    "sameSite": {
+      "strict": {
+        "label": "Strict",
+        "description": "Максимальная безопасность, только запросы с того же сайта отправляют cookies"
+      },
+      "lax": {
+        "label": "Lax",
+        "description": "По умолчанию, разрешает навигацию верхнего уровня отправлять cookies"
+      },
+      "none": {
+        "label": "None",
+        "description": "Без ограничений, требуется атрибут Secure"
+      }
+    },
+    "httpMethod": {
+      "get": {
+        "label": "GET",
+        "description": "Получить данные с сервера"
+      },
+      "post": {
+        "label": "POST",
+        "description": "Отправить данные на сервер"
+      },
+      "put": {
+        "label": "PUT",
+        "description": "Обновить существующий ресурс"
+      },
+      "delete": {
+        "label": "DELETE",
+        "description": "Удалить ресурс с сервера"
+      },
+      "patch": {
+        "label": "PATCH",
+        "description": "Частично обновить ресурс"
+      },
+      "head": {
+        "label": "HEAD",
+        "description": "Получить только заголовки"
+      },
+      "options": {
+        "label": "OPTIONS",
+        "description": "Получить поддерживаемые методы"
+      }
+    }
   }
 }

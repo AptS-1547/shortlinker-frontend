@@ -27,16 +27,22 @@ interface SystemConfigTableProps {
 }
 
 /** 类型 Badge 颜色 */
-function getTypeBadgeVariant(
-  type: string,
-): 'default' | 'secondary' | 'outline' {
+function getTypeBadgeVariant(type: string): {
+  variant: 'default' | 'secondary' | 'outline'
+  className?: string
+} {
   switch (type) {
     case 'bool':
-      return 'secondary'
+      return { variant: 'secondary' }
     case 'int':
-      return 'outline'
+      return { variant: 'outline' }
+    case 'enum':
+      return {
+        variant: 'default',
+        className: 'bg-violet-500 dark:bg-violet-600',
+      }
     default:
-      return 'default'
+      return { variant: 'default' }
   }
 }
 
@@ -100,9 +106,16 @@ export function SystemConfigTable({
                 )}
               </TableCell>
               <TableCell>
-                <Badge variant={getTypeBadgeVariant(config.value_type)}>
-                  {config.value_type}
-                </Badge>
+                {(() => {
+                  const { variant, className } = getTypeBadgeVariant(
+                    config.value_type,
+                  )
+                  return (
+                    <Badge variant={variant} className={className}>
+                      {config.value_type}
+                    </Badge>
+                  )
+                })()}
               </TableCell>
               <TableCell>
                 {config.requires_restart ? (

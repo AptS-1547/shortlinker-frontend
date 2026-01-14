@@ -24,12 +24,21 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
+import { useConfigSchemaByKey } from '@/hooks/useConfigSchema'
 import {
   type ConfigValueType,
   createConfigFormSchema,
 } from '@/schemas/systemConfigSchema'
 import type { SystemConfigItem } from '@/services/api'
+import type { EnumOption } from '@/services/types.generated'
 import { formatJSON, getConfigKeyLabel } from '@/utils/configUtils'
 
 interface SystemConfigEditDialogProps {
@@ -53,15 +62,18 @@ export function SystemConfigEditDialog({
   const { t } = useTranslation()
   const [showRestartWarning, setShowRestartWarning] = useState(false)
 
-  // 动态创建 schema
-  const schema = config
+  // 从 API 获取 schema
+  const { schema: configSchema } = useConfigSchemaByKey(config?.key || '')
+
+  // 动态创建 zod schema
+  const zodSchema = config
     ? createConfigFormSchema(config.value_type as ConfigValueType)
     : createConfigFormSchema('string')
 
-  type FormValues = z.infer<typeof schema>
+  type FormValues = z.infer<typeof zodSchema>
 
   const form = useForm<FormValues>({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(zodSchema),
     defaultValues: {
       value: config?.value || '',
     },
@@ -103,11 +115,85 @@ export function SystemConfigEditDialog({
 
   if (!config) return null
 
-  // 根据类型渲染不同的输入组件
+  // 根据类型和 schema 渲染不同的输入组件
   const renderInput = (field: {
     value: string
     onChange: (value: string) => void
   }) => {
+    // 优先使用 schema 中的 enum_options
+    if (configSchema?.enum_options) {
+      return (
+        <Select value={field.value} onValueChange={field.onChange}>
+          <SelectTrigger>
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            {configSchema.enum_options.map((opt: EnumOption) => {
+              // 使用翻译键，如果不存在则 fallback 到原始值
+              const label = opt.label_i18n_key
+                ? t(opt.label_i18n_key, opt.label)
+                : opt.label
+              const description = opt.description_i18n_key
+                ? t(opt.description_i18n_key, opt.description || '')
+                : opt.description
+
+              return (
+                <SelectItem key={opt.value} value={opt.value}>
+                  <span>{label}</span>
+                  {description && (
+                    <span className="ml-2 text-muted-foreground">
+                      - {description}
+                    </span>
+                  )}
+                </SelectItem>
+              )
+            })}
+          </SelectContent>
+        </Select>
+      )
+    }
+
+    // JSON 数组类型且有 array_item_options
+    if (configSchema?.array_item_options) {
+      let selected: string[] = []
+      try {
+        selected = JSON.parse(field.value || '[]')
+      } catch {
+        selected = []
+      }
+      return (
+        <div className="space-y-2">
+          {configSchema.array_item_options.map((opt: EnumOption) => {
+            const label = opt.label_i18n_key
+              ? t(opt.label_i18n_key, opt.label)
+              : opt.label
+
+            return (
+              <div key={opt.value} className="flex items-center gap-2">
+                <Checkbox
+                  id={`config-multi-${opt.value}`}
+                  checked={selected.includes(opt.value)}
+                  onCheckedChange={(checked: boolean) => {
+                    const newSelected = checked
+                      ? [...selected, opt.value]
+                      : selected.filter((v) => v !== opt.value)
+                    field.onChange(JSON.stringify(newSelected))
+                  }}
+                />
+                <label
+                  htmlFor={`config-multi-${opt.value}`}
+                  className="text-sm"
+                >
+                  {label}
+                </label>
+              </div>
+            )
+          })}
+        </div>
+      )
+    }
+
+    // 回退到基于 value_type 的默认渲染
     switch (config.value_type) {
       case 'bool':
         return (
@@ -142,6 +228,7 @@ export function SystemConfigEditDialog({
         )
 
       case 'json':
+        // 没有 array_item_options 的 json，使用 textarea
         return (
           <div className="space-y-2">
             <Textarea

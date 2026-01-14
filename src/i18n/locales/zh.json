@@ -461,5 +461,51 @@
     "savedNeedRestart": "配置已保存，请重启服务以使更改生效",
     "searchPlaceholder": "搜索配置键...",
     "allTypes": "所有类型"
+  },
+  "enums": {
+    "sameSite": {
+      "strict": {
+        "label": "Strict",
+        "description": "最严格，仅同站请求携带 Cookie"
+      },
+      "lax": {
+        "label": "Lax",
+        "description": "默认，允许顶级导航携带 Cookie"
+      },
+      "none": {
+        "label": "None",
+        "description": "无限制，需配合 Secure 使用"
+      }
+    },
+    "httpMethod": {
+      "get": {
+        "label": "GET",
+        "description": "从服务器获取数据"
+      },
+      "post": {
+        "label": "POST",
+        "description": "向服务器提交数据"
+      },
+      "put": {
+        "label": "PUT",
+        "description": "更新现有资源"
+      },
+      "delete": {
+        "label": "DELETE",
+        "description": "从服务器删除资源"
+      },
+      "patch": {
+        "label": "PATCH",
+        "description": "部分更新资源"
+      },
+      "head": {
+        "label": "HEAD",
+        "description": "仅获取响应头"
+      },
+      "options": {
+        "label": "OPTIONS",
+        "description": "获取支持的方法"
+      }
+    }
   }
 }

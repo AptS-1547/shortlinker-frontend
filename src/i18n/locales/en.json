@@ -461,5 +461,51 @@
     "savedNeedRestart": "Configuration saved. Please restart the server for changes to take effect.",
     "searchPlaceholder": "Search by key...",
     "allTypes": "All types"
+  },
+  "enums": {
+    "sameSite": {
+      "strict": {
+        "label": "Strict",
+        "description": "Most secure, only same-site requests carry cookies"
+      },
+      "lax": {
+        "label": "Lax",
+        "description": "Default, allows top-level navigation to carry cookies"
+      },
+      "none": {
+        "label": "None",
+        "description": "No restrictions, requires Secure attribute"
+      }
+    },
+    "httpMethod": {
+      "get": {
+        "label": "GET",
+        "description": "Retrieve data from server"
+      },
+      "post": {
+        "label": "POST",
+        "description": "Submit data to server"
+      },
+      "put": {
+        "label": "PUT",
+        "description": "Update existing resource"
+      },
+      "delete": {
+        "label": "DELETE",
+        "description": "Remove resource from server"
+      },
+      "patch": {
+        "label": "PATCH",
+        "description": "Partially update resource"
+      },
+      "head": {
+        "label": "HEAD",
+        "description": "Retrieve headers only"
+      },
+      "options": {
+        "label": "OPTIONS",
+        "description": "Get supported methods"
+      }
+    }
   }
 }

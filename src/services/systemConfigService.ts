@@ -5,12 +5,21 @@ import type {
   SystemConfigUpdateRequest,
   SystemConfigUpdateResponse,
 } from './types'
+import type { ConfigSchema } from './types.generated'
 
 export class SystemConfigService {
   /**
    * 获取所有配置
+   * @param signal - 用于取消请求的 AbortSignal
+   * @param skipCache - 是否跳过缓存，默认 false
    */
-  async fetchAll(signal?: AbortSignal): Promise<SystemConfigItem[]> {
+  async fetchAll(
+    signal?: AbortSignal,
+    skipCache = false,
+  ): Promise<SystemConfigItem[]> {
+    if (skipCache) {
+      adminClient.invalidateTags(['config-all'])
+    }
     const response = await adminClient.get<{
       code?: number
       data?: SystemConfigItem[]
@@ -85,6 +94,17 @@ export class SystemConfigService {
 
     // 清除所有配置缓存
     adminClient.invalidateTags(['config-all'])
+  }
+
+  /**
+   * 获取所有配置的 schema
+   */
+  async fetchSchema(signal?: AbortSignal): Promise<ConfigSchema[]> {
+    const response = await adminClient.get<{
+      code?: number
+      data?: ConfigSchema[]
+    }>('/config/schema', { signal })
+    return response.data || []
   }
 }
 

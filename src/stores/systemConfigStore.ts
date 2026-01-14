@@ -29,7 +29,8 @@ export const useSystemConfigStore = create<SystemConfigState>((set, get) => ({
   fetchConfigs: async (signal?: AbortSignal) => {
     set({ fetching: true, error: null })
     try {
-      const configs = await SystemConfigAPI.fetchAll(signal)
+      // 默认跳过缓存，确保每次切换到配置页面都获取最新数据
+      const configs = await SystemConfigAPI.fetchAll(signal, true)
       set({ configs })
     } catch (err) {
       // 忽略取消错误
