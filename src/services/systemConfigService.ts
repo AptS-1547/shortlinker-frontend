@@ -23,21 +23,28 @@ export class SystemConfigService {
     const response = await adminClient.get<{
       code?: number
       data?: SystemConfigItem[]
-    }>('/config', { signal })
+    }>('/config', { signal, skipCache })
     return response.data || []
   }
 
   /**
    * 获取单个配置
+   * @param key - 配置键
+   * @param signal - 用于取消请求的 AbortSignal
+   * @param skipCache - 是否跳过缓存，默认 false
    */
   async fetchOne(
     key: string,
     signal?: AbortSignal,
+    skipCache = false,
   ): Promise<SystemConfigItem | null> {
+    if (skipCache) {
+      adminClient.invalidateTags([`config:${key}`, 'config-all'])
+    }
     const response = await adminClient.get<{
       code?: number
       data?: SystemConfigItem
-    }>(`/config/${encodeURIComponent(key)}`, { signal })
+    }>(`/config/${encodeURIComponent(key)}`, { signal, skipCache })
     return response.data || null
   }
 

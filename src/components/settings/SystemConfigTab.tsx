@@ -37,6 +37,11 @@ const CONFIG_GROUPS = [
 
 type ConfigGroupKey = (typeof CONFIG_GROUPS)[number]['key']
 
+// 组件 Props
+interface SystemConfigTabProps {
+  isActive?: boolean
+}
+
 // 从配置 key 提取分组
 function getConfigGroup(key: string): string {
   const dotIndex = key.indexOf('.')
@@ -51,7 +56,7 @@ function getConfigSuffix(key: string): string {
   return key.substring(dotIndex + 1) // 返回点号后的部分
 }
 
-export function SystemConfigTab() {
+export function SystemConfigTab({ isActive = true }: SystemConfigTabProps) {
   const { t } = useTranslation()
   const {
     configs,
@@ -75,12 +80,13 @@ export function SystemConfigTab() {
   )
 
   useEffect(() => {
+    if (!isActive) return // 不激活时不请求
     const controller = new AbortController()
     fetchConfigs(controller.signal).catch(() => {
       // Error is handled by the store
     })
     return () => controller.abort()
-  }, [fetchConfigs])
+  }, [isActive, fetchConfigs])
 
   // 按分组整理配置
   const groupedConfigs = useMemo(() => {

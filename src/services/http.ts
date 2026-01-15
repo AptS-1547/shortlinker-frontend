@@ -538,11 +538,13 @@ export class HttpClient {
       }
     }
 
-    // 2. 检查是否有进行中的相同请求
-    const pendingRequest = this.pendingRequests.get<T>(url)
-    if (pendingRequest) {
-      httpLogger.info('Request deduplication:', url)
-      return pendingRequest
+    // 2. 检查是否有进行中的相同请求（skipCache 时忽略去重）
+    if (!skipCache) {
+      const pendingRequest = this.pendingRequests.get<T>(url)
+      if (pendingRequest) {
+        httpLogger.info('Request deduplication:', url)
+        return pendingRequest
+      }
     }
 
     // 3. 发起新请求

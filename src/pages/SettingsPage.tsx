@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
   FiInfo as Info,
@@ -14,6 +15,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
 export default function SettingsPage() {
   const { t } = useTranslation()
+  const [activeTab, setActiveTab] = useState('preferences')
 
   return (
     <div className="space-y-6">
@@ -22,7 +24,11 @@ export default function SettingsPage() {
         description={t('settings.description')}
       />
 
-      <Tabs defaultValue="preferences" className="space-y-6">
+      <Tabs
+        value={activeTab}
+        onValueChange={setActiveTab}
+        className="space-y-6"
+      >
         <TabsList className="grid w-full grid-cols-3 lg:w-auto lg:inline-grid">
           <TabsTrigger value="preferences" className="gap-2">
             <Sliders className="h-4 w-4" />
@@ -49,7 +55,7 @@ export default function SettingsPage() {
         </TabsContent>
 
         <TabsContent value="system">
-          <SystemConfigTab />
+          <SystemConfigTab isActive={activeTab === 'system'} />
         </TabsContent>
 
         <TabsContent value="about">

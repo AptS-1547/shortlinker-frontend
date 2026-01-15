@@ -2,30 +2,51 @@ import { useEffect, useMemo, useState } from 'react'
 import { systemConfigService } from '@/services/systemConfigService'
 import type { ConfigSchema } from '@/services/types.generated'
 
-// 全局缓存，schema 基本不变
+// 全局缓存，带过期时间
 let cachedSchemas: ConfigSchema[] | null = null
+let cacheTimestamp: number | null = null
 let fetchPromise: Promise<ConfigSchema[]> | null = null
+
+// 缓存 TTL: 5 分钟
+const CACHE_TTL = 5 * 60 * 1000
 
 /**
  * 获取所有配置的 schema
  *
- * 使用全局缓存，只请求一次
+ * 使用全局缓存，带过期机制
+ * @param forceRefresh - 强制刷新，忽略缓存
  */
-export function useConfigSchema() {
+export function useConfigSchema(forceRefresh = false) {
   const [schemas, setSchemas] = useState<ConfigSchema[]>(cachedSchemas || [])
-  const [isLoading, setIsLoading] = useState(!cachedSchemas)
+  const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<Error | null>(null)
 
   useEffect(() => {
-    // 已经有缓存，不需要再请求
-    if (cachedSchemas) {
-      setSchemas(cachedSchemas)
+    // 检查缓存是否有效
+    const now = Date.now()
+    const isCacheValid =
+      cachedSchemas &&
+      cacheTimestamp &&
+      now - cacheTimestamp < CACHE_TTL &&
+      !forceRefresh
+
+    // 已经有有效缓存，不需要再请求
+    if (isCacheValid) {
+      setSchemas(cachedSchemas!)
       setIsLoading(false)
       return
     }
 
+    // 强制刷新时清除旧缓存
+    if (forceRefresh) {
+      cachedSchemas = null
+      cacheTimestamp = null
+      fetchPromise = null
+    }
+
     // 已经有正在进行的请求，等待它完成
     if (fetchPromise) {
+      setIsLoading(true)
       fetchPromise
         .then((data) => {
           setSchemas(data)
@@ -45,6 +66,7 @@ export function useConfigSchema() {
     fetchPromise
       .then((data) => {
         cachedSchemas = data
+        cacheTimestamp = Date.now()
         setSchemas(data)
         setIsLoading(false)
       })
@@ -53,7 +75,7 @@ export function useConfigSchema() {
         setIsLoading(false)
         fetchPromise = null // 失败了允许重试
       })
-  }, [])
+  }, [forceRefresh])
 
   return { data: schemas, isLoading, error }
 }
@@ -61,8 +83,8 @@ export function useConfigSchema() {
 /**
  * 根据 key 获取单个配置的 schema
  */
-export function useConfigSchemaByKey(key: string) {
-  const { data: schemas, isLoading, error } = useConfigSchema()
+export function useConfigSchemaByKey(key: string, forceRefresh = false) {
+  const { data: schemas, isLoading, error } = useConfigSchema(forceRefresh)
 
   const schema = useMemo(
     () => schemas?.find((s) => s.key === key),
@@ -70,4 +92,15 @@ export function useConfigSchemaByKey(key: string) {
   )
 
   return { schema, isLoading, error }
+}
+
+/**
+ * 清除 schema 缓存
+ *
+ * 用于手动清除缓存，比如配置 schema 更新后
+ */
+export function clearConfigSchemaCache() {
+  cachedSchemas = null
+  cacheTimestamp = null
+  fetchPromise = null
 }
