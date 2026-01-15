@@ -1,6 +1,6 @@
 import * as AccordionPrimitive from '@radix-ui/react-accordion'
-import { ChevronDownIcon } from 'lucide-react'
 import type * as React from 'react'
+import { LuChevronDown as ChevronDownIcon } from 'react-icons/lu'
 
 import { cn } from '@/lib/utils'
 
