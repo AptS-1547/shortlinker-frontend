@@ -50,13 +50,7 @@ export type ConfigSchema = {
   value_type: ValueType
   default_value: string
   description: string
-  /**
-   * 配置分组（用于前端分组展示）
-   */
   category?: string
-  /**
-   * 枚举选项列表（单选用 Enum，多选用 Json 类型）
-   */
   enum_options?: Array<EnumOption>
   requires_restart: boolean
   editable: boolean
@@ -84,17 +78,8 @@ export type ConfigUpdateResponse = {
 export type EnumOption = {
   value: string
   label: string
-  /**
-   * 标签翻译键（如 "enums.sameSite.strict.label"）
-   */
   label_i18n_key?: string
-  /**
-   * 描述文本（英文，作为 fallback）
-   */
   description?: string
-  /**
-   * 描述翻译键（如 "enums.sameSite.strict.description"）
-   */
   description_i18n_key?: string
 }
 
@@ -228,5 +213,7 @@ export type StatsResponse = {
 
 /**
  * 配置值类型枚举
+ *
+ * 用于标识配置项在数据库和前端的类型。
  */
 export type ValueType = 'string' | 'int' | 'bool' | 'json' | 'enum'

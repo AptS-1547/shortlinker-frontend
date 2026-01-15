@@ -159,7 +159,7 @@ export function SystemConfigTab({ isActive = true }: SystemConfigTabProps) {
                 value={category}
                 className={cn(
                   'rounded-lg border bg-card',
-                  isLast && '!border-b'
+                  isLast && '!border-b',
                 )}
               >
                 <AccordionTrigger className="px-4 hover:no-underline">
