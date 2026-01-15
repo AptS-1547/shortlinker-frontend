@@ -1,5 +1,8 @@
 import type { TFunction } from 'i18next'
 
+import type { SystemConfigItem } from '@/services/api'
+import type { ConfigSchema } from '@/services/types.generated'
+
 /**
  * 获取配置键的翻译标签
  * 如果没有翻译，返回原始 key
@@ -37,4 +40,42 @@ export function isValidJSON(jsonString: string): boolean {
   } catch {
     return false
   }
+}
+
+/**
+ * 配置分组的显示信息
+ */
+export const CONFIG_CATEGORY_INFO: Record<
+  string,
+  { label: string; i18nKey: string }
+> = {
+  auth: { label: 'Authentication', i18nKey: 'config.category.auth' },
+  cookie: { label: 'Cookie Settings', i18nKey: 'config.category.cookie' },
+  features: { label: 'Feature Flags', i18nKey: 'config.category.features' },
+  routes: { label: 'Route Configuration', i18nKey: 'config.category.routes' },
+  cors: { label: 'CORS Settings', i18nKey: 'config.category.cors' },
+  tracking: { label: 'Click Tracking', i18nKey: 'config.category.tracking' },
+  other: { label: 'Other', i18nKey: 'config.category.other' },
+}
+
+/**
+ * 分组配置项
+ */
+export function groupConfigsByCategory(
+  configs: SystemConfigItem[],
+  schemas: ConfigSchema[],
+): Record<string, SystemConfigItem[]> {
+  const groups: Record<string, SystemConfigItem[]> = {}
+
+  for (const config of configs) {
+    const schema = schemas.find((s) => s.key === config.key)
+    const category = schema?.category || 'other'
+
+    if (!groups[category]) {
+      groups[category] = []
+    }
+    groups[category].push(config)
+  }
+
+  return groups
 }

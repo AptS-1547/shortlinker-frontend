@@ -31,6 +31,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { Switch } from '@/components/ui/switch'
 import { Textarea } from '@/components/ui/textarea'
 import { useConfigSchemaByKey } from '@/hooks/useConfigSchema'
 import {
@@ -120,8 +121,72 @@ export function SystemConfigEditDialog({
     value: string
     onChange: (value: string) => void
   }) => {
-    // 优先使用 schema 中的 enum_options
+    // 1. Bool 类型优先使用 Switch（无论是否有 enum_options）
+    if (config.value_type === 'bool') {
+      return (
+        <div className="flex items-center gap-3">
+          <Switch
+            id="config-bool-value"
+            checked={field.value === 'true'}
+            onCheckedChange={(checked: boolean) =>
+              field.onChange(checked ? 'true' : 'false')
+            }
+          />
+          <label
+            htmlFor="config-bool-value"
+            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+          >
+            {field.value === 'true'
+              ? t('common.enabled', 'Enabled')
+              : t('common.disabled', 'Disabled')}
+          </label>
+        </div>
+      )
+    }
+
+    // 2. enum_options：根据 value_type 决定单选还是多选
     if (configSchema?.enum_options) {
+      // 2a. Json 类型 + enum_options → 多选 Checkbox
+      if (config.value_type === 'json') {
+        let selected: string[] = []
+        try {
+          selected = JSON.parse(field.value || '[]')
+        } catch {
+          selected = []
+        }
+        return (
+          <div className="space-y-2">
+            {configSchema.enum_options.map((opt: EnumOption) => {
+              const label = opt.label_i18n_key
+                ? t(opt.label_i18n_key, opt.label)
+                : opt.label
+
+              return (
+                <div key={opt.value} className="flex items-center gap-2">
+                  <Checkbox
+                    id={`config-multi-${opt.value}`}
+                    checked={selected.includes(opt.value)}
+                    onCheckedChange={(checked: boolean) => {
+                      const newSelected = checked
+                        ? [...selected, opt.value]
+                        : selected.filter((v) => v !== opt.value)
+                      field.onChange(JSON.stringify(newSelected))
+                    }}
+                  />
+                  <label
+                    htmlFor={`config-multi-${opt.value}`}
+                    className="text-sm"
+                  >
+                    {label}
+                  </label>
+                </div>
+              )
+            })}
+          </div>
+        )
+      }
+
+      // 2b. 其他类型 + enum_options → 单选 Select
       return (
         <Select value={field.value} onValueChange={field.onChange}>
           <SelectTrigger>
@@ -129,7 +194,6 @@ export function SystemConfigEditDialog({
           </SelectTrigger>
           <SelectContent>
             {configSchema.enum_options.map((opt: EnumOption) => {
-              // 使用翻译键，如果不存在则 fallback 到原始值
               const label = opt.label_i18n_key
                 ? t(opt.label_i18n_key, opt.label)
                 : opt.label
@@ -153,69 +217,8 @@ export function SystemConfigEditDialog({
       )
     }
 
-    // JSON 数组类型且有 array_item_options
-    if (configSchema?.array_item_options) {
-      let selected: string[] = []
-      try {
-        selected = JSON.parse(field.value || '[]')
-      } catch {
-        selected = []
-      }
-      return (
-        <div className="space-y-2">
-          {configSchema.array_item_options.map((opt: EnumOption) => {
-            const label = opt.label_i18n_key
-              ? t(opt.label_i18n_key, opt.label)
-              : opt.label
-
-            return (
-              <div key={opt.value} className="flex items-center gap-2">
-                <Checkbox
-                  id={`config-multi-${opt.value}`}
-                  checked={selected.includes(opt.value)}
-                  onCheckedChange={(checked: boolean) => {
-                    const newSelected = checked
-                      ? [...selected, opt.value]
-                      : selected.filter((v) => v !== opt.value)
-                    field.onChange(JSON.stringify(newSelected))
-                  }}
-                />
-                <label
-                  htmlFor={`config-multi-${opt.value}`}
-                  className="text-sm"
-                >
-                  {label}
-                </label>
-              </div>
-            )
-          })}
-        </div>
-      )
-    }
-
-    // 回退到基于 value_type 的默认渲染
+    // 3. 回退到基于 value_type 的默认渲染
     switch (config.value_type) {
-      case 'bool':
-        return (
-          <div className="flex items-center gap-2">
-            <Checkbox
-              id="config-bool-value"
-              checked={field.value === 'true'}
-              onCheckedChange={(checked: boolean) =>
-                field.onChange(checked ? 'true' : 'false')
-              }
-            />
-            <label
-              htmlFor="config-bool-value"
-              className="text-sm text-muted-foreground"
-            >
-              {field.value === 'true'
-                ? t('common.enabled', 'Enabled')
-                : t('common.disabled', 'Disabled')}
-            </label>
-          </div>
-        )
-
       case 'int':
         return (
           <Input
@@ -228,7 +231,7 @@ export function SystemConfigEditDialog({
         )
 
       case 'json':
-        // 没有 array_item_options 的 json，使用 textarea
+        // 没有 enum_options 的 json，使用 textarea
         return (
           <div className="space-y-2">
             <Textarea

@@ -454,7 +454,16 @@
     "historyTitle": "設定履歴",
     "savedNeedRestart": "設定を保存しました。変更を有効にするにはサーバーを再起動してください。",
     "searchPlaceholder": "キーで検索...",
-    "allTypes": "すべてのタイプ"
+    "allTypes": "すべてのタイプ",
+    "category": {
+      "auth": "認証",
+      "cookie": "Cookie設定",
+      "features": "機能フラグ",
+      "routes": "ルート設定",
+      "cors": "CORS設定",
+      "tracking": "クリック追跡",
+      "other": "その他"
+    }
   },
   "enums": {
     "sameSite": {

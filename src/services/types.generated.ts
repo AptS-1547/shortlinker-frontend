@@ -51,13 +51,13 @@ export type ConfigSchema = {
   default_value: string
   description: string
   /**
-   * 如果是 enum 类型，这里是可选值列表
+   * 配置分组（用于前端分组展示）
+   */
+  category?: string
+  /**
+   * 枚举选项列表（单选用 Enum，多选用 Json 类型）
    */
   enum_options?: Array<EnumOption>
-  /**
-   * 如果是 JSON 数组类型且每个元素是 enum，这里是可选值列表
-   */
-  array_item_options?: Array<EnumOption>
   requires_restart: boolean
   editable: boolean
 }

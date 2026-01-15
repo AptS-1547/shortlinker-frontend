@@ -456,7 +456,16 @@
     "historyTitle": "Historique de Configuration",
     "savedNeedRestart": "Configuration sauvegardée. Veuillez redémarrer le serveur pour appliquer les changements.",
     "searchPlaceholder": "Rechercher par clé...",
-    "allTypes": "Tous les types"
+    "allTypes": "Tous les types",
+    "category": {
+      "auth": "Authentification",
+      "cookie": "Paramètres des cookies",
+      "features": "Indicateurs de fonctionnalité",
+      "routes": "Configuration des routes",
+      "cors": "Paramètres CORS",
+      "tracking": "Suivi des clics",
+      "other": "Autre"
+    }
   },
   "enums": {
     "sameSite": {

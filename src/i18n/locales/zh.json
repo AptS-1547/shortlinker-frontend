@@ -460,7 +460,16 @@
     "historyTitle": "配置历史",
     "savedNeedRestart": "配置已保存，请重启服务以使更改生效",
     "searchPlaceholder": "搜索配置键...",
-    "allTypes": "所有类型"
+    "allTypes": "所有类型",
+    "category": {
+      "auth": "身份认证",
+      "cookie": "Cookie 设置",
+      "features": "功能开关",
+      "routes": "路由配置",
+      "cors": "CORS 设置",
+      "tracking": "点击追踪",
+      "other": "其他"
+    }
   },
   "enums": {
     "sameSite": {

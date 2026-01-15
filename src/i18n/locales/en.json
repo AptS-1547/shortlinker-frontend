@@ -460,7 +460,16 @@
     "historyTitle": "Configuration History",
     "savedNeedRestart": "Configuration saved. Please restart the server for changes to take effect.",
     "searchPlaceholder": "Search by key...",
-    "allTypes": "All types"
+    "allTypes": "All types",
+    "category": {
+      "auth": "Authentication",
+      "cookie": "Cookie Settings",
+      "features": "Feature Flags",
+      "routes": "Route Configuration",
+      "cors": "CORS Settings",
+      "tracking": "Click Tracking",
+      "other": "Other"
+    }
   },
   "enums": {
     "sameSite": {
