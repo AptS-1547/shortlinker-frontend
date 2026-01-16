@@ -154,7 +154,12 @@ export function isValidHttpUrl(url: string): boolean {
 
 /**
  * 验证是否是有效的短链接代码（仅检查格式）
- * 只允许字母、数字、下划线和短横线
+ * 允许字母、数字、下划线、短横线，以及 / 作为路径分隔符
+ *
+ * 规则：
+ * - 不能以 / 开头或结尾
+ * - 不能有连续的 /
+ * - 每段路径只允许字母、数字、下划线、短横线
  *
  * 注意：此函数不检查保留字，使用 validateShortCode() 进行完整验证
  *
@@ -176,13 +181,15 @@ export function isValidShortCode(
     return false
   }
 
-  // 只允许字母、数字、下划线和短横线
-  const pattern = /^[a-zA-Z0-9_-]+$/
+  // 允许字母、数字、下划线、短横线，以及 / 作为路径分隔符
+  // 不能以 / 开头或结尾，不能有连续的 /
+  const pattern = /^[a-zA-Z0-9_-]+(?:\/[a-zA-Z0-9_-]+)*$/
   return pattern.test(code)
 }
 
 /**
  * 检查短链接代码是否为保留字（大小写不敏感）
+ * 对于带路径的 code（如 admin/test），检查第一段是否为保留字
  * @param code - 短链接代码
  * @returns 是否为保留字
  */
@@ -191,9 +198,10 @@ export function isReservedShortCode(code: string): boolean {
     return false
   }
 
-  const lowerCode = code.toLowerCase()
+  // 提取第一段路径进行检查（如 admin/test -> admin）
+  const firstSegment = code.split('/')[0].toLowerCase()
   const reserved = getReservedShortCodes()
-  return reserved.includes(lowerCode)
+  return reserved.includes(firstSegment)
 }
 
 /**

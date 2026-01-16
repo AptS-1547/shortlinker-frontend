@@ -92,7 +92,7 @@
     "shortCode": "ショートコード",
     "shortCodeOptional": "ショートコード（任意）",
     "shortCodePlaceholder": "空白で自動生成",
-    "shortCodeHelp": "カスタムショートコード（文字、数字、ハイフン、アンダースコア）",
+    "shortCodeHelp": "カスタムショートコード（文字、数字、ハイフン、アンダースコア、または abc/def のようなパス）",
     "targetUrl": "ターゲットURL",
     "targetUrlRequired": "ターゲットURL *",
     "targetUrlPlaceholder": "https://example.com/your-long-url",

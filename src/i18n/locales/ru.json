@@ -92,7 +92,7 @@
     "shortCode": "Короткий код",
     "shortCodeOptional": "Короткий код (необязательно)",
     "shortCodePlaceholder": "Оставьте пустым для автогенерации",
-    "shortCodeHelp": "Пользовательский короткий код (буквы, цифры, дефисы, подчеркивания)",
+    "shortCodeHelp": "Пользовательский короткий код (буквы, цифры, дефисы, подчеркивания или пути как abc/def)",
     "targetUrl": "Целевой URL",
     "targetUrlRequired": "Целевой URL *",
     "targetUrlPlaceholder": "https://example.com/ваш-длинный-url",

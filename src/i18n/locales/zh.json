@@ -92,7 +92,7 @@
     "shortCode": "短代码",
     "shortCodeOptional": "短代码（可选）",
     "shortCodePlaceholder": "留空自动生成",
-    "shortCodeHelp": "自定义短代码（字母、数字、连字符、下划线）",
+    "shortCodeHelp": "自定义短代码（字母、数字、连字符、下划线，或路径如 abc/def）",
     "targetUrl": "目标网址",
     "targetUrlRequired": "目标网址 *",
     "targetUrlPlaceholder": "https://example.com/your-long-url",

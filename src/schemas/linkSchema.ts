@@ -14,7 +14,7 @@ export const linkSchema = z.object({
     .optional()
     .refine((val) => !val || isValidShortCode(val), {
       message:
-        'Invalid short code format. Use only letters, numbers, underscores and hyphens',
+        'Invalid short code format. Use letters, numbers, underscores, hyphens, or paths like abc/def',
     })
     .refine((val) => !val || !isReservedShortCode(val), {
       message: 'This code is reserved and cannot be used',

@@ -92,7 +92,7 @@
     "shortCode": "Code court",
     "shortCodeOptional": "Code court (optionnel)",
     "shortCodePlaceholder": "Laisser vide pour génération automatique",
-    "shortCodeHelp": "Code court personnalisé (lettres, chiffres, tirets, underscores)",
+    "shortCodeHelp": "Code court personnalisé (lettres, chiffres, tirets, underscores, ou chemins comme abc/def)",
     "targetUrl": "URL cible",
     "targetUrlRequired": "URL cible *",
     "targetUrlPlaceholder": "https://example.com/votre-url-longue",

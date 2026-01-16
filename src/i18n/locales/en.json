@@ -92,7 +92,7 @@
     "shortCode": "Short Code",
     "shortCodeOptional": "Short Code (optional)",
     "shortCodePlaceholder": "Leave empty for auto-generation",
-    "shortCodeHelp": "Custom short code (letters, numbers, hyphens, underscores)",
+    "shortCodeHelp": "Custom short code (letters, numbers, hyphens, underscores, or paths like abc/def)",
     "targetUrl": "Target URL",
     "targetUrlRequired": "Target URL *",
     "targetUrlPlaceholder": "https://example.com/your-long-url",
