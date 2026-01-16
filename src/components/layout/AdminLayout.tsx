@@ -5,6 +5,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from '@/components/ui/sidebar'
+import { usePwaUpdate } from '@/hooks/usePwaUpdate'
 import { useHealthStore } from '@/stores/healthStore'
 import HealthModal from '../HealthModal'
 import AppSidebar from './AppSidebar'
@@ -18,6 +19,9 @@ export default function AdminLayout() {
   const loading = useHealthStore((state) => state.loading)
 
   const [showHealthModal, setShowHealthModal] = useState(false)
+
+  // PWA 更新检测
+  usePwaUpdate()
 
   // 强制刷新
   const handleRefresh = useCallback(() => {

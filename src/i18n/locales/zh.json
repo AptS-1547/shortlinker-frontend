@@ -434,9 +434,9 @@
       "click.enable_tracking": "启用点击统计",
       "click.flush_interval": "刷新间隔(秒)",
       "click.max_clicks_before_flush": "刷新阈值(点击数)",
-      "cors.enabled": "启用 CORS",
-      "cors.allow_credentials": "允许凭据",
-      "cors.allowed_origins": "允许的来源",
+      "cors.enabled": "启用 CORS 配置",
+      "cors.allow_credentials": "允许凭据（不能与通配符来源同时使用）",
+      "cors.allowed_origins": "允许的来源（使用 [\"*\"] 允许任意来源，留空则仅同源）",
       "cors.allowed_methods": "允许的方法",
       "cors.allowed_headers": "允许的请求头",
       "cors.max_age": "最大缓存时间(秒)"
@@ -516,5 +516,9 @@
         "description": "获取支持的方法"
       }
     }
+  },
+  "pwa": {
+    "updateAvailable": "有新版本可用",
+    "refresh": "刷新"
   }
 }

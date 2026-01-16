@@ -430,9 +430,9 @@
       "click.enable_tracking": "Включить Отслеживание Кликов",
       "click.flush_interval": "Интервал Сброса (секунды)",
       "click.max_clicks_before_flush": "Макс. Кликов до Сброса",
-      "cors.enabled": "Включить CORS",
-      "cors.allow_credentials": "Разрешить Учетные Данные",
-      "cors.allowed_origins": "Разрешенные Источники",
+      "cors.enabled": "Включить настройку CORS",
+      "cors.allow_credentials": "Разрешить учетные данные (несовместимо с wildcard)",
+      "cors.allowed_origins": "Разрешенные источники ([\"*\"] = любые, пусто = только свой)",
       "cors.allowed_methods": "Разрешенные Методы",
       "cors.allowed_headers": "Разрешенные Заголовки",
       "cors.max_age": "Макс. Время Кэша (секунды)"
@@ -512,5 +512,9 @@
         "description": "Получить поддерживаемые методы"
       }
     }
+  },
+  "pwa": {
+    "updateAvailable": "Доступна новая версия",
+    "refresh": "Обновить"
   }
 }

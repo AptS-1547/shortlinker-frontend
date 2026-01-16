@@ -428,9 +428,9 @@
       "click.enable_tracking": "クリック追跡を有効化",
       "click.flush_interval": "フラッシュ間隔(秒)",
       "click.max_clicks_before_flush": "フラッシュ前の最大クリック数",
-      "cors.enabled": "CORSを有効化",
-      "cors.allow_credentials": "資格情報を許可",
-      "cors.allowed_origins": "許可されたオリジン",
+      "cors.enabled": "CORS設定を有効化",
+      "cors.allow_credentials": "資格情報を許可（ワイルドカードオリジンと併用不可）",
+      "cors.allowed_origins": "許可されたオリジン（[\"*\"]で任意、空は同一オリジンのみ）",
       "cors.allowed_methods": "許可されたメソッド",
       "cors.allowed_headers": "許可されたヘッダー",
       "cors.max_age": "最大キャッシュ時間(秒)"
@@ -510,5 +510,9 @@
         "description": "サポートされているメソッドを取得"
       }
     }
+  },
+  "pwa": {
+    "updateAvailable": "新しいバージョンが利用可能です",
+    "refresh": "更新"
   }
 }

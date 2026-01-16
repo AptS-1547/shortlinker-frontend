@@ -60,6 +60,7 @@ export const qrcodeLogger = createLogger('QRCode')
 export const healthLogger = createLogger('Health')
 export const dashboardLogger = createLogger('Dashboard')
 export const hookLogger = createLogger('Hook')
+export const pwaLogger = createLogger('PWA')
 
 // 通用 logger（不建议使用，优先用具名 logger）
 export const logger = createLogger('App')

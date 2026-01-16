@@ -430,9 +430,9 @@
       "click.enable_tracking": "Activer Suivi des Clics",
       "click.flush_interval": "Intervalle de Vidage (secondes)",
       "click.max_clicks_before_flush": "Max Clics Avant Vidage",
-      "cors.enabled": "Activer CORS",
-      "cors.allow_credentials": "Autoriser les Informations d'Identification",
-      "cors.allowed_origins": "Origines Autorisées",
+      "cors.enabled": "Activer la configuration CORS",
+      "cors.allow_credentials": "Autoriser les identifiants (incompatible avec origines wildcard)",
+      "cors.allowed_origins": "Origines autorisées ([\"*\"] = toutes, vide = même origine)",
       "cors.allowed_methods": "Méthodes Autorisées",
       "cors.allowed_headers": "En-têtes Autorisés",
       "cors.max_age": "Durée Maximale (secondes)"
@@ -512,5 +512,9 @@
         "description": "Obtenir les méthodes supportées"
       }
     }
+  },
+  "pwa": {
+    "updateAvailable": "Nouvelle version disponible",
+    "refresh": "Actualiser"
   }
 }

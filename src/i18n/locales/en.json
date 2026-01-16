@@ -434,9 +434,9 @@
       "click.enable_tracking": "Enable Click Tracking",
       "click.flush_interval": "Flush Interval (seconds)",
       "click.max_clicks_before_flush": "Max Clicks Before Flush",
-      "cors.enabled": "Enable CORS",
-      "cors.allow_credentials": "Allow Credentials",
-      "cors.allowed_origins": "Allowed Origins",
+      "cors.enabled": "Enable CORS Configuration",
+      "cors.allow_credentials": "Allow Credentials (incompatible with wildcard origins)",
+      "cors.allowed_origins": "Allowed Origins (use [\"*\"] for any, empty = same-origin only)",
       "cors.allowed_methods": "Allowed Methods",
       "cors.allowed_headers": "Allowed Headers",
       "cors.max_age": "Max Age (seconds)"
@@ -516,5 +516,9 @@
         "description": "Get supported methods"
       }
     }
+  },
+  "pwa": {
+    "updateAvailable": "New version available",
+    "refresh": "Refresh"
   }
 }
