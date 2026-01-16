@@ -154,24 +154,24 @@ export function isValidHttpUrl(url: string): boolean {
 
 /**
  * 验证是否是有效的短链接代码（仅检查格式）
- * 允许字母、数字、下划线、短横线，以及 / 作为路径分隔符
+ * 允许字母、数字、下划线、短横线、点号，以及 / 作为路径分隔符
  *
  * 规则：
  * - 不能以 / 开头或结尾
  * - 不能有连续的 /
- * - 每段路径只允许字母、数字、下划线、短横线
+ * - 每段路径只允许字母、数字、下划线、短横线、点号
  *
  * 注意：此函数不检查保留字，使用 validateShortCode() 进行完整验证
  *
  * @param code - 短链接代码
  * @param minLength - 最小长度（默认 1）
- * @param maxLength - 最大长度（默认 50）
+ * @param maxLength - 最大长度（默认 128）
  * @returns 是否有效
  */
 export function isValidShortCode(
   code: string,
   minLength: number = 1,
-  maxLength: number = 50,
+  maxLength: number = 128,
 ): boolean {
   if (!code || typeof code !== 'string') {
     return false
@@ -181,9 +181,9 @@ export function isValidShortCode(
     return false
   }
 
-  // 允许字母、数字、下划线、短横线，以及 / 作为路径分隔符
+  // 允许字母、数字、下划线、短横线、点号，以及 / 作为路径分隔符
   // 不能以 / 开头或结尾，不能有连续的 /
-  const pattern = /^[a-zA-Z0-9_-]+(?:\/[a-zA-Z0-9_-]+)*$/
+  const pattern = /^[a-zA-Z0-9_.-]+(?:\/[a-zA-Z0-9_.-]+)*$/
   return pattern.test(code)
 }
 
@@ -216,20 +216,20 @@ export interface ShortCodeValidationResult {
  * 验证短链接代码（包含格式检查和保留字检查）
  * @param code - 短链接代码
  * @param minLength - 最小长度（默认 1）
- * @param maxLength - 最大长度（默认 50）
+ * @param maxLength - 最大长度（默认 128）
  * @returns 验证结果
  */
 export function validateShortCode(
   code: string,
   minLength: number = 1,
-  maxLength: number = 50,
+  maxLength: number = 128,
 ): ShortCodeValidationResult {
   // 基本格式检查
   if (!isValidShortCode(code, minLength, maxLength)) {
     return {
       isValid: false,
       error:
-        'Invalid short code format. Use only letters, numbers, underscores and hyphens',
+        'Invalid short code format. Use only letters, numbers, underscores, hyphens, dots and slashes',
     }
   }
 
