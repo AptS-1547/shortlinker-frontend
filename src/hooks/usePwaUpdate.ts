@@ -1,6 +1,6 @@
+import { useRegisterSW } from 'virtual:pwa-register/react'
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useRegisterSW } from 'virtual:pwa-register/react'
 import { toast } from 'sonner'
 import { pwaLogger } from '@/utils/logger'
 
