@@ -226,7 +226,7 @@
       "dragOrClick": "拖放 CSV 文件到此处，或点击选择",
       "mode": "导入模式",
       "modeSkip": "跳过重复 - 遇到已存在的链接时跳过",
-      "modeOverwrite": "覆盖 - 遇到已存在的链接时覆盖（保留创建时间和点击数）",
+      "modeOverwrite": "覆盖 - 遇到已存在的链接时全量覆盖",
       "modeError": "报错 - 遇到已存在的链接时返回错误",
       "import": "导入",
       "importing": "导入中...",

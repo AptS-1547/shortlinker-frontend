@@ -226,7 +226,7 @@
       "dragOrClick": "Drag and drop CSV file here, or click to select",
       "mode": "Import Mode",
       "modeSkip": "Skip duplicates - Skip existing links",
-      "modeOverwrite": "Overwrite - Replace existing links (preserve created_at and clicks)",
+      "modeOverwrite": "Overwrite - Fully replace existing links",
       "modeError": "Error - Return error on existing links",
       "import": "Import",
       "importing": "Importing...",

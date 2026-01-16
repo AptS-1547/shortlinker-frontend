@@ -226,7 +226,7 @@
       "dragOrClick": "Glissez-déposez le fichier CSV ici, ou cliquez pour sélectionner",
       "mode": "Mode d'importation",
       "modeSkip": "Ignorer les doublons - Ignorer les liens existants",
-      "modeOverwrite": "Écraser - Remplacer les liens existants (conserver created_at et clics)",
+      "modeOverwrite": "Écraser - Remplacer entièrement les liens existants",
       "modeError": "Erreur - Retourner une erreur pour les liens existants",
       "import": "Importer",
       "importing": "Importation...",
