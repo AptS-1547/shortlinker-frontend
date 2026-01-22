@@ -85,7 +85,7 @@ class RequestCache {
       if (!this.tagIndex.has(tag)) {
         this.tagIndex.set(tag, new Set())
       }
-      this.tagIndex.get(tag)!.add(url)
+      this.tagIndex.get(tag)?.add(url)
     }
   }
 
@@ -226,7 +226,7 @@ function matchCachePolicy(method: string, url: string): CachePolicy | null {
     const [pMethod, pPath] = pattern.split(' ')
     if (pMethod !== method) continue
 
-    const regex = new RegExp('^' + pPath.replace(/:[^/]+/g, '([^/]+)') + '$')
+    const regex = new RegExp(`^${pPath.replace(/:[^/]+/g, '([^/]+)')}$`)
     if (regex.test(path)) {
       return policy
     }

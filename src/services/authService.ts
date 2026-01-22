@@ -1,14 +1,7 @@
 import { authLogger } from '@/utils/logger'
 import { adminClient } from './http'
 import type { AuthRequest } from './types'
-
-interface AuthApiResponse {
-  code: number
-  data: {
-    message: string
-    expires_in?: number
-  }
-}
+import type { AuthSuccessResponse } from './types.generated'
 
 export interface AuthResult {
   expiresIn: number
@@ -21,12 +14,12 @@ export class AuthService {
    * 返回 expires_in（秒）
    */
   async login(credentials: AuthRequest): Promise<AuthResult> {
-    const response = await adminClient.post<AuthApiResponse>(
-      '/auth/login',
-      credentials,
-    )
+    const response = await adminClient.post<{
+      code: number
+      data: AuthSuccessResponse
+    }>('/auth/login', credentials)
     return {
-      expiresIn: response.data?.expires_in || 900,
+      expiresIn: Number(response.data?.expires_in) || 900,
     }
   }
 
@@ -49,12 +42,12 @@ export class AuthService {
    * 返回 expires_in（秒）
    */
   async refreshToken(): Promise<AuthResult> {
-    const response = await adminClient.post<AuthApiResponse>(
-      '/auth/refresh',
-      {},
-    )
+    const response = await adminClient.post<{
+      code: number
+      data: AuthSuccessResponse
+    }>('/auth/refresh', {})
     return {
-      expiresIn: response.data?.expires_in || 900,
+      expiresIn: Number(response.data?.expires_in) || 900,
     }
   }
 

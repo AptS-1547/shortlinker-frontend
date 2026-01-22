@@ -56,6 +56,7 @@ export function PreferencesTab() {
             const isSelected = theme === option.value
             return (
               <button
+                type="button"
                 key={option.value}
                 onClick={() => setTheme(option.value)}
                 className={cn(
@@ -100,6 +101,7 @@ export function PreferencesTab() {
             const isSelected = i18n.language === lang
             return (
               <button
+                type="button"
                 key={lang}
                 onClick={() => handleLanguageChange(lang)}
                 className={cn(

@@ -44,6 +44,7 @@ export function AppearanceTab() {
           const isSelected = theme === option.value
           return (
             <button
+              type="button"
               key={option.value}
               onClick={() => setTheme(option.value)}
               className={cn(

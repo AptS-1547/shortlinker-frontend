@@ -13,9 +13,9 @@
     <script>
       (() => {
         try {
-          var savedTheme = localStorage.getItem('theme');
-          var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-          var isDark = savedTheme === 'dark' || (savedTheme !== 'light' && prefersDark);
+          const savedTheme = localStorage.getItem('theme');
+          const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          const isDark = savedTheme === 'dark' || (savedTheme !== 'light' && prefersDark);
 
           if (isDark) {
             document.documentElement.classList.add('dark');
@@ -23,7 +23,7 @@
           } else {
             document.documentElement.style.backgroundColor = '#f8fafc';
           }
-        } catch (e) {}
+        } catch {}
       })();
     </script>
     <script>

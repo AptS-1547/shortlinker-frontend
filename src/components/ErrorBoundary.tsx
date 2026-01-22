@@ -60,7 +60,9 @@ function ErrorFallback({
             </Button>
             <Button
               variant="outline"
-              onClick={() => (window.location.href = '/')}
+              onClick={() => {
+                window.location.href = '/'
+              }}
               className="flex-1"
             >
               <Home className="mr-2 h-4 w-4" />

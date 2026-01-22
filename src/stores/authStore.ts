@@ -105,7 +105,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         authLogger.info('checkAuthStatus: expiresAt =', expiresAt)
         authLogger.info(
           'checkAuthStatus: timeUntilExpiry =',
-          timeUntilExpiry ? Math.round(timeUntilExpiry / 1000) + 's' : 'null',
+          timeUntilExpiry ? `${Math.round(timeUntilExpiry / 1000)}s` : 'null',
         )
         authLogger.info('checkAuthStatus: shouldRefreshNow =', shouldRefreshNow)
 

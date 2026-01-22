@@ -30,11 +30,6 @@ export type {
 
 // ============ 前端专用类型（保留） ============
 
-export interface AuthResponse {
-  token: string
-  expires_in?: number
-}
-
 export interface QRCodeOptions {
   size?: number
   margin?: number

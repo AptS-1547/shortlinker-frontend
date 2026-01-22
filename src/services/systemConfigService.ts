@@ -5,7 +5,7 @@ import type {
   SystemConfigUpdateRequest,
   SystemConfigUpdateResponse,
 } from './types'
-import type { ConfigSchema } from './types.generated'
+import type { ConfigSchema, ReloadResponse } from './types.generated'
 
 export class SystemConfigService {
   /**
@@ -93,14 +93,18 @@ export class SystemConfigService {
   /**
    * 重新加载配置
    */
-  async reload(): Promise<void> {
-    await adminClient.post<{ code?: number; data?: { message: string } }>(
-      '/config/reload',
-      {},
-    )
+  async reload(): Promise<ReloadResponse> {
+    const response = await adminClient.post<{
+      code?: number
+      data?: ReloadResponse
+    }>('/config/reload', {})
 
     // 清除所有配置缓存
     adminClient.invalidateTags(['config-all'])
+
+    return (
+      response.data || { message: 'Config reloaded', duration_ms: BigInt(0) }
+    )
   }
 
   /**

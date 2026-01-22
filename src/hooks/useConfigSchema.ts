@@ -31,8 +31,8 @@ export function useConfigSchema(forceRefresh = false) {
       !forceRefresh
 
     // 已经有有效缓存，不需要再请求
-    if (isCacheValid) {
-      setSchemas(cachedSchemas!)
+    if (isCacheValid && cachedSchemas) {
+      setSchemas(cachedSchemas)
       setIsLoading(false)
       return
     }

@@ -109,7 +109,7 @@ export function LinkImportDialog({
     setIsDragging(false)
 
     const droppedFile = e.dataTransfer.files?.[0]
-    if (droppedFile && droppedFile.name.endsWith('.csv')) {
+    if (droppedFile?.name.endsWith('.csv')) {
       setFile(droppedFile)
       setState('idle')
       setResult(null)
@@ -136,7 +136,15 @@ export function LinkImportDialog({
               className="hidden"
             />
             <div
+              role="button"
+              tabIndex={0}
               onClick={handleSelectFile}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault()
+                  handleSelectFile()
+                }
+              }}
               onDragOver={handleDragOver}
               onDragEnter={handleDragEnter}
               onDragLeave={handleDragLeave}
@@ -252,8 +260,8 @@ export function LinkImportDialog({
                   <p className="text-xs text-muted-foreground mb-1">
                     {t('links.import.failedDetails')}
                   </p>
-                  {result.failed_items.slice(0, 5).map((item, i) => (
-                    <p key={i} className="text-xs text-red-500">
+                  {result.failed_items.slice(0, 5).map((item) => (
+                    <p key={item.row} className="text-xs text-red-500">
                       {t('links.import.failedItem', {
                         row: item.row,
                         code: item.code,

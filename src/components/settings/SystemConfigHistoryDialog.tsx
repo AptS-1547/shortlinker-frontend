@@ -1,5 +1,5 @@
 import { format } from 'date-fns'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FiArrowRight } from 'react-icons/fi'
 
@@ -32,13 +32,7 @@ export function SystemConfigHistoryDialog({
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  useEffect(() => {
-    if (open && config) {
-      loadHistory(config.key)
-    }
-  }, [open, config])
-
-  const loadHistory = async (key: string) => {
+  const loadHistory = useCallback(async (key: string) => {
     setLoading(true)
     setError(null)
     try {
@@ -49,7 +43,13 @@ export function SystemConfigHistoryDialog({
     } finally {
       setLoading(false)
     }
-  }
+  }, [])
+
+  useEffect(() => {
+    if (open && config) {
+      loadHistory(config.key)
+    }
+  }, [open, config, loadHistory])
 
   const formatDate = (dateStr: string) => {
     try {
@@ -63,7 +63,7 @@ export function SystemConfigHistoryDialog({
     if (!value)
       return <span className="text-muted-foreground italic">null</span>
     if (value.length <= maxLength) return value
-    return value.slice(0, maxLength) + '...'
+    return `${value.slice(0, maxLength)}...`
   }
 
   return (

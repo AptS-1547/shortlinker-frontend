@@ -29,6 +29,7 @@ export function LanguageTab() {
           const isSelected = i18n.language === lang
           return (
             <button
+              type="button"
               key={lang}
               onClick={() => handleLanguageChange(lang)}
               className={cn(
