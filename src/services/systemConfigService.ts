@@ -51,10 +51,7 @@ export class SystemConfigService {
   /**
    * 更新配置
    */
-  async update(
-    key: string,
-    value: string,
-  ): Promise<ConfigUpdateResponse> {
+  async update(key: string, value: string): Promise<ConfigUpdateResponse> {
     const payload: ConfigUpdateRequest = { value }
     const response = await adminClient.put<{
       code?: number

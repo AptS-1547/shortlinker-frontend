@@ -167,9 +167,10 @@ export class LinkService {
    * 获取链接统计信息
    */
   async fetchStats(): Promise<StatsResponse> {
-    const response = await adminClient.get<{ code?: number; data?: StatsResponse }>(
-      '/stats',
-    )
+    const response = await adminClient.get<{
+      code?: number
+      data?: StatsResponse
+    }>('/stats')
     return (
       response.data || {
         total_links: 0,

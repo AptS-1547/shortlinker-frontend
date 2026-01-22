@@ -55,9 +55,10 @@ export class BatchService {
    * 批量删除链接
    */
   async deleteLinks(codes: string[]): Promise<BatchResponse> {
-    const response = await adminClient.delete<
-      ApiResponse<BatchResponse>
-    >('/links/batch', { codes } satisfies BatchDeleteRequest)
+    const response = await adminClient.delete<ApiResponse<BatchResponse>>(
+      '/links/batch',
+      { codes } satisfies BatchDeleteRequest,
+    )
 
     // 清除链接列表 + 被删除的链接缓存 + 统计缓存
     const linkTags = codes.map((code) => `link:${code}`)
