@@ -19,7 +19,7 @@ import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useConfigSchema } from '@/hooks/useConfigSchema'
 import { cn } from '@/lib/utils'
-import type { SystemConfigItem } from '@/services/api'
+import type { ConfigItemResponse } from '@/services/api'
 import { useSystemConfigStore } from '@/stores/systemConfigStore'
 import {
   CONFIG_CATEGORY_INFO,
@@ -47,10 +47,10 @@ export function SystemConfigTab({ isActive = true }: SystemConfigTabProps) {
   const { data: schemas } = useConfigSchema()
 
   // 对话框状态
-  const [editingConfig, setEditingConfig] = useState<SystemConfigItem | null>(
+  const [editingConfig, setEditingConfig] = useState<ConfigItemResponse | null>(
     null,
   )
-  const [historyConfig, setHistoryConfig] = useState<SystemConfigItem | null>(
+  const [historyConfig, setHistoryConfig] = useState<ConfigItemResponse | null>(
     null,
   )
 

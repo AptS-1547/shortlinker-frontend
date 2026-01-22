@@ -13,11 +13,11 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { Skeleton } from '@/components/ui/skeleton'
-import type { SystemConfigHistory, SystemConfigItem } from '@/services/api'
+import type { ConfigHistoryResponse, ConfigItemResponse } from '@/services/api'
 import { SystemConfigAPI } from '@/services/api'
 
 interface SystemConfigHistoryDialogProps {
-  config: SystemConfigItem | null
+  config: ConfigItemResponse | null
   open: boolean
   onOpenChange: (open: boolean) => void
 }
@@ -28,7 +28,7 @@ export function SystemConfigHistoryDialog({
   onOpenChange,
 }: SystemConfigHistoryDialogProps) {
   const { t } = useTranslation()
-  const [history, setHistory] = useState<SystemConfigHistory[]>([])
+  const [history, setHistory] = useState<ConfigHistoryResponse[]>([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 

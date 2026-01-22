@@ -31,7 +31,7 @@ import type { UseDialogReturn } from '@/hooks/useDialog'
 import { cn } from '@/lib/utils'
 import type { LinkFormData } from '@/schemas/linkSchema'
 import { linkSchema } from '@/schemas/linkSchema'
-import type { LinkPayload, SerializableShortLink } from '@/services/types'
+import type { PostNewLink, LinkResponse } from '@/services/types'
 
 // 生成小时选项 (00-23)
 const HOURS = Array.from({ length: 24 }, (_, i) =>
@@ -43,8 +43,8 @@ const MINUTES = Array.from({ length: 60 }, (_, i) =>
 )
 
 interface LinkFormDialogProps {
-  dialog: UseDialogReturn<SerializableShortLink>
-  onSave: (data: LinkPayload) => Promise<void>
+  dialog: UseDialogReturn<LinkResponse>
+  onSave: (data: PostNewLink) => Promise<void>
   isSaving: boolean
 }
 
@@ -93,7 +93,7 @@ export function LinkFormDialog({
 
   const handleSubmit = createSubmitHandler(async (data) => {
     // 直接将验证后的数据传递给 onSave
-    await onSave(data as LinkPayload)
+    await onSave(data as PostNewLink)
   })
 
   return (

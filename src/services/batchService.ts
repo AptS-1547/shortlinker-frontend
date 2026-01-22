@@ -4,12 +4,12 @@ import { adminClient } from './http'
 import type {
   BatchCreateRequest,
   BatchDeleteRequest,
-  BatchOperationResult,
+  BatchResponse,
   BatchUpdateRequest,
   GetLinksQuery,
   ImportMode,
   ImportResponse,
-  LinkPayload,
+  PostNewLink,
 } from './types'
 
 interface ApiResponse<T> {
@@ -21,8 +21,8 @@ export class BatchService {
   /**
    * 批量创建链接
    */
-  async createLinks(links: LinkPayload[]): Promise<BatchOperationResult> {
-    const response = await adminClient.post<ApiResponse<BatchOperationResult>>(
+  async createLinks(links: PostNewLink[]): Promise<BatchResponse> {
+    const response = await adminClient.post<ApiResponse<BatchResponse>>(
       '/links/batch',
       { links } satisfies BatchCreateRequest,
     )
@@ -37,9 +37,9 @@ export class BatchService {
    * 批量更新链接
    */
   async updateLinks(
-    updates: { code: string; payload: LinkPayload }[],
-  ): Promise<BatchOperationResult> {
-    const response = await adminClient.put<ApiResponse<BatchOperationResult>>(
+    updates: { code: string; payload: PostNewLink }[],
+  ): Promise<BatchResponse> {
+    const response = await adminClient.put<ApiResponse<BatchResponse>>(
       '/links/batch',
       { updates } satisfies BatchUpdateRequest,
     )
@@ -54,9 +54,9 @@ export class BatchService {
   /**
    * 批量删除链接
    */
-  async deleteLinks(codes: string[]): Promise<BatchOperationResult> {
+  async deleteLinks(codes: string[]): Promise<BatchResponse> {
     const response = await adminClient.delete<
-      ApiResponse<BatchOperationResult>
+      ApiResponse<BatchResponse>
     >('/links/batch', { codes } satisfies BatchDeleteRequest)
 
     // 清除链接列表 + 被删除的链接缓存 + 统计缓存

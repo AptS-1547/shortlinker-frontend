@@ -51,7 +51,7 @@ import { useLinksBatch } from '@/hooks/useLinksBatch'
 import { useLinksFilters } from '@/hooks/useLinksFilters'
 import { useLinksSort } from '@/hooks/useLinksSort'
 import { batchService } from '@/services/batchService'
-import type { LinkPayload, SerializableShortLink } from '@/services/types'
+import type { PostNewLink, LinkResponse } from '@/services/types'
 import { useLinksStore } from '@/stores/linksStore'
 import { buildShortUrl } from '@/utils/urlBuilder'
 
@@ -141,8 +141,8 @@ export default function LinksPage() {
   }, [batch, fetchLinks])
 
   // Dialog state
-  const formDialog = useDialog<SerializableShortLink>()
-  const deleteDialog = useDialog<SerializableShortLink>()
+  const formDialog = useDialog<LinkResponse>()
+  const deleteDialog = useDialog<LinkResponse>()
   const [copiedCode, setCopiedCode] = useState<string | null>(null)
   const [importOpen, setImportOpen] = useState(false)
   const [exporting, setExporting] = useState(false)
@@ -153,14 +153,14 @@ export default function LinksPage() {
   }, [formDialog])
 
   const handleOpenEdit = useCallback(
-    (link: SerializableShortLink) => {
+    (link: LinkResponse) => {
       formDialog.open(link)
     },
     [formDialog],
   )
 
   const handleSave = useCallback(
-    async (data: LinkPayload) => {
+    async (data: PostNewLink) => {
       try {
         if (formDialog.isEditMode && formDialog.data) {
           await updateLink(formDialog.data.code, data)

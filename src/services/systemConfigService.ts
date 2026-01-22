@@ -1,9 +1,9 @@
 import { adminClient } from './http'
 import type {
-  SystemConfigHistory,
-  SystemConfigItem,
-  SystemConfigUpdateRequest,
-  SystemConfigUpdateResponse,
+  ConfigHistoryResponse,
+  ConfigItemResponse,
+  ConfigUpdateRequest,
+  ConfigUpdateResponse,
 } from './types'
 import type { ConfigSchema, ReloadResponse } from './types.generated'
 
@@ -16,13 +16,13 @@ export class SystemConfigService {
   async fetchAll(
     signal?: AbortSignal,
     skipCache = false,
-  ): Promise<SystemConfigItem[]> {
+  ): Promise<ConfigItemResponse[]> {
     if (skipCache) {
       adminClient.invalidateTags(['config-all'])
     }
     const response = await adminClient.get<{
       code?: number
-      data?: SystemConfigItem[]
+      data?: ConfigItemResponse[]
     }>('/config', { signal, skipCache })
     return response.data || []
   }
@@ -37,13 +37,13 @@ export class SystemConfigService {
     key: string,
     signal?: AbortSignal,
     skipCache = false,
-  ): Promise<SystemConfigItem | null> {
+  ): Promise<ConfigItemResponse | null> {
     if (skipCache) {
       adminClient.invalidateTags([`config:${key}`, 'config-all'])
     }
     const response = await adminClient.get<{
       code?: number
-      data?: SystemConfigItem
+      data?: ConfigItemResponse
     }>(`/config/${encodeURIComponent(key)}`, { signal, skipCache })
     return response.data || null
   }
@@ -54,11 +54,11 @@ export class SystemConfigService {
   async update(
     key: string,
     value: string,
-  ): Promise<SystemConfigUpdateResponse> {
-    const payload: SystemConfigUpdateRequest = { value }
+  ): Promise<ConfigUpdateResponse> {
+    const payload: ConfigUpdateRequest = { value }
     const response = await adminClient.put<{
       code?: number
-      data?: SystemConfigUpdateResponse
+      data?: ConfigUpdateResponse
     }>(`/config/${encodeURIComponent(key)}`, payload)
 
     // 清除该配置项 + 全部配置列表的缓存
@@ -82,10 +82,10 @@ export class SystemConfigService {
     key: string,
     limit: number = 20,
     signal?: AbortSignal,
-  ): Promise<SystemConfigHistory[]> {
+  ): Promise<ConfigHistoryResponse[]> {
     const response = await adminClient.get<{
       code?: number
-      data?: SystemConfigHistory[]
+      data?: ConfigHistoryResponse[]
     }>(`/config/${encodeURIComponent(key)}/history?limit=${limit}`, { signal })
     return response.data || []
   }

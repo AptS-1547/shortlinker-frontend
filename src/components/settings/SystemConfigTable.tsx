@@ -17,13 +17,13 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
-import type { SystemConfigItem } from '@/services/api'
+import type { ConfigItemResponse } from '@/services/api'
 import { getConfigKeyLabel } from '@/utils/configUtils'
 
 interface SystemConfigTableProps {
-  configs: SystemConfigItem[]
-  onEdit: (config: SystemConfigItem) => void
-  onHistory: (config: SystemConfigItem) => void
+  configs: ConfigItemResponse[]
+  onEdit: (config: ConfigItemResponse) => void
+  onHistory: (config: ConfigItemResponse) => void
 }
 
 /** 类型 Badge 颜色 */

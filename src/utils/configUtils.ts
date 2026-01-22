@@ -1,6 +1,6 @@
 import type { TFunction } from 'i18next'
 
-import type { SystemConfigItem } from '@/services/api'
+import type { ConfigItemResponse } from '@/services/api'
 import type { ConfigSchema } from '@/services/types.generated'
 
 /**
@@ -62,10 +62,10 @@ export const CONFIG_CATEGORY_INFO: Record<
  * 分组配置项
  */
 export function groupConfigsByCategory(
-  configs: SystemConfigItem[],
+  configs: ConfigItemResponse[],
   schemas: ConfigSchema[],
-): Record<string, SystemConfigItem[]> {
-  const groups: Record<string, SystemConfigItem[]> = {}
+): Record<string, ConfigItemResponse[]> {
+  const groups: Record<string, ConfigItemResponse[]> = {}
 
   for (const config of configs) {
     const schema = schemas.find((s) => s.key === config.key)

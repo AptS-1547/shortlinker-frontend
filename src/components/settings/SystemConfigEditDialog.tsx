@@ -38,12 +38,12 @@ import {
   type ConfigValueType,
   createConfigFormSchema,
 } from '@/schemas/systemConfigSchema'
-import type { SystemConfigItem } from '@/services/api'
+import type { ConfigItemResponse } from '@/services/api'
 import type { EnumOption } from '@/services/types.generated'
 import { formatJSON, getConfigKeyLabel } from '@/utils/configUtils'
 
 interface SystemConfigEditDialogProps {
-  config: SystemConfigItem | null
+  config: ConfigItemResponse | null
   open: boolean
   onOpenChange: (open: boolean) => void
   onSave: (

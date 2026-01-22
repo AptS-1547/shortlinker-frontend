@@ -2,10 +2,10 @@ import { ApiError, adminClient } from './http'
 import type {
   GetLinksQuery,
   LinkCreateResult,
-  LinkPayload,
-  LinkStats,
+  PostNewLink,
+  StatsResponse,
   PaginatedLinksResponse,
-  SerializableShortLink,
+  LinkResponse,
 } from './types'
 
 /**
@@ -43,11 +43,11 @@ export class LinkService {
   /**
    * 获取所有链接（带筛选）
    */
-  async fetchAll(query?: GetLinksQuery): Promise<SerializableShortLink[]> {
+  async fetchAll(query?: GetLinksQuery): Promise<LinkResponse[]> {
     const url = buildLinkUrl(query)
     const response = await adminClient.get<{
       code?: number
-      data?: SerializableShortLink[]
+      data?: LinkResponse[]
       pagination?: PaginatedLinksResponse['pagination']
     }>(url)
 
@@ -69,7 +69,7 @@ export class LinkService {
     const url = buildLinkUrl(query)
     const response = await adminClient.get<{
       code?: number
-      data?: SerializableShortLink[]
+      data?: LinkResponse[]
       pagination?: PaginatedLinksResponse['pagination']
     }>(url, { signal })
 
@@ -98,9 +98,9 @@ export class LinkService {
   /**
    * 获取单个链接
    */
-  async fetchOne(code: string): Promise<SerializableShortLink | null> {
+  async fetchOne(code: string): Promise<LinkResponse | null> {
     try {
-      const response = await adminClient.get<{ data?: SerializableShortLink }>(
+      const response = await adminClient.get<{ data?: LinkResponse }>(
         `/links/${code}`,
       )
       return response.data || null
@@ -115,7 +115,7 @@ export class LinkService {
   /**
    * 创建链接
    */
-  async create(payload: LinkPayload): Promise<void> {
+  async create(payload: PostNewLink): Promise<void> {
     await adminClient.post('/links', payload)
     // 使用标签清理（更精细）
     adminClient.invalidateTags(['links-list', 'stats'])
@@ -125,7 +125,7 @@ export class LinkService {
    * 创建链接（带重复检查）
    * 利用后端的 force 逻辑：如果链接已存在且 force != true，后端返回 409 Conflict
    */
-  async createWithCheck(payload: LinkPayload): Promise<LinkCreateResult> {
+  async createWithCheck(payload: PostNewLink): Promise<LinkCreateResult> {
     try {
       await this.create(payload)
       return { success: true }
@@ -148,7 +148,7 @@ export class LinkService {
   /**
    * 更新链接
    */
-  async update(code: string, payload: LinkPayload): Promise<void> {
+  async update(code: string, payload: PostNewLink): Promise<void> {
     await adminClient.put(`/links/${code}`, payload)
     // 清除该链接 + 列表缓存 + 统计缓存
     adminClient.invalidateTags([`link:${code}`, 'links-list', 'stats'])
@@ -166,8 +166,8 @@ export class LinkService {
   /**
    * 获取链接统计信息
    */
-  async fetchStats(): Promise<LinkStats> {
-    const response = await adminClient.get<{ code?: number; data?: LinkStats }>(
+  async fetchStats(): Promise<StatsResponse> {
+    const response = await adminClient.get<{ code?: number; data?: StatsResponse }>(
       '/stats',
     )
     return (

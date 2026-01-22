@@ -1,6 +1,6 @@
 import { authLogger } from '@/utils/logger'
 import { adminClient } from './http'
-import type { AuthRequest } from './types'
+import type { LoginCredentials } from './types'
 import type { AuthSuccessResponse } from './types.generated'
 
 export interface AuthResult {
@@ -13,7 +13,7 @@ export class AuthService {
    * 后端会设置 httpOnly Cookie，前端不需要处理 token
    * 返回 expires_in（秒）
    */
-  async login(credentials: AuthRequest): Promise<AuthResult> {
+  async login(credentials: LoginCredentials): Promise<AuthResult> {
     const response = await adminClient.post<{
       code: number
       data: AuthSuccessResponse

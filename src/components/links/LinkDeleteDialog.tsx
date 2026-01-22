@@ -10,10 +10,10 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
 import type { UseDialogReturn } from '@/hooks/useDialog'
-import type { SerializableShortLink } from '@/services/types'
+import type { LinkResponse } from '@/services/types'
 
 interface LinkDeleteDialogProps {
-  dialog: UseDialogReturn<SerializableShortLink>
+  dialog: UseDialogReturn<LinkResponse>
   onConfirm: () => Promise<void>
   isDeleting: boolean
 }

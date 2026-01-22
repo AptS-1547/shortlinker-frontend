@@ -39,7 +39,7 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip'
 import { useDateFormat } from '@/hooks/useDateFormat'
-import type { SerializableShortLink } from '@/services/types'
+import type { LinkResponse } from '@/services/types'
 import { buildShortUrl } from '@/utils/urlBuilder'
 
 export type SortField = 'clicks' | 'created_at' | null
@@ -63,15 +63,15 @@ export const DEFAULT_VISIBLE_COLUMNS: ColumnKey[] = [
 ]
 
 interface LinksTableProps {
-  links: SerializableShortLink[]
+  links: LinkResponse[]
   copiedCode: string | null
   selectedCodes: Set<string>
   sortField: SortField
   sortDirection: SortDirection
   visibleColumns: ColumnKey[]
   onCopy: (code: string) => void
-  onEdit: (link: SerializableShortLink) => void
-  onDelete: (link: SerializableShortLink) => void
+  onEdit: (link: LinkResponse) => void
+  onDelete: (link: LinkResponse) => void
   onSelectChange: (code: string, checked: boolean) => void
   onSelectAll: (checked: boolean) => void
   onSort: (field: SortField) => void
@@ -99,14 +99,14 @@ const LinkRow = memo(function LinkRow({
   onDelete,
   onSelectChange,
 }: {
-  link: SerializableShortLink
+  link: LinkResponse
   copiedCode: string | null
   isSelected: boolean
   visibleColumns: ColumnKey[]
   columnCount: number
   onCopy: (code: string) => void
-  onEdit: (link: SerializableShortLink) => void
-  onDelete: (link: SerializableShortLink) => void
+  onEdit: (link: LinkResponse) => void
+  onDelete: (link: LinkResponse) => void
   onSelectChange: (code: string, checked: boolean) => void
 }) {
   const { t } = useTranslation()

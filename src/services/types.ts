@@ -1,17 +1,15 @@
-// ============ 从生成文件重新导出（保持原有名称兼容） ============
-// 健康检查类型
-// 直接导出的新类型
+// ============ 从生成文件重新导出 ============
 export type {
   BatchCreateRequest,
   BatchDeleteRequest,
   BatchFailedItem,
-  BatchResponse as BatchOperationResult,
+  BatchResponse,
   BatchUpdateItem,
   BatchUpdateRequest,
-  ConfigHistoryResponse as SystemConfigHistory,
-  ConfigItemResponse as SystemConfigItem,
-  ConfigUpdateRequest as SystemConfigUpdateRequest,
-  ConfigUpdateResponse as SystemConfigUpdateResponse,
+  ConfigHistoryResponse,
+  ConfigItemResponse,
+  ConfigUpdateRequest,
+  ConfigUpdateResponse,
   GetLinksQuery,
   HealthChecks,
   HealthResponse,
@@ -20,11 +18,11 @@ export type {
   ImportFailedItem,
   ImportMode,
   ImportResponse,
-  LinkResponse as SerializableShortLink,
-  LoginCredentials as AuthRequest,
+  LinkResponse,
+  LoginCredentials,
   PaginationInfo,
-  PostNewLink as LinkPayload,
-  StatsResponse as LinkStats,
+  PostNewLink,
+  StatsResponse,
   ValueType,
 } from './types.generated'
 

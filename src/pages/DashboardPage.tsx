@@ -15,7 +15,7 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { useDateFormat } from '@/hooks/useDateFormat'
-import type { LinkStats, SerializableShortLink } from '@/services/api'
+import type { StatsResponse, LinkResponse } from '@/services/api'
 import { LinkAPI } from '@/services/api'
 import { useHealthStore } from '@/stores/healthStore'
 import { dashboardLogger } from '@/utils/logger'
@@ -25,8 +25,8 @@ export default function DashboardPage() {
   const { formatRelative } = useDateFormat()
 
   // 仪表盘独立管理最近链接数据，避免与 LinksPage 的 store 冲突
-  const [recentLinks, setRecentLinks] = useState<SerializableShortLink[]>([])
-  const [stats, setStats] = useState<LinkStats>({
+  const [recentLinks, setRecentLinks] = useState<LinkResponse[]>([])
+  const [stats, setStats] = useState<StatsResponse>({
     total_links: 0,
     total_clicks: 0,
     active_links: 0,

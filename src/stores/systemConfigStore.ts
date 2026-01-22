@@ -1,10 +1,10 @@
 import { create } from 'zustand'
 import { SystemConfigAPI } from '@/services/api'
-import type { SystemConfigItem } from '@/services/types'
+import type { ConfigItemResponse } from '@/services/types'
 import { extractErrorMessage } from '@/utils/errorHandler'
 
 interface SystemConfigState {
-  configs: SystemConfigItem[]
+  configs: ConfigItemResponse[]
   fetching: boolean
   updating: boolean
   reloading: boolean

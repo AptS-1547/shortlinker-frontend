@@ -1,10 +1,10 @@
 import { useCallback, useMemo, useState } from 'react'
-import type { SerializableShortLink } from '@/services/types'
+import type { LinkResponse } from '@/services/types'
 
 export type SortField = 'clicks' | 'created_at' | null
 export type SortDirection = 'asc' | 'desc'
 
-export function useLinksSort(links: SerializableShortLink[]) {
+export function useLinksSort(links: LinkResponse[]) {
   const [sortField, setSortField] = useState<SortField>(null)
   const [sortDirection, setSortDirection] = useState<SortDirection>('desc')
 

@@ -1,8 +1,8 @@
 import { create } from 'zustand'
 import type {
   GetLinksQuery,
-  LinkPayload,
-  SerializableShortLink,
+  PostNewLink,
+  LinkResponse,
 } from '@/services/api'
 import { LinkAPI } from '@/services/api'
 import { extractErrorMessage } from '@/utils/errorHandler'
@@ -29,7 +29,7 @@ interface PaginationState {
 }
 
 interface LinksState {
-  links: SerializableShortLink[]
+  links: LinkResponse[]
   fetching: boolean
   creating: boolean
   updating: boolean
@@ -44,8 +44,8 @@ interface LinksState {
   resetFilter: () => Promise<void>
   goToPage: (page: number) => Promise<void>
   setPageSize: (pageSize: number) => Promise<void>
-  createLink: (data: LinkPayload) => Promise<void>
-  updateLink: (code: string, data: LinkPayload) => Promise<void>
+  createLink: (data: PostNewLink) => Promise<void>
+  updateLink: (code: string, data: PostNewLink) => Promise<void>
   deleteLink: (code: string) => Promise<void>
 }
 
@@ -182,7 +182,7 @@ export const useLinksStore = create<LinksState>((set, get) => ({
     await get().fetchLinks(newQuery)
   },
 
-  createLink: async (data: LinkPayload) => {
+  createLink: async (data: PostNewLink) => {
     set({ creating: true, error: null })
     try {
       await LinkAPI.create(data)
@@ -195,7 +195,7 @@ export const useLinksStore = create<LinksState>((set, get) => ({
     }
   },
 
-  updateLink: async (code: string, data: LinkPayload) => {
+  updateLink: async (code: string, data: PostNewLink) => {
     set({ updating: true, error: null })
     try {
       await LinkAPI.update(code, data)
