@@ -108,7 +108,11 @@ describe('errorMapping', () => {
 
     it('should return fallback when translation fails', () => {
       const error = createApiError('UNKNOWN_CODE')
-      const result = getUserFriendlyErrorMessage(error, mockTranslate, 'Fallback message')
+      const result = getUserFriendlyErrorMessage(
+        error,
+        mockTranslate,
+        'Fallback message',
+      )
       expect(result).toBe('Fallback message')
     })
 

@@ -267,7 +267,9 @@ describe('useDialog', () => {
       expect(numberResult.current.isEditMode).toBe(true)
 
       // Test with empty string
-      const { result: emptyStringResult } = renderHook(() => useDialog<string>())
+      const { result: emptyStringResult } = renderHook(() =>
+        useDialog<string>(),
+      )
       act(() => {
         emptyStringResult.current.open('')
       })
@@ -288,7 +290,11 @@ describe('useDialog', () => {
 
     it('should work with complex types', () => {
       const { result } = renderHook(() => useDialog<LinkData>())
-      const linkData: LinkData = { id: '1', url: 'https://example.com', code: 'test' }
+      const linkData: LinkData = {
+        id: '1',
+        url: 'https://example.com',
+        code: 'test',
+      }
 
       act(() => {
         result.current.open(linkData)

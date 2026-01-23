@@ -163,7 +163,9 @@ describe('healthStore', () => {
     })
 
     it('should handle error and set unhealthy status', async () => {
-      vi.mocked(HealthAPI.check).mockRejectedValueOnce(new Error('Network error'))
+      vi.mocked(HealthAPI.check).mockRejectedValueOnce(
+        new Error('Network error'),
+      )
 
       await act(async () => {
         await useHealthStore.getState().checkHealth()

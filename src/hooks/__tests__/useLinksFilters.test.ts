@@ -1,5 +1,5 @@
 import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest'
-import { renderHook, act, waitFor } from '@testing-library/react'
+import { renderHook, act } from '@testing-library/react'
 import { useLinksFilters } from '../useLinksFilters'
 
 describe('useLinksFilters', () => {
@@ -18,25 +18,19 @@ describe('useLinksFilters', () => {
   describe('initial state', () => {
     it('should have empty search query', () => {
       const onFilterChange = vi.fn()
-      const { result } = renderHook(() =>
-        useLinksFilters({ onFilterChange }),
-      )
+      const { result } = renderHook(() => useLinksFilters({ onFilterChange }))
       expect(result.current.searchQuery).toBe('')
     })
 
     it('should have "all" status filter', () => {
       const onFilterChange = vi.fn()
-      const { result } = renderHook(() =>
-        useLinksFilters({ onFilterChange }),
-      )
+      const { result } = renderHook(() => useLinksFilters({ onFilterChange }))
       expect(result.current.statusFilter).toBe('all')
     })
 
     it('should have undefined date filters', () => {
       const onFilterChange = vi.fn()
-      const { result } = renderHook(() =>
-        useLinksFilters({ onFilterChange }),
-      )
+      const { result } = renderHook(() => useLinksFilters({ onFilterChange }))
       expect(result.current.createdAfter).toBeUndefined()
       expect(result.current.createdBefore).toBeUndefined()
     })
@@ -65,9 +59,7 @@ describe('useLinksFilters', () => {
   describe('setSearchQuery', () => {
     it('should update search query', () => {
       const onFilterChange = vi.fn()
-      const { result } = renderHook(() =>
-        useLinksFilters({ onFilterChange }),
-      )
+      const { result } = renderHook(() => useLinksFilters({ onFilterChange }))
 
       act(() => {
         result.current.setSearchQuery('test')
@@ -144,9 +136,7 @@ describe('useLinksFilters', () => {
   describe('setStatusFilter', () => {
     it('should update status filter to active', () => {
       const onFilterChange = vi.fn()
-      const { result } = renderHook(() =>
-        useLinksFilters({ onFilterChange }),
-      )
+      const { result } = renderHook(() => useLinksFilters({ onFilterChange }))
 
       act(() => {
         result.current.setStatusFilter('active')
@@ -157,9 +147,7 @@ describe('useLinksFilters', () => {
 
     it('should update status filter to expired', () => {
       const onFilterChange = vi.fn()
-      const { result } = renderHook(() =>
-        useLinksFilters({ onFilterChange }),
-      )
+      const { result } = renderHook(() => useLinksFilters({ onFilterChange }))
 
       act(() => {
         result.current.setStatusFilter('expired')
@@ -222,9 +210,7 @@ describe('useLinksFilters', () => {
   describe('date filters', () => {
     it('should update createdAfter', () => {
       const onFilterChange = vi.fn()
-      const { result } = renderHook(() =>
-        useLinksFilters({ onFilterChange }),
-      )
+      const { result } = renderHook(() => useLinksFilters({ onFilterChange }))
 
       const date = new Date('2024-01-01')
       act(() => {
@@ -236,9 +222,7 @@ describe('useLinksFilters', () => {
 
     it('should update createdBefore', () => {
       const onFilterChange = vi.fn()
-      const { result } = renderHook(() =>
-        useLinksFilters({ onFilterChange }),
-      )
+      const { result } = renderHook(() => useLinksFilters({ onFilterChange }))
 
       const date = new Date('2024-12-31')
       act(() => {
@@ -279,9 +263,7 @@ describe('useLinksFilters', () => {
   describe('clearDateFilters', () => {
     it('should clear both date filters', () => {
       const onFilterChange = vi.fn()
-      const { result } = renderHook(() =>
-        useLinksFilters({ onFilterChange }),
-      )
+      const { result } = renderHook(() => useLinksFilters({ onFilterChange }))
 
       const afterDate = new Date('2024-01-01')
       const beforeDate = new Date('2024-12-31')
@@ -310,9 +292,7 @@ describe('useLinksFilters', () => {
   describe('buildQuery', () => {
     it('should return default query', () => {
       const onFilterChange = vi.fn()
-      const { result } = renderHook(() =>
-        useLinksFilters({ onFilterChange }),
-      )
+      const { result } = renderHook(() => useLinksFilters({ onFilterChange }))
 
       const query = result.current.buildQuery()
       expect(query).toEqual({
@@ -328,9 +308,7 @@ describe('useLinksFilters', () => {
 
     it('should include search when set', () => {
       const onFilterChange = vi.fn()
-      const { result } = renderHook(() =>
-        useLinksFilters({ onFilterChange }),
-      )
+      const { result } = renderHook(() => useLinksFilters({ onFilterChange }))
 
       act(() => {
         result.current.setSearchQuery('test')
@@ -342,9 +320,7 @@ describe('useLinksFilters', () => {
 
     it('should include only_active when status is active', () => {
       const onFilterChange = vi.fn()
-      const { result } = renderHook(() =>
-        useLinksFilters({ onFilterChange }),
-      )
+      const { result } = renderHook(() => useLinksFilters({ onFilterChange }))
 
       act(() => {
         result.current.setStatusFilter('active')
@@ -357,9 +333,7 @@ describe('useLinksFilters', () => {
 
     it('should include only_expired when status is expired', () => {
       const onFilterChange = vi.fn()
-      const { result } = renderHook(() =>
-        useLinksFilters({ onFilterChange }),
-      )
+      const { result } = renderHook(() => useLinksFilters({ onFilterChange }))
 
       act(() => {
         result.current.setStatusFilter('expired')
@@ -372,9 +346,7 @@ describe('useLinksFilters', () => {
 
     it('should include date filters when set', () => {
       const onFilterChange = vi.fn()
-      const { result } = renderHook(() =>
-        useLinksFilters({ onFilterChange }),
-      )
+      const { result } = renderHook(() => useLinksFilters({ onFilterChange }))
 
       const afterDate = new Date('2024-01-01')
       const beforeDate = new Date('2024-12-31')
@@ -391,9 +363,7 @@ describe('useLinksFilters', () => {
 
     it('should return null for empty search string', () => {
       const onFilterChange = vi.fn()
-      const { result } = renderHook(() =>
-        useLinksFilters({ onFilterChange }),
-      )
+      const { result } = renderHook(() => useLinksFilters({ onFilterChange }))
 
       act(() => {
         result.current.setSearchQuery('')
@@ -411,9 +381,7 @@ describe('useLinksFilters', () => {
   describe('debounce configuration', () => {
     it('should use default debounce of 300ms', () => {
       const onFilterChange = vi.fn()
-      const { result } = renderHook(() =>
-        useLinksFilters({ onFilterChange }),
-      )
+      const { result } = renderHook(() => useLinksFilters({ onFilterChange }))
 
       onFilterChange.mockClear()
 

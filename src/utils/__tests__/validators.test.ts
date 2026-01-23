@@ -1,4 +1,4 @@
-import { describe, expect, it, beforeEach, vi } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import {
   isValidUrl,
   validateSafeUrl,
@@ -272,17 +272,23 @@ describe('validators', () => {
     it('should reject short password', () => {
       const result = validatePasswordStrength('Short1')
       expect(result.isValid).toBe(false)
-      expect(result.feedback).toContain('Password should be at least 8 characters')
+      expect(result.feedback).toContain(
+        'Password should be at least 8 characters',
+      )
     })
 
     it('should provide feedback for missing lowercase', () => {
       const result = validatePasswordStrength('UPPERCASE123')
-      expect(result.feedback).toContain('Password should contain lowercase letters')
+      expect(result.feedback).toContain(
+        'Password should contain lowercase letters',
+      )
     })
 
     it('should provide feedback for missing uppercase', () => {
       const result = validatePasswordStrength('lowercase123')
-      expect(result.feedback).toContain('Password should contain uppercase letters')
+      expect(result.feedback).toContain(
+        'Password should contain uppercase letters',
+      )
     })
 
     it('should provide feedback for missing numbers', () => {
@@ -292,7 +298,9 @@ describe('validators', () => {
 
     it('should provide feedback for missing special chars', () => {
       const result = validatePasswordStrength('Password123')
-      expect(result.feedback).toContain('Password should contain special characters')
+      expect(result.feedback).toContain(
+        'Password should contain special characters',
+      )
     })
 
     it('should accept strong password', () => {

@@ -4,7 +4,14 @@ import { useColumnVisibility } from '../useColumnVisibility'
 
 // Mock the imports
 vi.mock('@/components/links/LinksTable', () => ({
-  DEFAULT_VISIBLE_COLUMNS: ['code', 'target', 'clicks', 'status', 'created', 'expires'],
+  DEFAULT_VISIBLE_COLUMNS: [
+    'code',
+    'target',
+    'clicks',
+    'status',
+    'created',
+    'expires',
+  ],
 }))
 
 vi.mock('@/utils/storage', () => ({
@@ -52,7 +59,10 @@ describe('useColumnVisibility', () => {
     })
 
     it('should use default columns when storage has invalid column names', () => {
-      vi.mocked(Storage.getJSON).mockReturnValue(['invalid_column', 'another_invalid'])
+      vi.mocked(Storage.getJSON).mockReturnValue([
+        'invalid_column',
+        'another_invalid',
+      ])
 
       const { result } = renderHook(() => useColumnVisibility())
       expect(result.current.visibleColumns).toEqual(DEFAULT_VISIBLE_COLUMNS)
@@ -83,7 +93,11 @@ describe('useColumnVisibility', () => {
       })
 
       expect(result.current.visibleColumns).toContain('clicks')
-      expect(result.current.visibleColumns).toEqual(['code', 'target', 'clicks'])
+      expect(result.current.visibleColumns).toEqual([
+        'code',
+        'target',
+        'clicks',
+      ])
     })
 
     it('should remove column when checked is false', () => {

@@ -233,9 +233,7 @@ describe('useTableSelection', () => {
 
   describe('isAllSelected', () => {
     it('should return false for empty items', () => {
-      const { result } = renderHook(() =>
-        useTableSelection([], { getItemId }),
-      )
+      const { result } = renderHook(() => useTableSelection([], { getItemId }))
       expect(result.current.isAllSelected).toBe(false)
     })
 

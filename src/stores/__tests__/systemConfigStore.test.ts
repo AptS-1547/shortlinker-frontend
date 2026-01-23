@@ -17,19 +17,29 @@ vi.mock('@/utils/errorHandler', () => ({
   ),
 }))
 
-import { useSystemConfigStore, useSystemConfigLoading } from '../systemConfigStore'
+import { useSystemConfigStore } from '../systemConfigStore'
 import { SystemConfigAPI } from '@/services/api'
 
 describe('systemConfigStore', () => {
   const mockConfig = {
     key: 'test_key',
     value: 'test_value',
+    value_type: 'string' as const,
+    requires_restart: false,
+    is_sensitive: false,
     updated_at: '2024-01-01T00:00:00Z',
   }
 
   const mockConfigs = [
     mockConfig,
-    { key: 'another_key', value: 'another_value', updated_at: '2024-01-01T00:00:00Z' },
+    {
+      key: 'another_key',
+      value: 'another_value',
+      value_type: 'string' as const,
+      requires_restart: false,
+      is_sensitive: false,
+      updated_at: '2024-01-01T00:00:00Z',
+    },
   ]
 
   beforeEach(() => {
@@ -142,15 +152,26 @@ describe('systemConfigStore', () => {
     it('should update config optimistically and return result', async () => {
       useSystemConfigStore.setState({ configs: mockConfigs })
       vi.mocked(SystemConfigAPI.update).mockResolvedValueOnce({
+        key: 'test_key',
+        value: 'new_value',
         requires_restart: false,
+        is_sensitive: false,
         message: null,
       })
 
       const result = await act(async () => {
-        return await useSystemConfigStore.getState().updateConfig('test_key', 'new_value')
+        return await useSystemConfigStore
+          .getState()
+          .updateConfig('test_key', 'new_value')
       })
 
-      expect(result).toEqual({ requires_restart: false, message: null })
+      expect(result).toEqual({
+        key: 'test_key',
+        value: 'new_value',
+        requires_restart: false,
+        is_sensitive: false,
+        message: null,
+      })
       const state = useSystemConfigStore.getState()
       const updatedConfig = state.configs.find((c) => c.key === 'test_key')
       expect(updatedConfig?.value).toBe('new_value')
@@ -161,11 +182,19 @@ describe('systemConfigStore', () => {
       let updatingDuringCall = false
       vi.mocked(SystemConfigAPI.update).mockImplementation(async () => {
         updatingDuringCall = useSystemConfigStore.getState().updating
-        return { requires_restart: false, message: null }
+        return {
+          key: 'test_key',
+          value: 'new_value',
+          requires_restart: false,
+          is_sensitive: false,
+          message: null,
+        }
       })
 
       await act(async () => {
-        await useSystemConfigStore.getState().updateConfig('test_key', 'new_value')
+        await useSystemConfigStore
+          .getState()
+          .updateConfig('test_key', 'new_value')
       })
 
       expect(updatingDuringCall).toBe(true)
@@ -179,7 +208,9 @@ describe('systemConfigStore', () => {
 
       await expect(
         act(async () => {
-          await useSystemConfigStore.getState().updateConfig('test_key', 'new_value')
+          await useSystemConfigStore
+            .getState()
+            .updateConfig('test_key', 'new_value')
         }),
       ).rejects.toThrow('Update failed')
 
@@ -192,12 +223,17 @@ describe('systemConfigStore', () => {
     it('should return requires_restart flag', async () => {
       useSystemConfigStore.setState({ configs: mockConfigs })
       vi.mocked(SystemConfigAPI.update).mockResolvedValueOnce({
+        key: 'test_key',
+        value: 'new_value',
         requires_restart: true,
+        is_sensitive: false,
         message: 'Please restart the server',
       })
 
       const result = await act(async () => {
-        return await useSystemConfigStore.getState().updateConfig('test_key', 'new_value')
+        return await useSystemConfigStore
+          .getState()
+          .updateConfig('test_key', 'new_value')
       })
 
       expect(result.requires_restart).toBe(true)
@@ -211,7 +247,10 @@ describe('systemConfigStore', () => {
 
   describe('reloadConfigs', () => {
     it('should reload configs and refetch', async () => {
-      vi.mocked(SystemConfigAPI.reload).mockResolvedValueOnce(undefined)
+      vi.mocked(SystemConfigAPI.reload).mockResolvedValueOnce({
+        message: 'Config reloaded',
+        duration_ms: BigInt(100),
+      })
       vi.mocked(SystemConfigAPI.fetchAll).mockResolvedValueOnce(mockConfigs)
 
       await act(async () => {
@@ -228,7 +267,7 @@ describe('systemConfigStore', () => {
       let reloadingDuringCall = false
       vi.mocked(SystemConfigAPI.reload).mockImplementation(async () => {
         reloadingDuringCall = useSystemConfigStore.getState().reloading
-        return undefined
+        return { message: 'Config reloaded', duration_ms: BigInt(100) }
       })
       vi.mocked(SystemConfigAPI.fetchAll).mockResolvedValueOnce(mockConfigs)
 

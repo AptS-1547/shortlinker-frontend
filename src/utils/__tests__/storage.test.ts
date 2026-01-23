@@ -96,7 +96,9 @@ describe('Storage', () => {
   describe('getJSON', () => {
     it('should parse and return JSON value', () => {
       const testObj = { foo: 'bar', count: 42 }
-      vi.spyOn(window.localStorage, 'getItem').mockReturnValue(JSON.stringify(testObj))
+      vi.spyOn(window.localStorage, 'getItem').mockReturnValue(
+        JSON.stringify(testObj),
+      )
 
       const result = Storage.getJSON<typeof testObj>('test-key')
       expect(result).toEqual(testObj)
@@ -118,7 +120,9 @@ describe('Storage', () => {
 
     it('should handle array values', () => {
       const testArr = [1, 2, 3, 'four']
-      vi.spyOn(window.localStorage, 'getItem').mockReturnValue(JSON.stringify(testArr))
+      vi.spyOn(window.localStorage, 'getItem').mockReturnValue(
+        JSON.stringify(testArr),
+      )
 
       const result = Storage.getJSON<typeof testArr>('test-key')
       expect(result).toEqual(testArr)
@@ -132,7 +136,10 @@ describe('Storage', () => {
 
       const result = Storage.setJSON('test-key', testObj)
       expect(result).toBe(true)
-      expect(setItemSpy).toHaveBeenCalledWith('test-key', JSON.stringify(testObj))
+      expect(setItemSpy).toHaveBeenCalledWith(
+        'test-key',
+        JSON.stringify(testObj),
+      )
     })
 
     it('should handle array values', () => {
@@ -141,7 +148,10 @@ describe('Storage', () => {
 
       const result = Storage.setJSON('test-key', testArr)
       expect(result).toBe(true)
-      expect(setItemSpy).toHaveBeenCalledWith('test-key', JSON.stringify(testArr))
+      expect(setItemSpy).toHaveBeenCalledWith(
+        'test-key',
+        JSON.stringify(testArr),
+      )
     })
 
     it('should handle primitive values', () => {

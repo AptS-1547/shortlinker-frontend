@@ -153,7 +153,9 @@ describe('authStore', () => {
 
     it('should set isAuthenticated to false even if API fails', async () => {
       useAuthStore.setState({ isAuthenticated: true })
-      vi.mocked(AuthAPI.logout).mockRejectedValueOnce(new Error('Network error'))
+      vi.mocked(AuthAPI.logout).mockRejectedValueOnce(
+        new Error('Network error'),
+      )
 
       await act(async () => {
         await useAuthStore.getState().logout()
@@ -219,7 +221,9 @@ describe('authStore', () => {
     })
 
     it('should handle verification error', async () => {
-      vi.mocked(AuthAPI.verifyToken).mockRejectedValueOnce(new Error('Network error'))
+      vi.mocked(AuthAPI.verifyToken).mockRejectedValueOnce(
+        new Error('Network error'),
+      )
 
       await act(async () => {
         await useAuthStore.getState().checkAuthStatus()
@@ -268,7 +272,9 @@ describe('authStore', () => {
 
     it('should set isAuthenticated to false on refresh failure', async () => {
       useAuthStore.setState({ isAuthenticated: true })
-      vi.mocked(AuthAPI.refreshToken).mockRejectedValueOnce(new Error('Refresh failed'))
+      vi.mocked(AuthAPI.refreshToken).mockRejectedValueOnce(
+        new Error('Refresh failed'),
+      )
 
       await expect(
         act(async () => {
@@ -351,7 +357,10 @@ describe('authStore', () => {
 
   describe('exported functions', () => {
     it('forceLogout should set isAuthenticated to false', () => {
-      useAuthStore.setState({ isAuthenticated: true, expiresAt: Date.now() + 3600000 })
+      useAuthStore.setState({
+        isAuthenticated: true,
+        expiresAt: Date.now() + 3600000,
+      })
 
       act(() => {
         forceLogout()

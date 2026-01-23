@@ -1,5 +1,5 @@
-import { describe, expect, it, vi } from 'vitest'
-import axios, { AxiosError } from 'axios'
+import { describe, expect, it } from 'vitest'
+import { AxiosError } from 'axios'
 import {
   extractErrorMessage,
   isNetworkError,
