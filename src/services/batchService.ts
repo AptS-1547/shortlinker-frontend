@@ -102,7 +102,11 @@ export class BatchService {
   /**
    * 从 CSV 导入链接
    */
-  async importLinks(file: File, mode: ImportMode): Promise<ImportResponse> {
+  async importLinks(
+    file: File,
+    mode: ImportMode,
+    onProgress?: (percent: number) => void,
+  ): Promise<ImportResponse> {
     const formData = new FormData()
     formData.append('file', file)
     formData.append('mode', mode)
@@ -120,6 +124,16 @@ export class BatchService {
           'Content-Type': 'multipart/form-data',
         },
         withCredentials: true,
+        onUploadProgress: onProgress
+          ? (progressEvent) => {
+              if (progressEvent.total) {
+                const percent = Math.round(
+                  (progressEvent.loaded * 100) / progressEvent.total,
+                )
+                onProgress(percent)
+              }
+            }
+          : undefined,
       },
     )
 

@@ -190,17 +190,15 @@ describe('linksStore', () => {
       )
 
       await act(async () => {
-        await useLinksStore
-          .getState()
-          .fetchLinks({
-            page: 3,
-            page_size: 10,
-            search: 'new',
-            created_after: null,
-            created_before: null,
-            only_expired: null,
-            only_active: null,
-          })
+        await useLinksStore.getState().fetchLinks({
+          page: 3,
+          page_size: 10,
+          search: 'new',
+          created_after: null,
+          created_before: null,
+          only_expired: null,
+          only_active: null,
+        })
       })
 
       const state = useLinksStore.getState()
@@ -245,17 +243,15 @@ describe('linksStore', () => {
       )
 
       await act(async () => {
-        await useLinksStore
-          .getState()
-          .applyFilter({
-            search: 'test',
-            page: null,
-            page_size: null,
-            created_after: null,
-            created_before: null,
-            only_expired: null,
-            only_active: null,
-          })
+        await useLinksStore.getState().applyFilter({
+          search: 'test',
+          page: null,
+          page_size: null,
+          created_after: null,
+          created_before: null,
+          only_expired: null,
+          only_active: null,
+        })
       })
 
       expect(LinkAPI.fetchPaginated).toHaveBeenCalled()
@@ -280,17 +276,15 @@ describe('linksStore', () => {
       )
 
       await act(async () => {
-        await useLinksStore
-          .getState()
-          .applyFilter({
-            search: 'new',
-            page: null,
-            page_size: null,
-            created_after: null,
-            created_before: null,
-            only_expired: null,
-            only_active: null,
-          })
+        await useLinksStore.getState().applyFilter({
+          search: 'new',
+          page: null,
+          page_size: null,
+          created_after: null,
+          created_before: null,
+          only_expired: null,
+          only_active: null,
+        })
       })
 
       const state = useLinksStore.getState()

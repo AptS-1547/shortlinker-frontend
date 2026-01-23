@@ -20,6 +20,9 @@ import { cn } from '@/lib/utils'
 import { batchService } from '@/services/batchService'
 import type { ImportMode, ImportResponse } from '@/services/types'
 
+// 与后端 PayloadConfig 保持一致 (src/runtime/modes/server.rs:174)
+const MAX_FILE_SIZE = 1024 * 1024 // 1MB
+
 interface LinkImportDialogProps {
   open: boolean
   onOpenChange: (open: boolean) => void
@@ -42,28 +45,40 @@ export function LinkImportDialog({
   const [result, setResult] = useState<ImportResponse | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [isDragging, setIsDragging] = useState(false)
+  const [uploadProgress, setUploadProgress] = useState(0)
 
   const handleFileChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const selectedFile = e.target.files?.[0]
       if (selectedFile) {
+        if (selectedFile.size > MAX_FILE_SIZE) {
+          setError(
+            t('links.import.fileTooLarge', {
+              maxSize: `${(MAX_FILE_SIZE / 1024 / 1024).toFixed(1)}MB`,
+            }),
+          )
+          return
+        }
         setFile(selectedFile)
         setState('idle')
         setResult(null)
         setError(null)
       }
     },
-    [],
+    [t],
   )
 
   const handleImport = useCallback(async () => {
     if (!file) return
 
     setState('uploading')
+    setUploadProgress(0)
     setError(null)
 
     try {
-      const response = await batchService.importLinks(file, mode)
+      const response = await batchService.importLinks(file, mode, (percent) => {
+        setUploadProgress(percent)
+      })
       setResult(response)
       setState('success')
       onSuccess()
@@ -79,6 +94,7 @@ export function LinkImportDialog({
     setState('idle')
     setResult(null)
     setError(null)
+    setUploadProgress(0)
     onOpenChange(false)
   }, [onOpenChange])
 
@@ -103,19 +119,30 @@ export function LinkImportDialog({
     setIsDragging(false)
   }, [])
 
-  const handleDrop = useCallback((e: React.DragEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
-    setIsDragging(false)
+  const handleDrop = useCallback(
+    (e: React.DragEvent) => {
+      e.preventDefault()
+      e.stopPropagation()
+      setIsDragging(false)
 
-    const droppedFile = e.dataTransfer.files?.[0]
-    if (droppedFile?.name.endsWith('.csv')) {
-      setFile(droppedFile)
-      setState('idle')
-      setResult(null)
-      setError(null)
-    }
-  }, [])
+      const droppedFile = e.dataTransfer.files?.[0]
+      if (droppedFile?.name.endsWith('.csv')) {
+        if (droppedFile.size > MAX_FILE_SIZE) {
+          setError(
+            t('links.import.fileTooLarge', {
+              maxSize: `${(MAX_FILE_SIZE / 1024 / 1024).toFixed(1)}MB`,
+            }),
+          )
+          return
+        }
+        setFile(droppedFile)
+        setState('idle')
+        setResult(null)
+        setError(null)
+      }
+    },
+    [t],
+  )
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
@@ -282,11 +309,27 @@ export function LinkImportDialog({
           )}
 
           {/* 错误信息 */}
-          {state === 'error' && error && (
+          {error && (
             <div className="p-3 rounded-lg bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-800">
               <div className="flex items-center gap-2 text-red-700 dark:text-red-300">
                 <AlertCircle className="h-4 w-4" />
                 <span>{error}</span>
+              </div>
+            </div>
+          )}
+
+          {/* 上传进度 */}
+          {state === 'uploading' && (
+            <div className="space-y-2">
+              <div className="flex items-center justify-between text-sm text-muted-foreground">
+                <span>{t('links.import.uploading')}</span>
+                <span>{uploadProgress}%</span>
+              </div>
+              <div className="h-2 bg-muted rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-primary transition-all duration-200"
+                  style={{ width: `${uploadProgress}%` }}
+                />
               </div>
             </div>
           )}
