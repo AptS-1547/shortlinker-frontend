@@ -475,7 +475,10 @@ export class HttpClient {
       }
 
       // 如果后端返回了 ErrorCode，直接使用
-      if (backendErrorCode !== undefined && backendErrorCode !== ErrorCode.Success) {
+      if (
+        backendErrorCode !== undefined &&
+        backendErrorCode !== ErrorCode.Success
+      ) {
         throw new ApiError(
           backendMessage || `Error ${status}`,
           status,
@@ -516,9 +519,13 @@ export class HttpClient {
               ? ErrorCode.AuthFailed
               : ErrorCode.Unauthorized
           case 403:
-            return ErrorCode.Forbidden
+            // 403 通常是 CSRF 保护触发
+            return ErrorCode.CsrfInvalid
           case 404:
             return ErrorCode.NotFound
+          case 409:
+            // 409 冲突通常是链接已存在
+            return ErrorCode.LinkAlreadyExists
           case 429:
             return ErrorCode.RateLimitExceeded
           case 500:

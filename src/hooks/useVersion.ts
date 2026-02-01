@@ -4,10 +4,11 @@ import { appConfig } from '@/config/app'
 export function useVersion() {
   const version = appConfig.shortlinkerVersion
 
+  // version 是从 appConfig 单例获取的常量，不需要作为依赖项
   const displayVersion = useMemo(() => {
     const cleanVersion = version.replace('-dirty', '')
     return cleanVersion.startsWith('v') ? cleanVersion : `v${cleanVersion}`
-  }, [version])
+  }, [])
 
   const versionType = useMemo(() => {
     const ver = version.toLowerCase()
@@ -17,7 +18,7 @@ export function useVersion() {
     if (ver.includes('rc')) return 'rc'
 
     return 'release'
-  }, [version])
+  }, [])
 
   const isDevelopment = useMemo(() => versionType === 'alpha', [versionType])
   const isPreRelease = useMemo(

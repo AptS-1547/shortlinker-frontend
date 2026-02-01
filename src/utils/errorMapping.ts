@@ -19,9 +19,7 @@ const ERROR_CODE_TO_I18N_KEY: Partial<Record<ErrorCode, string>> = {
   // 通用错误
   [ErrorCode.BadRequest]: 'errors.badRequest',
   [ErrorCode.Unauthorized]: 'errors.unauthorized',
-  [ErrorCode.Forbidden]: 'errors.forbidden',
   [ErrorCode.NotFound]: 'errors.notFound',
-  [ErrorCode.Conflict]: 'errors.conflict',
   [ErrorCode.RateLimitExceeded]: 'errors.tooManyRequests',
   [ErrorCode.InternalServerError]: 'errors.serverError',
   [ErrorCode.ServiceUnavailable]: 'errors.serviceUnavailable',
@@ -67,7 +65,9 @@ export function getErrorI18nKey(error: unknown): string {
 
   if (error instanceof Error && 'code' in error) {
     const apiError = error as ApiError
-    return ERROR_CODE_TO_I18N_KEY[apiError.code as ErrorCode] ?? 'errors.unknown'
+    return (
+      ERROR_CODE_TO_I18N_KEY[apiError.code as ErrorCode] ?? 'errors.unknown'
+    )
   }
 
   return 'errors.unknown'

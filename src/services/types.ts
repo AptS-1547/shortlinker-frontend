@@ -1,5 +1,5 @@
 // ============ 从生成文件重新导出 ============
-export { ErrorCode } from './types.generated'
+
 export type {
   BatchCreateRequest,
   BatchDeleteRequest,
@@ -26,6 +26,7 @@ export type {
   StatsResponse,
   ValueType,
 } from './types.generated'
+export { ErrorCode } from './types.generated'
 
 // ============ 前端专用类型（保留） ============
 

@@ -11,7 +11,10 @@ import {
 } from '../errorMapping'
 
 // Helper to create mock ApiError with numeric ErrorCode
-function createApiError(code: number | undefined, message = 'Test error'): ApiError {
+function createApiError(
+  code: number | undefined,
+  message = 'Test error',
+): ApiError {
   const error = new Error(message) as ApiError
   error.code = code
   error.errorCode = code as ErrorCode | undefined
@@ -19,7 +22,9 @@ function createApiError(code: number | undefined, message = 'Test error'): ApiEr
 }
 
 // Helper for network errors (no code, message-based detection)
-function createNetworkError(message = 'Network Error: Cannot connect to server'): ApiError {
+function createNetworkError(
+  message = 'Network Error: Cannot connect to server',
+): ApiError {
   const error = new Error(message) as ApiError
   return error
 }
@@ -48,11 +53,6 @@ describe('errorMapping', () => {
     it('should return errors.unauthorized for Unauthorized', () => {
       const error = createApiError(ErrorCode.Unauthorized)
       expect(getErrorI18nKey(error)).toBe('errors.unauthorized')
-    })
-
-    it('should return errors.forbidden for Forbidden', () => {
-      const error = createApiError(ErrorCode.Forbidden)
-      expect(getErrorI18nKey(error)).toBe('errors.forbidden')
     })
 
     it('should return errors.notFound for NotFound', () => {
@@ -191,7 +191,7 @@ describe('errorMapping', () => {
     })
 
     it('should return false for other error codes', () => {
-      const error = createApiError(ErrorCode.Forbidden)
+      const error = createApiError(ErrorCode.BadRequest)
       expect(isAuthenticationError(error)).toBe(false)
     })
 
