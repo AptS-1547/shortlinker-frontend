@@ -1,5 +1,5 @@
-import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest'
 import { act } from '@testing-library/react'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 // Mock HealthAPI
 vi.mock('@/services/api', () => ({
@@ -8,8 +8,8 @@ vi.mock('@/services/api', () => ({
   },
 }))
 
-import { useHealthStore } from '../healthStore'
 import { HealthAPI } from '@/services/api'
+import { useHealthStore } from '../healthStore'
 
 describe('healthStore', () => {
   const mockHealthResponse = {

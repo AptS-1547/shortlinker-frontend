@@ -1,13 +1,13 @@
 import { describe, expect, it } from 'vitest'
+import type { ApiError } from '@/services/http'
 import {
   getErrorI18nKey,
   getUserFriendlyErrorMessage,
-  isNetworkError,
   isAuthenticationError,
-  isServerError,
+  isNetworkError,
   isRetryableError,
+  isServerError,
 } from '../errorMapping'
-import type { ApiError } from '@/services/http'
 
 // Helper to create mock ApiError
 function createApiError(code: string, message = 'Test error'): ApiError {

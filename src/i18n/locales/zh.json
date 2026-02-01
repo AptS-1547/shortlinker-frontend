@@ -425,8 +425,6 @@
       "api.jwt_secret": "JWT 密钥",
       "api.access_token_minutes": "Access Token 有效期(分钟)",
       "api.refresh_token_days": "Refresh Token 有效期(天)",
-      "api.access_cookie_name": "Access Cookie 名称",
-      "api.refresh_cookie_name": "Refresh Cookie 名称",
       "api.cookie_secure": "Cookie 安全传输",
       "api.cookie_same_site": "Cookie SameSite 策略",
       "api.cookie_domain": "Cookie 域名",

@@ -421,8 +421,6 @@
       "api.jwt_secret": "JWT Секрет",
       "api.access_token_minutes": "Срок Access Token (минуты)",
       "api.refresh_token_days": "Срок Refresh Token (дни)",
-      "api.access_cookie_name": "Имя Access Cookie",
-      "api.refresh_cookie_name": "Имя Refresh Cookie",
       "api.cookie_secure": "Безопасная Cookie (только HTTPS)",
       "api.cookie_same_site": "Политика Cookie SameSite",
       "api.cookie_domain": "Домен Cookie",

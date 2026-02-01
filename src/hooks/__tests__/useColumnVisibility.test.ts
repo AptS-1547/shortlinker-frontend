@@ -1,5 +1,5 @@
-import { describe, expect, it, vi, beforeEach } from 'vitest'
-import { renderHook, act } from '@testing-library/react'
+import { act, renderHook } from '@testing-library/react'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { useColumnVisibility } from '../useColumnVisibility'
 
 // Mock the imports
@@ -24,8 +24,8 @@ vi.mock('@/utils/storage', () => ({
   },
 }))
 
-import { Storage, STORAGE_KEYS } from '@/utils/storage'
 import { DEFAULT_VISIBLE_COLUMNS } from '@/components/links/LinksTable'
+import { STORAGE_KEYS, Storage } from '@/utils/storage'
 
 describe('useColumnVisibility', () => {
   beforeEach(() => {

@@ -51,7 +51,7 @@ import { useLinksBatch } from '@/hooks/useLinksBatch'
 import { useLinksFilters } from '@/hooks/useLinksFilters'
 import { useLinksSort } from '@/hooks/useLinksSort'
 import { batchService } from '@/services/batchService'
-import type { PostNewLink, LinkResponse } from '@/services/types'
+import type { LinkResponse, PostNewLink } from '@/services/types'
 import { useLinksStore } from '@/stores/linksStore'
 import { buildShortUrl } from '@/utils/urlBuilder'
 
@@ -398,6 +398,7 @@ function TableSkeleton() {
   return (
     <div className="space-y-3">
       {Array.from({ length: 5 }).map((_, i) => (
+        // biome-ignore lint/suspicious/noArrayIndexKey: static skeleton list, order never changes
         <div key={`skeleton-${i}`} className="flex items-center gap-4">
           <Skeleton className="h-5 w-5" />
           <Skeleton className="h-5 w-24" />

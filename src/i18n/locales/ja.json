@@ -419,8 +419,6 @@
       "api.jwt_secret": "JWTシークレット",
       "api.access_token_minutes": "アクセストークン有効期限(分)",
       "api.refresh_token_days": "リフレッシュトークン有効期限(日)",
-      "api.access_cookie_name": "アクセスCookie名",
-      "api.refresh_cookie_name": "リフレッシュCookie名",
       "api.cookie_secure": "Cookie安全転送(HTTPSのみ)",
       "api.cookie_same_site": "Cookie SameSiteポリシー",
       "api.cookie_domain": "Cookieドメイン",

@@ -15,7 +15,7 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { useDateFormat } from '@/hooks/useDateFormat'
-import type { StatsResponse, LinkResponse } from '@/services/api'
+import type { LinkResponse, StatsResponse } from '@/services/api'
 import { LinkAPI } from '@/services/api'
 import { useHealthStore } from '@/stores/healthStore'
 import { dashboardLogger } from '@/utils/logger'

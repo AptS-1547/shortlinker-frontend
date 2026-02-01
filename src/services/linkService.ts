@@ -2,10 +2,10 @@ import { ApiError, adminClient } from './http'
 import type {
   GetLinksQuery,
   LinkCreateResult,
+  LinkResponse,
+  PaginatedLinksResponse,
   PostNewLink,
   StatsResponse,
-  PaginatedLinksResponse,
-  LinkResponse,
 } from './types'
 
 /**

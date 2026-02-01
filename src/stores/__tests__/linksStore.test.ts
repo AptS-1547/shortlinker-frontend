@@ -1,5 +1,5 @@
-import { describe, expect, it, vi, beforeEach } from 'vitest'
 import { act } from '@testing-library/react'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 // Mock LinkAPI
 vi.mock('@/services/api', () => ({
@@ -38,8 +38,8 @@ vi.mock('@/utils/storage', () => ({
   },
 }))
 
-import { useLinksStore } from '../linksStore'
 import { LinkAPI } from '@/services/api'
+import { useLinksStore } from '../linksStore'
 
 describe('linksStore', () => {
   const mockLink = {

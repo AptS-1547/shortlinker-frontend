@@ -1,5 +1,5 @@
-import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest'
 import { act } from '@testing-library/react'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 // Mock AuthAPI
 vi.mock('@/services/api', () => ({
@@ -20,8 +20,8 @@ vi.mock('@/utils/logger', () => ({
   },
 }))
 
-import { useAuthStore, forceLogout, refreshTokenFromHttp } from '../authStore'
 import { AuthAPI } from '@/services/api'
+import { forceLogout, refreshTokenFromHttp, useAuthStore } from '../authStore'
 
 describe('authStore', () => {
   beforeEach(() => {

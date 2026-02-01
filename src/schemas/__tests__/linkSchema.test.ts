@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { linkSchema, type LinkFormData } from '../linkSchema'
+import { type LinkFormData, linkSchema } from '../linkSchema'
 
 describe('linkSchema', () => {
   // ==========================================================================

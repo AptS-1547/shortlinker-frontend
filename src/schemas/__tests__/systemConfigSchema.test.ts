@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import {
-  createConfigValueSchema,
   createConfigFormSchema,
+  createConfigValueSchema,
 } from '../systemConfigSchema'
 
 describe('systemConfigSchema', () => {

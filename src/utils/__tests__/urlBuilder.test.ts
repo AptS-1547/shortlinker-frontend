@@ -1,11 +1,11 @@
-import { describe, expect, it, beforeEach } from 'vitest'
+import { beforeEach, describe, expect, it } from 'vitest'
 import {
-  buildUrlParams,
+  buildShortUrl,
   buildUrl,
-  parseUrlParams,
+  buildUrlParams,
   isValidUrl,
   normalizeUrl,
-  buildShortUrl,
+  parseUrlParams,
 } from '../urlBuilder'
 
 describe('urlBuilder', () => {

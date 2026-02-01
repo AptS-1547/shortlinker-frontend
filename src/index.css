@@ -233,8 +233,8 @@
   input:-webkit-autofill:hover,
   input:-webkit-autofill:focus,
   input:-webkit-autofill:active {
-    -webkit-box-shadow: 0 0 0 1000px oklch(0.96 0.02 250) inset !important;
-    -webkit-text-fill-color: var(--foreground) !important;
+    -webkit-box-shadow: 0 0 0 1000px oklch(0.96 0.02 250) inset;
+    -webkit-text-fill-color: var(--foreground);
     transition: background-color 5000s ease-in-out 0s;
     caret-color: var(--foreground);
   }
@@ -244,7 +244,7 @@
   [role="dialog"] input:-webkit-autofill:hover,
   [role="dialog"] input:-webkit-autofill:focus,
   [role="dialog"] input:-webkit-autofill:active {
-    -webkit-box-shadow: 0 0 0 1000px oklch(0.96 0.02 250) inset !important;
+    -webkit-box-shadow: 0 0 0 1000px oklch(0.96 0.02 250) inset;
   }
 
   /* 暗色模式下的自动填充 */
@@ -252,7 +252,7 @@
   .dark input:-webkit-autofill:hover,
   .dark input:-webkit-autofill:focus,
   .dark input:-webkit-autofill:active {
-    -webkit-box-shadow: 0 0 0 1000px oklch(0.25 0.02 250) inset !important;
-    -webkit-text-fill-color: var(--foreground) !important;
+    -webkit-box-shadow: 0 0 0 1000px oklch(0.25 0.02 250) inset;
+    -webkit-text-fill-color: var(--foreground);
   }
 }

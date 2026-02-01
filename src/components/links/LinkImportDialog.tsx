@@ -162,16 +162,9 @@ export function LinkImportDialog({
               onChange={handleFileChange}
               className="hidden"
             />
-            <div
-              role="button"
-              tabIndex={0}
+            <button
+              type="button"
               onClick={handleSelectFile}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  e.preventDefault()
-                  handleSelectFile()
-                }
-              }}
               onDragOver={handleDragOver}
               onDragEnter={handleDragEnter}
               onDragLeave={handleDragLeave}
@@ -210,7 +203,7 @@ export function LinkImportDialog({
                   </span>
                 </div>
               )}
-            </div>
+            </button>
           </div>
 
           {/* 导入模式 */}

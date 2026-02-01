@@ -1,5 +1,5 @@
-import { describe, expect, it, vi, beforeEach } from 'vitest'
-import { renderHook, act } from '@testing-library/react'
+import { act, renderHook } from '@testing-library/react'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { useConfirm } from '../useConfirm'
 
 // Mock logger
@@ -95,6 +95,7 @@ describe('useConfirm', () => {
       })
 
       expect(result.current.isOpen).toBe(false)
+      // biome-ignore lint/style/noNonNullAssertion: test context guarantees assignment
       expect(await confirmPromise!).toBe(true)
     })
 
@@ -116,6 +117,7 @@ describe('useConfirm', () => {
 
       expect(onConfirm).toHaveBeenCalled()
       expect(result.current.isOpen).toBe(false)
+      // biome-ignore lint/style/noNonNullAssertion: test context guarantees assignment
       expect(await confirmPromise!).toBe(true)
     })
 
@@ -161,6 +163,7 @@ describe('useConfirm', () => {
         await result.current.handleConfirm(failingCallback)
       })
 
+      // biome-ignore lint/style/noNonNullAssertion: test context guarantees assignment
       expect(await confirmPromise!).toBe(false)
       expect(result.current.isOpen).toBe(false)
     })
@@ -189,6 +192,7 @@ describe('useConfirm', () => {
       })
 
       expect(result.current.isOpen).toBe(false)
+      // biome-ignore lint/style/noNonNullAssertion: test context guarantees assignment
       expect(await confirmPromise!).toBe(false)
     })
   })
@@ -214,6 +218,7 @@ describe('useConfirm', () => {
         await result.current.handleConfirm()
       })
 
+      // biome-ignore lint/style/noNonNullAssertion: test context guarantees assignment
       expect(await confirmPromise1!).toBe(true)
 
       // Second confirm (cancel)
@@ -229,6 +234,7 @@ describe('useConfirm', () => {
         result.current.handleCancel()
       })
 
+      // biome-ignore lint/style/noNonNullAssertion: test context guarantees assignment
       expect(await confirmPromise2!).toBe(false)
     })
 

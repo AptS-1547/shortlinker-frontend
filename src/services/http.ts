@@ -8,6 +8,9 @@ import { appConfig } from '@/config/app'
 import { forceLogout, refreshTokenFromHttp } from '@/stores/authStore'
 import { httpLogger } from '@/utils/logger'
 
+/** CSRF Cookie 名称（硬编码常量） */
+const CSRF_COOKIE_NAME = 'csrf_token'
+
 // ==================== 错误处理 ====================
 export class ApiError extends Error {
   status?: number
@@ -342,8 +345,24 @@ export class HttpClient {
   }
 
   private setupInterceptors(): void {
-    // Request interceptor - no Authorization header needed, cookies are sent automatically
-    this.client.interceptors.request.use((config) => config)
+    // Request interceptor - add CSRF token header for mutating requests
+    this.client.interceptors.request.use((config) => {
+      // Add CSRF token for non-GET requests (POST, PUT, DELETE, PATCH)
+      if (
+        config.method &&
+        !['get', 'head', 'options'].includes(config.method.toLowerCase())
+      ) {
+        const csrfToken = document.cookie
+          .split('; ')
+          .find((row) => row.startsWith(`${CSRF_COOKIE_NAME}=`))
+          ?.split('=')[1]
+
+        if (csrfToken) {
+          config.headers['X-CSRF-Token'] = decodeURIComponent(csrfToken)
+        }
+      }
+      return config
+    })
 
     // Response interceptor with token refresh logic
     this.client.interceptors.response.use(

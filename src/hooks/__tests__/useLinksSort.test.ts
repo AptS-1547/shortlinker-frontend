@@ -1,7 +1,7 @@
+import { act, renderHook } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
-import { renderHook, act } from '@testing-library/react'
-import { useLinksSort } from '../useLinksSort'
 import type { LinkResponse } from '@/services/types'
+import { useLinksSort } from '../useLinksSort'
 
 // Helper to create mock links
 function createMockLinks(): LinkResponse[] {

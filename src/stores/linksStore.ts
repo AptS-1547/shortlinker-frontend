@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import type { GetLinksQuery, PostNewLink, LinkResponse } from '@/services/api'
+import type { GetLinksQuery, LinkResponse, PostNewLink } from '@/services/api'
 import { LinkAPI } from '@/services/api'
 import { extractErrorMessage } from '@/utils/errorHandler'
 import { linksLogger } from '@/utils/logger'

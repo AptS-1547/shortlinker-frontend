@@ -1,10 +1,10 @@
+import type { AxiosError, InternalAxiosRequestConfig } from 'axios'
 import { describe, expect, it } from 'vitest'
-import { AxiosError } from 'axios'
 import {
   extractErrorMessage,
-  isNetworkError,
   isAuthError,
   isForbiddenError,
+  isNetworkError,
   isNotFoundError,
 } from '../errorHandler'
 
@@ -22,7 +22,7 @@ function createAxiosError(
   error.code = code
   error.name = 'AxiosError'
   error.message = message
-  error.config = { headers: {} as any } as any
+  error.config = {} as InternalAxiosRequestConfig
   error.toJSON = () => ({})
   if (response) {
     error.response = {
@@ -30,7 +30,7 @@ function createAxiosError(
       data: response.data || {},
       statusText: '',
       headers: {},
-      config: { headers: {} as any } as any,
+      config: {} as InternalAxiosRequestConfig,
     }
   }
   return error

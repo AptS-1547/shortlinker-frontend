@@ -425,8 +425,6 @@
       "api.jwt_secret": "JWT Secret",
       "api.access_token_minutes": "Access Token Lifetime (minutes)",
       "api.refresh_token_days": "Refresh Token Lifetime (days)",
-      "api.access_cookie_name": "Access Cookie Name",
-      "api.refresh_cookie_name": "Refresh Cookie Name",
       "api.cookie_secure": "Cookie Secure (HTTPS only)",
       "api.cookie_same_site": "Cookie SameSite Policy",
       "api.cookie_domain": "Cookie Domain",

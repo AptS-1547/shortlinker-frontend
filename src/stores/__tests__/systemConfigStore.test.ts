@@ -1,5 +1,5 @@
-import { describe, expect, it, vi, beforeEach } from 'vitest'
 import { act } from '@testing-library/react'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 // Mock SystemConfigAPI
 vi.mock('@/services/api', () => ({
@@ -17,8 +17,8 @@ vi.mock('@/utils/errorHandler', () => ({
   ),
 }))
 
-import { useSystemConfigStore } from '../systemConfigStore'
 import { SystemConfigAPI } from '@/services/api'
+import { useSystemConfigStore } from '../systemConfigStore'
 
 describe('systemConfigStore', () => {
   const mockConfig = {
@@ -166,10 +166,7 @@ describe('systemConfigStore', () => {
       })
 
       expect(result).toEqual({
-        key: 'test_key',
-        value: 'new_value',
         requires_restart: false,
-        is_sensitive: false,
         message: null,
       })
       const state = useSystemConfigStore.getState()

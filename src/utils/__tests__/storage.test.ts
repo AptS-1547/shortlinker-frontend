@@ -1,5 +1,5 @@
-import { describe, expect, it, beforeEach, vi } from 'vitest'
-import { Storage, STORAGE_KEYS } from '../storage'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { STORAGE_KEYS, Storage } from '../storage'
 
 describe('Storage', () => {
   beforeEach(() => {

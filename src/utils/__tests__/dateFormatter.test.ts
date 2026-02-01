@@ -1,12 +1,12 @@
-import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import {
+  daysDifference,
   formatDate,
   formatDateTime,
   formatDateTimeLocal,
+  formatRelativeTime,
   formatToRFC3339,
   isExpired,
-  daysDifference,
-  formatRelativeTime,
 } from '../dateFormatter'
 
 describe('dateFormatter', () => {
