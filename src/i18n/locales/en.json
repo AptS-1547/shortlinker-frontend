@@ -24,7 +24,8 @@
     "close": "Close",
     "enabled": "Enabled",
     "disabled": "Disabled",
-    "actions": "Actions"
+    "actions": "Actions",
+    "addItem": "Add item..."
   },
   "auth": {
     "title": "Admin Login",
@@ -492,6 +493,16 @@
       "cors": "CORS Settings",
       "tracking": "Click Tracking",
       "other": "Other"
+    },
+    "placeholder": {
+      "trustedProxies": "IP or CIDR (e.g., 192.168.1.0/24)",
+      "allowedOrigins": "Origin URL (e.g., https://example.com or *)",
+      "allowedHeaders": "Header name (e.g., Content-Type)"
+    },
+    "error": {
+      "invalidIpCidr": "Invalid IP/CIDR format",
+      "invalidUrl": "Invalid URL format",
+      "invalidHeader": "Invalid header name"
     }
   },
   "enums": {

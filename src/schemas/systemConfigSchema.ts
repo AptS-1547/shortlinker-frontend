@@ -45,6 +45,24 @@ export function createConfigValueSchema(valueType: ConfigValueType) {
         { message: 'Must be valid JSON' },
       )
 
+    case 'stringarray':
+    case 'enumarray':
+      // 数组类型必须是有效的 JSON 字符串数组
+      return z.string().refine(
+        (val) => {
+          try {
+            const arr = JSON.parse(val)
+            return (
+              Array.isArray(arr) &&
+              arr.every((item) => typeof item === 'string')
+            )
+          } catch {
+            return false
+          }
+        },
+        { message: 'Must be a valid string array' },
+      )
+
     default:
       // string 类型接受任何字符串
       return z.string()

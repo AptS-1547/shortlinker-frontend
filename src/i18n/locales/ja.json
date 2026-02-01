@@ -24,7 +24,8 @@
     "close": "閉じる",
     "enabled": "有効",
     "disabled": "無効",
-    "actions": "アクション"
+    "actions": "アクション",
+    "addItem": "項目を追加..."
   },
   "auth": {
     "title": "管理者ログイン",
@@ -486,6 +487,16 @@
       "cors": "CORS設定",
       "tracking": "クリック追跡",
       "other": "その他"
+    },
+    "placeholder": {
+      "trustedProxies": "IPまたはCIDR（例: 192.168.1.0/24）",
+      "allowedOrigins": "オリジンURL（例: https://example.com または *）",
+      "allowedHeaders": "ヘッダー名（例: Content-Type）"
+    },
+    "error": {
+      "invalidIpCidr": "無効なIP/CIDR形式",
+      "invalidUrl": "無効なURL形式",
+      "invalidHeader": "無効なヘッダー名"
     }
   },
   "enums": {

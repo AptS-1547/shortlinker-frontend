@@ -32,6 +32,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Switch } from '@/components/ui/switch'
+import { TagInput } from '@/components/ui/tag-input'
 import { Textarea } from '@/components/ui/textarea'
 import { useConfigSchemaByKey } from '@/hooks/useConfigSchema'
 import {
@@ -144,9 +145,90 @@ export function SystemConfigEditDialog({
       )
     }
 
-    // 2. enum_options：根据 value_type 决定单选还是多选
+    // 2. StringArray 类型 → TagInput 组件
+    if (config.value_type === 'stringarray') {
+      let items: string[] = []
+      try {
+        items = JSON.parse(field.value || '[]')
+      } catch {
+        items = []
+      }
+
+      // 根据配置 key 提供不同的 placeholder
+      const getPlaceholder = () => {
+        switch (config.key) {
+          case 'api.trusted_proxies':
+            return t(
+              'config.placeholder.trustedProxies',
+              'IP or CIDR (e.g., 192.168.1.0/24)',
+            )
+          case 'cors.allowed_origins':
+            return t(
+              'config.placeholder.allowedOrigins',
+              'Origin URL (e.g., https://example.com or *)',
+            )
+          case 'cors.allowed_headers':
+            return t(
+              'config.placeholder.allowedHeaders',
+              'Header name (e.g., Content-Type)',
+            )
+          default:
+            return t('common.addItem', 'Add item...')
+        }
+      }
+
+      return (
+        <TagInput
+          value={items}
+          onChange={(newItems) => field.onChange(JSON.stringify(newItems))}
+          placeholder={getPlaceholder()}
+        />
+      )
+    }
+
+    // 3. EnumArray 类型 + enum_options → 多选 Checkbox
+    if (config.value_type === 'enumarray' && configSchema?.enum_options) {
+      let selected: string[] = []
+      try {
+        selected = JSON.parse(field.value || '[]')
+      } catch {
+        selected = []
+      }
+      return (
+        <div className="space-y-2">
+          {configSchema.enum_options.map((opt: EnumOption) => {
+            const label = opt.label_i18n_key
+              ? t(opt.label_i18n_key, opt.label)
+              : opt.label
+
+            return (
+              <div key={opt.value} className="flex items-center gap-2">
+                <Checkbox
+                  id={`config-multi-${opt.value}`}
+                  checked={selected.includes(opt.value)}
+                  onCheckedChange={(checked: boolean) => {
+                    const newSelected = checked
+                      ? [...selected, opt.value]
+                      : selected.filter((v) => v !== opt.value)
+                    field.onChange(JSON.stringify(newSelected))
+                  }}
+                />
+                <label
+                  htmlFor={`config-multi-${opt.value}`}
+                  className="text-sm"
+                >
+                  {label}
+                </label>
+              </div>
+            )
+          })}
+        </div>
+      )
+    }
+
+    // 4. enum_options：根据 value_type 决定单选还是多选
     if (configSchema?.enum_options) {
-      // 2a. Json 类型 + enum_options → 多选 Checkbox
+      // 4a. Json 类型 + enum_options → 多选 Checkbox（向后兼容）
       if (config.value_type === 'json') {
         let selected: string[] = []
         try {
@@ -186,7 +268,7 @@ export function SystemConfigEditDialog({
         )
       }
 
-      // 2b. 其他类型 + enum_options → 单选 Select
+      // 4b. 其他类型 + enum_options → 单选 Select
       return (
         <Select value={field.value} onValueChange={field.onChange}>
           <SelectTrigger>
@@ -217,7 +299,7 @@ export function SystemConfigEditDialog({
       )
     }
 
-    // 3. 回退到基于 value_type 的默认渲染
+    // 5. 回退到基于 value_type 的默认渲染
     switch (config.value_type) {
       case 'int':
         return (

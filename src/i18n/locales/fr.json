@@ -24,7 +24,8 @@
     "close": "Fermer",
     "enabled": "Activé",
     "disabled": "Désactivé",
-    "actions": "Actions"
+    "actions": "Actions",
+    "addItem": "Ajouter un élément..."
   },
   "auth": {
     "title": "Connexion administrateur",
@@ -488,6 +489,16 @@
       "cors": "Paramètres CORS",
       "tracking": "Suivi des clics",
       "other": "Autre"
+    },
+    "placeholder": {
+      "trustedProxies": "IP ou CIDR (ex: 192.168.1.0/24)",
+      "allowedOrigins": "URL d'origine (ex: https://example.com ou *)",
+      "allowedHeaders": "Nom d'en-tête (ex: Content-Type)"
+    },
+    "error": {
+      "invalidIpCidr": "Format IP/CIDR invalide",
+      "invalidUrl": "Format URL invalide",
+      "invalidHeader": "Nom d'en-tête invalide"
     }
   },
   "enums": {

@@ -1,4 +1,3 @@
-import { useTheme } from '@/hooks/useTheme'
 import {
   FiCheckCircle as CircleCheckIcon,
   FiInfo as InfoIcon,
@@ -7,6 +6,7 @@ import {
   FiAlertTriangle as TriangleAlertIcon,
 } from 'react-icons/fi'
 import { Toaster as Sonner, type ToasterProps } from 'sonner'
+import { useTheme } from '@/hooks/useTheme'
 
 const Toaster = ({ ...props }: ToasterProps) => {
   const { isDark } = useTheme()

@@ -24,7 +24,8 @@
     "close": "关闭",
     "enabled": "已启用",
     "disabled": "已禁用",
-    "actions": "操作"
+    "actions": "操作",
+    "addItem": "添加项目..."
   },
   "auth": {
     "title": "管理员登录",
@@ -492,6 +493,16 @@
       "cors": "CORS 设置",
       "tracking": "点击追踪",
       "other": "其他"
+    },
+    "placeholder": {
+      "trustedProxies": "IP 或 CIDR（如 192.168.1.0/24）",
+      "allowedOrigins": "来源 URL（如 https://example.com 或 *）",
+      "allowedHeaders": "Header 名称（如 Content-Type）"
+    },
+    "error": {
+      "invalidIpCidr": "无效的 IP/CIDR 格式",
+      "invalidUrl": "无效的 URL 格式",
+      "invalidHeader": "无效的 Header 名称"
     }
   },
   "enums": {

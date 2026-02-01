@@ -30,7 +30,8 @@ const fallbackTexts: Record<string, string> = {
   'errors.boundary.technicalDetails': 'Technical Details',
   'errors.boundary.reload': 'Reload',
   'errors.boundary.goHome': 'Home',
-  'errors.boundary.persistentIssue': 'If the problem persists, please contact support.',
+  'errors.boundary.persistentIssue':
+    'If the problem persists, please contact support.',
 }
 
 function ErrorFallback({
@@ -40,13 +41,18 @@ function ErrorFallback({
   error: Error | null
   onReset: () => void
 }) {
-  // 尝试使用 i18n，失败时使用硬编码文本
-  let t: (key: string) => string
-  try {
-    const { t: translate } = useTranslation()
-    t = translate
-  } catch {
-    t = (key: string) => fallbackTexts[key] || key
+  // 无条件调用 hook，遵循 React hooks 规则
+  const { t: translate } = useTranslation()
+
+  // 包装 t 函数，如果翻译失败则使用 fallback
+  const t = (key: string) => {
+    try {
+      const result = translate(key)
+      // 如果返回的是 key 本身，说明翻译不存在，用 fallback
+      return result === key ? fallbackTexts[key] || key : result
+    } catch {
+      return fallbackTexts[key] || key
+    }
   }
 
   return (

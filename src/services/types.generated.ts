@@ -145,4 +145,4 @@ export type StatsResponse = { total_links: number, total_clicks: number, active_
  *
  * 用于标识配置项在数据库和前端的类型。
  */
-export type ValueType = "string" | "int" | "bool" | "json" | "enum";
+export type ValueType = "string" | "int" | "bool" | "json" | "enum" | "stringarray" | "enumarray";

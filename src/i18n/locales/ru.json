@@ -24,7 +24,8 @@
     "close": "Закрыть",
     "enabled": "Включено",
     "disabled": "Отключено",
-    "actions": "Действия"
+    "actions": "Действия",
+    "addItem": "Добавить элемент..."
   },
   "auth": {
     "title": "Вход администратора",
@@ -488,6 +489,16 @@
       "cors": "Настройки CORS",
       "tracking": "Отслеживание кликов",
       "other": "Другое"
+    },
+    "placeholder": {
+      "trustedProxies": "IP или CIDR (например, 192.168.1.0/24)",
+      "allowedOrigins": "URL источника (например, https://example.com или *)",
+      "allowedHeaders": "Имя заголовка (например, Content-Type)"
+    },
+    "error": {
+      "invalidIpCidr": "Неверный формат IP/CIDR",
+      "invalidUrl": "Неверный формат URL",
+      "invalidHeader": "Неверное имя заголовка"
     }
   },
   "enums": {
