@@ -13,6 +13,50 @@ export function isApiError(error: unknown): error is ApiError {
 }
 
 /**
+ * ErrorCode → i18n 翻译键映射表
+ */
+const ERROR_CODE_TO_I18N_KEY: Partial<Record<ErrorCode, string>> = {
+  // 通用错误
+  [ErrorCode.BadRequest]: 'errors.badRequest',
+  [ErrorCode.Unauthorized]: 'errors.unauthorized',
+  [ErrorCode.Forbidden]: 'errors.forbidden',
+  [ErrorCode.NotFound]: 'errors.notFound',
+  [ErrorCode.Conflict]: 'errors.conflict',
+  [ErrorCode.RateLimitExceeded]: 'errors.tooManyRequests',
+  [ErrorCode.InternalServerError]: 'errors.serverError',
+  [ErrorCode.ServiceUnavailable]: 'errors.serviceUnavailable',
+
+  // 认证错误
+  [ErrorCode.AuthFailed]: 'errors.authFailed',
+  [ErrorCode.TokenExpired]: 'errors.tokenExpired',
+  [ErrorCode.TokenInvalid]: 'errors.tokenInvalid',
+  [ErrorCode.CsrfInvalid]: 'errors.csrfInvalid',
+
+  // 链接错误
+  [ErrorCode.LinkNotFound]: 'errors.linkNotFound',
+  [ErrorCode.LinkAlreadyExists]: 'errors.linkAlreadyExists',
+  [ErrorCode.LinkInvalidUrl]: 'errors.linkInvalidUrl',
+  [ErrorCode.LinkInvalidExpireTime]: 'errors.linkInvalidExpireTime',
+  [ErrorCode.LinkPasswordHashError]: 'errors.linkPasswordHashError',
+  [ErrorCode.LinkDatabaseError]: 'errors.linkDatabaseError',
+  [ErrorCode.LinkEmptyCode]: 'errors.linkEmptyCode',
+
+  // 导入导出错误
+  [ErrorCode.ImportFailed]: 'errors.importFailed',
+  [ErrorCode.ExportFailed]: 'errors.exportFailed',
+  [ErrorCode.InvalidMultipartData]: 'errors.invalidMultipartData',
+  [ErrorCode.FileReadError]: 'errors.fileReadError',
+  [ErrorCode.CsvFileMissing]: 'errors.csvFileMissing',
+  [ErrorCode.CsvParseError]: 'errors.csvParseError',
+  [ErrorCode.CsvGenerationError]: 'errors.csvGenerationError',
+
+  // 配置错误
+  [ErrorCode.ConfigNotFound]: 'errors.configNotFound',
+  [ErrorCode.ConfigUpdateFailed]: 'errors.configUpdateFailed',
+  [ErrorCode.ConfigReloadFailed]: 'errors.configReloadFailed',
+}
+
+/**
  * 将错误代码映射到 i18n 翻译键
  */
 export function getErrorI18nKey(error: unknown): string {
@@ -23,79 +67,7 @@ export function getErrorI18nKey(error: unknown): string {
 
   if (error instanceof Error && 'code' in error) {
     const apiError = error as ApiError
-
-    switch (apiError.code) {
-      // 通用错误
-      case ErrorCode.BadRequest:
-        return 'errors.badRequest'
-      case ErrorCode.Unauthorized:
-        return 'errors.unauthorized'
-      case ErrorCode.Forbidden:
-        return 'errors.forbidden'
-      case ErrorCode.NotFound:
-        return 'errors.notFound'
-      case ErrorCode.Conflict:
-        return 'errors.conflict'
-      case ErrorCode.RateLimitExceeded:
-        return 'errors.tooManyRequests'
-      case ErrorCode.InternalServerError:
-        return 'errors.serverError'
-      case ErrorCode.ServiceUnavailable:
-        return 'errors.serviceUnavailable'
-
-      // 认证错误
-      case ErrorCode.AuthFailed:
-        return 'errors.authFailed'
-      case ErrorCode.TokenExpired:
-        return 'errors.tokenExpired'
-      case ErrorCode.TokenInvalid:
-        return 'errors.tokenInvalid'
-      case ErrorCode.CsrfInvalid:
-        return 'errors.csrfInvalid'
-
-      // 链接错误
-      case ErrorCode.LinkNotFound:
-        return 'errors.linkNotFound'
-      case ErrorCode.LinkAlreadyExists:
-        return 'errors.linkAlreadyExists'
-      case ErrorCode.LinkInvalidUrl:
-        return 'errors.linkInvalidUrl'
-      case ErrorCode.LinkInvalidExpireTime:
-        return 'errors.linkInvalidExpireTime'
-      case ErrorCode.LinkPasswordHashError:
-        return 'errors.linkPasswordHashError'
-      case ErrorCode.LinkDatabaseError:
-        return 'errors.linkDatabaseError'
-      case ErrorCode.LinkEmptyCode:
-        return 'errors.linkEmptyCode'
-
-      // 导入导出错误
-      case ErrorCode.ImportFailed:
-        return 'errors.importFailed'
-      case ErrorCode.ExportFailed:
-        return 'errors.exportFailed'
-      case ErrorCode.InvalidMultipartData:
-        return 'errors.invalidMultipartData'
-      case ErrorCode.FileReadError:
-        return 'errors.fileReadError'
-      case ErrorCode.CsvFileMissing:
-        return 'errors.csvFileMissing'
-      case ErrorCode.CsvParseError:
-        return 'errors.csvParseError'
-      case ErrorCode.CsvGenerationError:
-        return 'errors.csvGenerationError'
-
-      // 配置错误
-      case ErrorCode.ConfigNotFound:
-        return 'errors.configNotFound'
-      case ErrorCode.ConfigUpdateFailed:
-        return 'errors.configUpdateFailed'
-      case ErrorCode.ConfigReloadFailed:
-        return 'errors.configReloadFailed'
-
-      default:
-        return 'errors.unknown'
-    }
+    return ERROR_CODE_TO_I18N_KEY[apiError.code as ErrorCode] ?? 'errors.unknown'
   }
 
   return 'errors.unknown'
