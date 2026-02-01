@@ -3,237 +3,137 @@
 /**
  * 认证成功响应
  */
-export type AuthSuccessResponse = { message: string; expires_in: bigint }
+export type AuthSuccessResponse = { message: string, expires_in: bigint, };
 
-export type BatchCreateRequest = { links: Array<PostNewLink> }
+export type BatchCreateRequest = { links: Array<PostNewLink>, };
 
-export type BatchDeleteRequest = { codes: Array<string> }
+export type BatchDeleteRequest = { codes: Array<string>, };
 
-export type BatchFailedItem = { code: string; error: string }
+export type BatchFailedItem = { code: string, error: string, };
 
-export type BatchResponse = {
-  success: Array<string>
-  failed: Array<BatchFailedItem>
-}
+export type BatchResponse = { success: Array<string>, failed: Array<BatchFailedItem>, };
 
-export type BatchUpdateItem = { code: string; payload: PostNewLink }
+export type BatchUpdateItem = { code: string, payload: PostNewLink, };
 
-export type BatchUpdateRequest = { updates: Array<BatchUpdateItem> }
+export type BatchUpdateRequest = { updates: Array<BatchUpdateItem>, };
 
 /**
  * 配置历史记录响应
  */
-export type ConfigHistoryResponse = {
-  id: number
-  config_key: string
-  old_value: string | null
-  new_value: string
-  changed_at: string
-  changed_by: string | null
-}
+export type ConfigHistoryResponse = { id: number, config_key: string, old_value: string | null, new_value: string, changed_at: string, changed_by: string | null, };
 
 /**
  * 配置项响应
  */
-export type ConfigItemResponse = {
-  key: string
-  value: string
-  /**
-   * 值类型
-   */
-  value_type: ValueType
-  requires_restart: boolean
-  is_sensitive: boolean
-  updated_at: string
-}
+export type ConfigItemResponse = { key: string, value: string, 
+/**
+ * 值类型
+ */
+value_type: ValueType, requires_restart: boolean, is_sensitive: boolean, updated_at: string, };
 
 /**
  * 配置项的 schema 元信息
  */
-export type ConfigSchema = {
-  key: string
-  value_type: ValueType
-  default_value: string
-  description: string
-  category?: string
-  enum_options?: Array<EnumOption>
-  requires_restart: boolean
-  editable: boolean
-}
+export type ConfigSchema = { key: string, value_type: ValueType, default_value: string, description: string, category?: string, enum_options?: Array<EnumOption>, requires_restart: boolean, editable: boolean, };
 
 /**
  * 配置更新请求
  */
-export type ConfigUpdateRequest = { value: string }
+export type ConfigUpdateRequest = { value: string, };
 
 /**
  * 配置更新响应
  */
-export type ConfigUpdateResponse = {
-  key: string
-  value: string
-  requires_restart: boolean
-  is_sensitive: boolean
-  message: string | null
-}
+export type ConfigUpdateResponse = { key: string, value: string, requires_restart: boolean, is_sensitive: boolean, message: string | null, };
 
 /**
  * 单个 enum 选项
  */
-export type EnumOption = {
-  value: string
-  label: string
-  label_i18n_key?: string
-  description?: string
-  description_i18n_key?: string
-}
+export type EnumOption = { value: string, label: string, label_i18n_key?: string, description?: string, description_i18n_key?: string, };
 
 /**
  * 错误响应数据
  */
-export type ErrorData = { error: string }
+export type ErrorData = { error: string, };
 
 /**
  * 导出查询参数
  */
-export type ExportQuery = {
-  search: string | null
-  created_after: string | null
-  created_before: string | null
-  only_expired: boolean | null
-  only_active: boolean | null
-}
+export type ExportQuery = { search: string | null, created_after: string | null, created_before: string | null, only_expired: boolean | null, only_active: boolean | null, };
 
-export type GetLinksQuery = {
-  page: number | null
-  page_size: number | null
-  created_after: string | null
-  created_before: string | null
-  only_expired: boolean | null
-  only_active: boolean | null
-  search: string | null
-}
+export type GetLinksQuery = { page: number | null, page_size: number | null, created_after: string | null, created_before: string | null, only_expired: boolean | null, only_active: boolean | null, search: string | null, };
 
 /**
  * 健康检查项容器
  */
-export type HealthChecks = { storage: HealthStorageCheck }
+export type HealthChecks = { storage: HealthStorageCheck, };
 
 /**
  * 健康检查响应
  */
-export type HealthResponse = {
-  status: string
-  timestamp: string
-  uptime: number
-  checks: HealthChecks
-  response_time_ms: number
-}
+export type HealthResponse = { status: string, timestamp: string, uptime: number, checks: HealthChecks, response_time_ms: number, };
 
 /**
  * 存储后端信息
  */
-export type HealthStorageBackend = {
-  storage_type: string
-  support_click: boolean
-}
+export type HealthStorageBackend = { storage_type: string, support_click: boolean, };
 
 /**
  * 存储健康检查状态
  */
-export type HealthStorageCheck = {
-  status: string
-  links_count: number | null
-  backend: HealthStorageBackend
-  error: string | null
-}
+export type HealthStorageCheck = { status: string, links_count: number | null, backend: HealthStorageBackend, error: string | null, };
 
 /**
  * HTTP 方法枚举
  */
-export type HttpMethod =
-  | 'GET'
-  | 'POST'
-  | 'PUT'
-  | 'DELETE'
-  | 'PATCH'
-  | 'HEAD'
-  | 'OPTIONS'
+export type HttpMethod = "GET" | "POST" | "PUT" | "DELETE" | "PATCH" | "HEAD" | "OPTIONS";
 
 /**
  * 导入失败项
  */
-export type ImportFailedItem = { row: number; code: string; error: string }
+export type ImportFailedItem = { row: number, code: string, error: string, };
 
 /**
  * 导入模式
  */
-export type ImportMode = 'skip' | 'overwrite' | 'error'
+export type ImportMode = "skip" | "overwrite" | "error";
 
 /**
  * 导入响应
  */
-export type ImportResponse = {
-  total_rows: number
-  success_count: number
-  skipped_count: number
-  failed_count: number
-  failed_items: Array<ImportFailedItem>
-}
+export type ImportResponse = { total_rows: number, success_count: number, skipped_count: number, failed_count: number, failed_items: Array<ImportFailedItem>, };
 
-export type LinkResponse = {
-  code: string
-  target: string
-  created_at: string
-  expires_at: string | null
-  password: string | null
-  click_count: number
-}
+export type LinkResponse = { code: string, target: string, created_at: string, expires_at: string | null, password: string | null, click_count: number, };
 
-export type LoginCredentials = { password: string }
+export type LoginCredentials = { password: string, };
 
 /**
  * 简单消息响应
  */
-export type MessageResponse = { message: string }
+export type MessageResponse = { message: string, };
 
-export type PaginationInfo = {
-  page: number
-  page_size: number
-  total: number
-  total_pages: number
-}
+export type PaginationInfo = { page: number, page_size: number, total: number, total_pages: number, };
 
-export type PostNewLink = {
-  code: string | null
-  target: string
-  expires_at: string | null
-  password: string | null
-  force: boolean | null
-}
+export type PostNewLink = { code: string | null, target: string, expires_at: string | null, password: string | null, force: boolean | null, };
 
 /**
  * Reload 成功响应
  */
-export type ReloadResponse = { message: string; duration_ms: bigint }
+export type ReloadResponse = { message: string, duration_ms: bigint, };
 
 /**
  * Cookie SameSite 策略
  */
-export type SameSitePolicy = 'Strict' | 'Lax' | 'None'
+export type SameSitePolicy = "Strict" | "Lax" | "None";
 
 /**
  * 统计信息响应
  */
-export type StatsResponse = {
-  total_links: number
-  total_clicks: number
-  active_links: number
-}
+export type StatsResponse = { total_links: number, total_clicks: number, active_links: number, };
 
 /**
  * 配置值类型枚举
  *
  * 用于标识配置项在数据库和前端的类型。
  */
-export type ValueType = 'string' | 'int' | 'bool' | 'json' | 'enum'
+export type ValueType = "string" | "int" | "bool" | "json" | "enum";
