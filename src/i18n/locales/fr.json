@@ -446,6 +446,7 @@
       "api.cookie_secure": "Cookie Sécurisé (HTTPS uniquement)",
       "api.cookie_same_site": "Politique Cookie SameSite",
       "api.cookie_domain": "Domaine Cookie",
+      "api.trusted_proxies": "Proxies de Confiance",
       "features.enable_admin_panel": "Activer Panneau Admin",
       "features.random_code_length": "Longueur Code Aléatoire",
       "features.default_url": "URL de Redirection par Défaut",

@@ -446,6 +446,7 @@
       "api.cookie_secure": "Безопасная Cookie (только HTTPS)",
       "api.cookie_same_site": "Политика Cookie SameSite",
       "api.cookie_domain": "Домен Cookie",
+      "api.trusted_proxies": "Доверенные Прокси",
       "features.enable_admin_panel": "Включить Админ Панель",
       "features.random_code_length": "Длина Случайного Кода",
       "features.default_url": "URL Перенаправления по Умолчанию",

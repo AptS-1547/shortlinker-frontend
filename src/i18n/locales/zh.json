@@ -450,6 +450,7 @@
       "api.cookie_secure": "Cookie 安全传输",
       "api.cookie_same_site": "Cookie SameSite 策略",
       "api.cookie_domain": "Cookie 域名",
+      "api.trusted_proxies": "信任的代理服务器",
       "features.enable_admin_panel": "启用管理面板",
       "features.random_code_length": "随机短码长度",
       "features.default_url": "默认跳转 URL",

@@ -450,6 +450,7 @@
       "api.cookie_secure": "Cookie Secure (HTTPS only)",
       "api.cookie_same_site": "Cookie SameSite Policy",
       "api.cookie_domain": "Cookie Domain",
+      "api.trusted_proxies": "Trusted Proxies",
       "features.enable_admin_panel": "Enable Admin Panel",
       "features.random_code_length": "Random Code Length",
       "features.default_url": "Default Redirect URL",

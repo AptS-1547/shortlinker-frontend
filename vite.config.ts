@@ -48,6 +48,8 @@ export default defineConfig({
     alias: {
       '@': path.resolve(__dirname, './src'),
     },
+    // 确保只有一个 React 实例，防止 hooks 失效
+    dedupe: ['react', 'react-dom'],
   },
   build: {
     rollupOptions: {

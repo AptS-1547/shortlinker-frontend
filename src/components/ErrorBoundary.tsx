@@ -23,6 +23,16 @@ interface State {
   error: Error | null
 }
 
+// i18n 不可用时的 fallback 文本
+const fallbackTexts: Record<string, string> = {
+  'errors.boundary.title': 'Oops! Something went wrong',
+  'errors.boundary.description': 'Please try reloading the page.',
+  'errors.boundary.technicalDetails': 'Technical Details',
+  'errors.boundary.reload': 'Reload',
+  'errors.boundary.goHome': 'Home',
+  'errors.boundary.persistentIssue': 'If the problem persists, please contact support.',
+}
+
 function ErrorFallback({
   error,
   onReset,
@@ -30,7 +40,14 @@ function ErrorFallback({
   error: Error | null
   onReset: () => void
 }) {
-  const { t } = useTranslation()
+  // 尝试使用 i18n，失败时使用硬编码文本
+  let t: (key: string) => string
+  try {
+    const { t: translate } = useTranslation()
+    t = translate
+  } catch {
+    t = (key: string) => fallbackTexts[key] || key
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background p-4">

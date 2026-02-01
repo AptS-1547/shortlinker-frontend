@@ -444,6 +444,7 @@
       "api.cookie_secure": "Cookie安全転送(HTTPSのみ)",
       "api.cookie_same_site": "Cookie SameSiteポリシー",
       "api.cookie_domain": "Cookieドメイン",
+      "api.trusted_proxies": "信頼されたプロキシサーバー",
       "features.enable_admin_panel": "管理パネルを有効化",
       "features.random_code_length": "ランダムコード長",
       "features.default_url": "デフォルトリダイレクトURL",
