@@ -53,6 +53,7 @@ import { useLinksSort } from '@/hooks/useLinksSort'
 import { batchService } from '@/services/batchService'
 import type { LinkResponse, PostNewLink } from '@/services/types'
 import { useLinksStore } from '@/stores/linksStore'
+import { logger } from '@/utils/logger'
 import { buildShortUrl } from '@/utils/urlBuilder'
 
 export default function LinksPage() {
@@ -221,21 +222,15 @@ export default function LinksPage() {
         only_expired: filters.statusFilter === 'expired' || undefined,
       }
 
-      const blob = await batchService.exportLinks(query)
+      // 触发下载（预检 + 浏览器原生下载）
+      await batchService.exportLinks(query)
 
-      // 下载文件
-      const url = URL.createObjectURL(blob)
-      const link = document.createElement('a')
-      link.href = url
-      link.download = `shortlinks_export_${new Date().toISOString().slice(0, 19).replace(/:/g, '-')}.csv`
-      document.body.appendChild(link)
-      link.click()
-      document.body.removeChild(link)
-      URL.revokeObjectURL(url)
-
+      // 立即成功提示（浏览器已开始下载）
       toast.success(t('links.export.success'))
-    } catch {
+    } catch (error) {
+      // 预检失败时的错误处理（401/500等）
       toast.error(t('links.export.error'))
+      logger.error('Failed to export links:', error)
     } finally {
       setExporting(false)
     }

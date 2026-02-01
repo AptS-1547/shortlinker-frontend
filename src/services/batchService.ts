@@ -69,9 +69,11 @@ export class BatchService {
 
   /**
    * 导出链接为 CSV
+   *
+   * 使用隐藏 iframe 触发浏览器原生下载，避免内存缓冲和页面闪烁
    */
-  async exportLinks(query?: Partial<GetLinksQuery>): Promise<Blob> {
-    // 构建查询参数
+  async exportLinks(query?: Partial<GetLinksQuery>): Promise<void> {
+    // 1. 构建查询参数
     const params = new URLSearchParams()
     if (query?.search) params.set('search', query.search)
     if (query?.created_after) params.set('created_after', query.created_after)
@@ -81,22 +83,33 @@ export class BatchService {
     if (query?.only_active) params.set('only_active', 'true')
 
     const queryString = params.toString()
-    const url = `/links/export${queryString ? `?${queryString}` : ''}`
+    const relativeUrl = `/links/export${queryString ? `?${queryString}` : ''}`
 
-    // 使用 axios 直接请求以获取 blob
+    // 2. 预检：确保认证有效（使用 /auth/verify 快速检查）
+    // 如果 token 过期，adminClient 会自动刷新
+    await adminClient.get('/auth/verify')
+
+    // 3. 构建完整 URL
     const baseUrl = import.meta.env.PROD
       ? window.location.origin
       : appConfig.apiBaseUrl || 'http://127.0.0.1:8080'
+    const exportUrl = `${baseUrl}${appConfig.adminRoutePrefix}${relativeUrl}`
 
-    const response = await axios.get(
-      `${baseUrl}${appConfig.adminRoutePrefix}${url}`,
-      {
-        responseType: 'blob',
-        withCredentials: true,
-      },
-    )
+    // 4. 使用隐藏 iframe 触发下载（完全无感，无闪烁）
+    const iframe = document.createElement('iframe')
+    iframe.style.display = 'none'
+    iframe.src = exportUrl
 
-    return response.data
+    // 5. 注入 DOM 触发请求
+    document.body.appendChild(iframe)
+
+    // 6. 延迟清理 iframe（60 秒后删除）
+    // 注意：不能监听 onload，因为 Content-Disposition: attachment 不触发 load 事件
+    setTimeout(() => {
+      if (document.body.contains(iframe)) {
+        document.body.removeChild(iframe)
+      }
+    }, 60000)
   }
 
   /**
