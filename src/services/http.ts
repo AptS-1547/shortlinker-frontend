@@ -7,6 +7,7 @@ import { LRUCache } from 'lru-cache'
 import { appConfig } from '@/config/app'
 import { forceLogout, refreshTokenFromHttp } from '@/stores/authStore'
 import { httpLogger } from '@/utils/logger'
+import { ErrorCode } from './types.generated'
 
 /** CSRF Cookie 名称（硬编码常量） */
 const CSRF_COOKIE_NAME = 'csrf_token'
@@ -14,13 +15,15 @@ const CSRF_COOKIE_NAME = 'csrf_token'
 // ==================== 错误处理 ====================
 export class ApiError extends Error {
   status?: number
-  code?: string
+  code?: number
+  errorCode?: ErrorCode
 
-  constructor(message: string, status?: number, code?: string) {
+  constructor(message: string, status?: number, errorCode?: ErrorCode) {
     super(message)
     this.name = 'ApiError'
     this.status = status
-    this.code = code
+    this.errorCode = errorCode
+    this.code = errorCode
   }
 }
 
@@ -450,82 +453,88 @@ export class HttpClient {
         throw new ApiError(
           'Network Error: Cannot connect to server',
           undefined,
-          'NETWORK_ERROR',
+          undefined,
         )
       }
 
       const status = axiosError.response?.status
       const context = this.context
 
-      // 优先提取后端返回的错误消息
+      // 从新格式 {code, message, data?} 提取后端错误信息
       let backendMessage: string | undefined
+      let backendErrorCode: ErrorCode | undefined
       if (axiosError.response?.data) {
         const data = axiosError.response.data as {
-          error?: string
+          code?: number
           message?: string
+          error?: string // 兼容旧格式
+          data?: { error?: string } // 兼容旧格式
         }
-        backendMessage = data.error || data.message
+        backendErrorCode = data.code as ErrorCode | undefined
+        backendMessage = data.message || data.error || data.data?.error
       }
 
-      switch (status) {
-        case 400:
-          throw new ApiError(
-            backendMessage ||
-              `400: Bad Request${context ? ` for ${context}` : ''}`,
-            400,
-            'BAD_REQUEST',
-          )
-        case 401:
-          throw new ApiError(
-            backendMessage ||
-              (axiosError.config?.url?.includes('/auth/login')
-                ? 'Invalid credentials'
-                : `401: Unauthorized access${context ? ` to ${context}` : ''}`),
-            401,
-            axiosError.config?.url?.includes('/auth/login')
-              ? 'INVALID_CREDENTIALS'
-              : 'UNAUTHORIZED',
-          )
-        case 403:
-          throw new ApiError(
-            backendMessage ||
-              `403: Forbidden${context ? ` - insufficient permissions for ${context}` : ''}`,
-            403,
-            'FORBIDDEN',
-          )
-        case 404:
-          throw new ApiError(
-            backendMessage || `404: ${context || 'Resource'} not found`,
-            404,
-            'NOT_FOUND',
-          )
-        case 429:
-          throw new ApiError(
-            backendMessage || '429: Too many requests - please try again later',
-            429,
-            'TOO_MANY_REQUESTS',
-          )
-        case 500:
-          throw new ApiError(
-            backendMessage ||
-              `500: ${context ? `${context} failed` : 'Internal server error'}`,
-            500,
-            'SERVER_ERROR',
-          )
-        case 503:
-          throw new ApiError(
-            backendMessage || '503: Service temporarily unavailable',
-            503,
-            'SERVICE_UNAVAILABLE',
-          )
-        default:
-          throw new ApiError(
-            backendMessage ||
-              `${status}: ${axiosError.response?.statusText || 'Unknown error'}`,
-            status,
-            'HTTP_ERROR',
-          )
+      // 如果后端返回了 ErrorCode，直接使用
+      if (backendErrorCode !== undefined && backendErrorCode !== ErrorCode.Success) {
+        throw new ApiError(
+          backendMessage || `Error ${status}`,
+          status,
+          backendErrorCode,
+        )
       }
+
+      // 兜底：按 HTTP 状态码构建错误
+      const fallbackMessage = (() => {
+        switch (status) {
+          case 400:
+            return `400: Bad Request${context ? ` for ${context}` : ''}`
+          case 401:
+            return axiosError.config?.url?.includes('/auth/login')
+              ? 'Invalid credentials'
+              : `401: Unauthorized access${context ? ` to ${context}` : ''}`
+          case 403:
+            return `403: Forbidden${context ? ` - insufficient permissions for ${context}` : ''}`
+          case 404:
+            return `404: ${context || 'Resource'} not found`
+          case 429:
+            return '429: Too many requests - please try again later'
+          case 500:
+            return `500: ${context ? `${context} failed` : 'Internal server error'}`
+          case 503:
+            return '503: Service temporarily unavailable'
+          default:
+            return `${status}: ${axiosError.response?.statusText || 'Unknown error'}`
+        }
+      })()
+
+      const fallbackCode = (() => {
+        switch (status) {
+          case 400:
+            return ErrorCode.BadRequest
+          case 401:
+            return axiosError.config?.url?.includes('/auth/login')
+              ? ErrorCode.AuthFailed
+              : ErrorCode.Unauthorized
+          case 403:
+            return ErrorCode.Forbidden
+          case 404:
+            return ErrorCode.NotFound
+          case 429:
+            return ErrorCode.RateLimitExceeded
+          case 500:
+            return ErrorCode.InternalServerError
+          case 503:
+            return ErrorCode.ServiceUnavailable
+          default:
+            return ErrorCode.InternalServerError
+        }
+      })()
+
+      throw new ApiError(
+        backendMessage || fallbackMessage,
+        status,
+        fallbackCode,
+      )
     }
 
     throw error instanceof Error

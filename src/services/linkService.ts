@@ -47,11 +47,12 @@ export class LinkService {
     const url = buildLinkUrl(query)
     const response = await adminClient.get<{
       code?: number
+      message?: string
       data?: LinkResponse[]
       pagination?: PaginatedLinksResponse['pagination']
     }>(url)
 
-    // 处理新的API响应格式: { code, data: [...], pagination }
+    // 处理 API 响应格式: { code, message, data: [...], pagination }
     if (response?.data && Array.isArray(response.data)) {
       return response.data
     }
@@ -69,14 +70,16 @@ export class LinkService {
     const url = buildLinkUrl(query)
     const response = await adminClient.get<{
       code?: number
+      message?: string
       data?: LinkResponse[]
       pagination?: PaginatedLinksResponse['pagination']
     }>(url, { signal })
 
-    // 处理新的API响应格式: { code, data: [...], pagination }
+    // 处理 API 响应格式: { code, message, data: [...], pagination }
     if (response?.data && response.pagination) {
       return {
         code: response.code || 0,
+        message: response.message || '',
         data: Array.isArray(response.data) ? response.data : [],
         pagination: response.pagination,
       }
@@ -85,6 +88,7 @@ export class LinkService {
     // 如果响应格式不正确，返回空数据
     return {
       code: 0,
+      message: '',
       data: [],
       pagination: {
         page: 1,

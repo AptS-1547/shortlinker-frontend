@@ -1,30 +1,98 @@
 import type { ApiError } from '@/services/http'
+import { ErrorCode } from '@/services/types.generated'
+
+/**
+ * 类型守卫：判断错误是否为 ApiError
+ */
+export function isApiError(error: unknown): error is ApiError {
+  return (
+    error instanceof Error &&
+    'errorCode' in error &&
+    typeof (error as ApiError).errorCode === 'number'
+  )
+}
 
 /**
  * 将错误代码映射到 i18n 翻译键
  */
 export function getErrorI18nKey(error: unknown): string {
+  // 网络错误优先检测（可能没有 code 属性）
+  if (error instanceof Error && error.message?.includes('Network Error')) {
+    return 'errors.network'
+  }
+
   if (error instanceof Error && 'code' in error) {
     const apiError = error as ApiError
 
     switch (apiError.code) {
-      case 'NETWORK_ERROR':
-        return 'errors.network'
-      case 'BAD_REQUEST':
+      // 通用错误
+      case ErrorCode.BadRequest:
         return 'errors.badRequest'
-      case 'INVALID_CREDENTIALS':
-      case 'UNAUTHORIZED':
+      case ErrorCode.Unauthorized:
         return 'errors.unauthorized'
-      case 'FORBIDDEN':
+      case ErrorCode.Forbidden:
         return 'errors.forbidden'
-      case 'NOT_FOUND':
+      case ErrorCode.NotFound:
         return 'errors.notFound'
-      case 'TOO_MANY_REQUESTS':
+      case ErrorCode.Conflict:
+        return 'errors.conflict'
+      case ErrorCode.RateLimitExceeded:
         return 'errors.tooManyRequests'
-      case 'SERVER_ERROR':
+      case ErrorCode.InternalServerError:
         return 'errors.serverError'
-      case 'SERVICE_UNAVAILABLE':
+      case ErrorCode.ServiceUnavailable:
         return 'errors.serviceUnavailable'
+
+      // 认证错误
+      case ErrorCode.AuthFailed:
+        return 'errors.authFailed'
+      case ErrorCode.TokenExpired:
+        return 'errors.tokenExpired'
+      case ErrorCode.TokenInvalid:
+        return 'errors.tokenInvalid'
+      case ErrorCode.CsrfInvalid:
+        return 'errors.csrfInvalid'
+
+      // 链接错误
+      case ErrorCode.LinkNotFound:
+        return 'errors.linkNotFound'
+      case ErrorCode.LinkAlreadyExists:
+        return 'errors.linkAlreadyExists'
+      case ErrorCode.LinkInvalidUrl:
+        return 'errors.linkInvalidUrl'
+      case ErrorCode.LinkInvalidExpireTime:
+        return 'errors.linkInvalidExpireTime'
+      case ErrorCode.LinkPasswordHashError:
+        return 'errors.linkPasswordHashError'
+      case ErrorCode.LinkDatabaseError:
+        return 'errors.linkDatabaseError'
+      case ErrorCode.LinkEmptyCode:
+        return 'errors.linkEmptyCode'
+
+      // 导入导出错误
+      case ErrorCode.ImportFailed:
+        return 'errors.importFailed'
+      case ErrorCode.ExportFailed:
+        return 'errors.exportFailed'
+      case ErrorCode.InvalidMultipartData:
+        return 'errors.invalidMultipartData'
+      case ErrorCode.FileReadError:
+        return 'errors.fileReadError'
+      case ErrorCode.CsvFileMissing:
+        return 'errors.csvFileMissing'
+      case ErrorCode.CsvParseError:
+        return 'errors.csvParseError'
+      case ErrorCode.CsvGenerationError:
+        return 'errors.csvGenerationError'
+
+      // 配置错误
+      case ErrorCode.ConfigNotFound:
+        return 'errors.configNotFound'
+      case ErrorCode.ConfigUpdateFailed:
+        return 'errors.configUpdateFailed'
+      case ErrorCode.ConfigReloadFailed:
+        return 'errors.configReloadFailed'
+
       default:
         return 'errors.unknown'
     }
@@ -61,8 +129,9 @@ export function getUserFriendlyErrorMessage(
  * 判断错误是否为网络错误
  */
 export function isNetworkError(error: unknown): boolean {
-  if (error instanceof Error && 'code' in error) {
-    return (error as ApiError).code === 'NETWORK_ERROR'
+  if (error instanceof Error) {
+    // 网络错误的 code 为 undefined，通过 message 判断
+    return error.message?.includes('Network Error') === true
   }
   return false
 }
@@ -73,7 +142,12 @@ export function isNetworkError(error: unknown): boolean {
 export function isAuthenticationError(error: unknown): boolean {
   if (error instanceof Error && 'code' in error) {
     const code = (error as ApiError).code
-    return code === 'UNAUTHORIZED' || code === 'INVALID_CREDENTIALS'
+    return (
+      code === ErrorCode.Unauthorized ||
+      code === ErrorCode.AuthFailed ||
+      code === ErrorCode.TokenExpired ||
+      code === ErrorCode.TokenInvalid
+    )
   }
   return false
 }
@@ -84,7 +158,10 @@ export function isAuthenticationError(error: unknown): boolean {
 export function isServerError(error: unknown): boolean {
   if (error instanceof Error && 'code' in error) {
     const code = (error as ApiError).code
-    return code === 'SERVER_ERROR' || code === 'SERVICE_UNAVAILABLE'
+    return (
+      code === ErrorCode.InternalServerError ||
+      code === ErrorCode.ServiceUnavailable
+    )
   }
   return false
 }

@@ -53,6 +53,7 @@ describe('linksStore', () => {
 
   const mockPaginatedResponse = {
     code: 200,
+    message: 'OK',
     data: [mockLink],
     pagination: {
       page: 1,
@@ -352,6 +353,7 @@ describe('linksStore', () => {
     it('should update page size and reset to page 1', async () => {
       vi.mocked(LinkAPI.fetchPaginated).mockResolvedValue({
         code: 200,
+        message: 'OK',
         data: [mockLink],
         pagination: { page: 1, page_size: 50, total: 1, total_pages: 1 },
       })
@@ -513,6 +515,7 @@ describe('linksStore', () => {
       vi.mocked(LinkAPI.delete).mockResolvedValueOnce(undefined)
       vi.mocked(LinkAPI.fetchPaginated).mockResolvedValueOnce({
         code: 200,
+        message: 'OK',
         data: [],
         pagination: { page: 1, page_size: 20, total: 0, total_pages: 0 },
       })

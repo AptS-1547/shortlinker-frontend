@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import type { ApiError } from '@/services/http'
+import { ErrorCode } from '@/services/types.generated'
 import {
   getErrorI18nKey,
   getUserFriendlyErrorMessage,
@@ -9,10 +10,17 @@ import {
   isServerError,
 } from '../errorMapping'
 
-// Helper to create mock ApiError
-function createApiError(code: string, message = 'Test error'): ApiError {
+// Helper to create mock ApiError with numeric ErrorCode
+function createApiError(code: number | undefined, message = 'Test error'): ApiError {
   const error = new Error(message) as ApiError
   error.code = code
+  error.errorCode = code as ErrorCode | undefined
+  return error
+}
+
+// Helper for network errors (no code, message-based detection)
+function createNetworkError(message = 'Network Error: Cannot connect to server'): ApiError {
+  const error = new Error(message) as ApiError
   return error
 }
 
@@ -22,53 +30,53 @@ describe('errorMapping', () => {
   // ==========================================================================
 
   describe('getErrorI18nKey', () => {
-    it('should return errors.network for NETWORK_ERROR', () => {
-      const error = createApiError('NETWORK_ERROR')
+    it('should return errors.network for network error', () => {
+      const error = createNetworkError()
       expect(getErrorI18nKey(error)).toBe('errors.network')
     })
 
-    it('should return errors.badRequest for BAD_REQUEST', () => {
-      const error = createApiError('BAD_REQUEST')
+    it('should return errors.badRequest for BadRequest', () => {
+      const error = createApiError(ErrorCode.BadRequest)
       expect(getErrorI18nKey(error)).toBe('errors.badRequest')
     })
 
-    it('should return errors.unauthorized for INVALID_CREDENTIALS', () => {
-      const error = createApiError('INVALID_CREDENTIALS')
+    it('should return errors.unauthorized for AuthFailed', () => {
+      const error = createApiError(ErrorCode.AuthFailed)
       expect(getErrorI18nKey(error)).toBe('errors.unauthorized')
     })
 
-    it('should return errors.unauthorized for UNAUTHORIZED', () => {
-      const error = createApiError('UNAUTHORIZED')
+    it('should return errors.unauthorized for Unauthorized', () => {
+      const error = createApiError(ErrorCode.Unauthorized)
       expect(getErrorI18nKey(error)).toBe('errors.unauthorized')
     })
 
-    it('should return errors.forbidden for FORBIDDEN', () => {
-      const error = createApiError('FORBIDDEN')
+    it('should return errors.forbidden for Forbidden', () => {
+      const error = createApiError(ErrorCode.Forbidden)
       expect(getErrorI18nKey(error)).toBe('errors.forbidden')
     })
 
-    it('should return errors.notFound for NOT_FOUND', () => {
-      const error = createApiError('NOT_FOUND')
+    it('should return errors.notFound for NotFound', () => {
+      const error = createApiError(ErrorCode.NotFound)
       expect(getErrorI18nKey(error)).toBe('errors.notFound')
     })
 
-    it('should return errors.tooManyRequests for TOO_MANY_REQUESTS', () => {
-      const error = createApiError('TOO_MANY_REQUESTS')
+    it('should return errors.tooManyRequests for RateLimitExceeded', () => {
+      const error = createApiError(ErrorCode.RateLimitExceeded)
       expect(getErrorI18nKey(error)).toBe('errors.tooManyRequests')
     })
 
-    it('should return errors.serverError for SERVER_ERROR', () => {
-      const error = createApiError('SERVER_ERROR')
+    it('should return errors.serverError for InternalServerError', () => {
+      const error = createApiError(ErrorCode.InternalServerError)
       expect(getErrorI18nKey(error)).toBe('errors.serverError')
     })
 
-    it('should return errors.serviceUnavailable for SERVICE_UNAVAILABLE', () => {
-      const error = createApiError('SERVICE_UNAVAILABLE')
+    it('should return errors.serviceUnavailable for ServiceUnavailable', () => {
+      const error = createApiError(ErrorCode.ServiceUnavailable)
       expect(getErrorI18nKey(error)).toBe('errors.serviceUnavailable')
     })
 
     it('should return errors.unknown for unknown code', () => {
-      const error = createApiError('UNKNOWN_CODE')
+      const error = createApiError(99999)
       expect(getErrorI18nKey(error)).toBe('errors.unknown')
     })
 
@@ -83,6 +91,16 @@ describe('errorMapping', () => {
     it('should return errors.unknown for Error without code', () => {
       const error = new Error('No code')
       expect(getErrorI18nKey(error)).toBe('errors.unknown')
+    })
+
+    it('should return errors.notFound for LinkNotFound', () => {
+      const error = createApiError(ErrorCode.LinkNotFound)
+      expect(getErrorI18nKey(error)).toBe('errors.notFound')
+    })
+
+    it('should return errors.forbidden for CsrfInvalid', () => {
+      const error = createApiError(ErrorCode.CsrfInvalid)
+      expect(getErrorI18nKey(error)).toBe('errors.forbidden')
     })
   })
 
@@ -101,13 +119,13 @@ describe('errorMapping', () => {
     }
 
     it('should return translated message for known error', () => {
-      const error = createApiError('NETWORK_ERROR')
+      const error = createNetworkError()
       const result = getUserFriendlyErrorMessage(error, mockTranslate)
       expect(result).toBe('Network connection failed')
     })
 
     it('should return fallback when translation fails', () => {
-      const error = createApiError('UNKNOWN_CODE')
+      const error = createApiError(99999)
       const result = getUserFriendlyErrorMessage(
         error,
         mockTranslate,
@@ -117,7 +135,7 @@ describe('errorMapping', () => {
     })
 
     it('should return error message when no translation and no fallback', () => {
-      const error = createApiError('UNKNOWN_CODE', 'Original error message')
+      const error = createApiError(99999, 'Original error message')
       const result = getUserFriendlyErrorMessage(error, mockTranslate)
       expect(result).toBe('Original error message')
     })
@@ -133,13 +151,13 @@ describe('errorMapping', () => {
   // ==========================================================================
 
   describe('isNetworkError', () => {
-    it('should return true for NETWORK_ERROR code', () => {
-      const error = createApiError('NETWORK_ERROR')
+    it('should return true for network error', () => {
+      const error = createNetworkError()
       expect(isNetworkError(error)).toBe(true)
     })
 
     it('should return false for other error codes', () => {
-      const error = createApiError('SERVER_ERROR')
+      const error = createApiError(ErrorCode.InternalServerError)
       expect(isNetworkError(error)).toBe(false)
     })
 
@@ -157,18 +175,23 @@ describe('errorMapping', () => {
   // ==========================================================================
 
   describe('isAuthenticationError', () => {
-    it('should return true for UNAUTHORIZED code', () => {
-      const error = createApiError('UNAUTHORIZED')
+    it('should return true for Unauthorized code', () => {
+      const error = createApiError(ErrorCode.Unauthorized)
       expect(isAuthenticationError(error)).toBe(true)
     })
 
-    it('should return true for INVALID_CREDENTIALS code', () => {
-      const error = createApiError('INVALID_CREDENTIALS')
+    it('should return true for AuthFailed code', () => {
+      const error = createApiError(ErrorCode.AuthFailed)
+      expect(isAuthenticationError(error)).toBe(true)
+    })
+
+    it('should return true for TokenExpired code', () => {
+      const error = createApiError(ErrorCode.TokenExpired)
       expect(isAuthenticationError(error)).toBe(true)
     })
 
     it('should return false for other error codes', () => {
-      const error = createApiError('FORBIDDEN')
+      const error = createApiError(ErrorCode.Forbidden)
       expect(isAuthenticationError(error)).toBe(false)
     })
 
@@ -182,18 +205,18 @@ describe('errorMapping', () => {
   // ==========================================================================
 
   describe('isServerError', () => {
-    it('should return true for SERVER_ERROR code', () => {
-      const error = createApiError('SERVER_ERROR')
+    it('should return true for InternalServerError code', () => {
+      const error = createApiError(ErrorCode.InternalServerError)
       expect(isServerError(error)).toBe(true)
     })
 
-    it('should return true for SERVICE_UNAVAILABLE code', () => {
-      const error = createApiError('SERVICE_UNAVAILABLE')
+    it('should return true for ServiceUnavailable code', () => {
+      const error = createApiError(ErrorCode.ServiceUnavailable)
       expect(isServerError(error)).toBe(true)
     })
 
     it('should return false for other error codes', () => {
-      const error = createApiError('BAD_REQUEST')
+      const error = createApiError(ErrorCode.BadRequest)
       expect(isServerError(error)).toBe(false)
     })
 
@@ -208,27 +231,27 @@ describe('errorMapping', () => {
 
   describe('isRetryableError', () => {
     it('should return true for network errors', () => {
-      const error = createApiError('NETWORK_ERROR')
+      const error = createNetworkError()
       expect(isRetryableError(error)).toBe(true)
     })
 
     it('should return true for server errors', () => {
-      const error = createApiError('SERVER_ERROR')
+      const error = createApiError(ErrorCode.InternalServerError)
       expect(isRetryableError(error)).toBe(true)
     })
 
     it('should return true for service unavailable', () => {
-      const error = createApiError('SERVICE_UNAVAILABLE')
+      const error = createApiError(ErrorCode.ServiceUnavailable)
       expect(isRetryableError(error)).toBe(true)
     })
 
     it('should return false for client errors', () => {
-      const error = createApiError('BAD_REQUEST')
+      const error = createApiError(ErrorCode.BadRequest)
       expect(isRetryableError(error)).toBe(false)
     })
 
     it('should return false for auth errors', () => {
-      const error = createApiError('UNAUTHORIZED')
+      const error = createApiError(ErrorCode.Unauthorized)
       expect(isRetryableError(error)).toBe(false)
     })
   })

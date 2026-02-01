@@ -62,14 +62,14 @@ describe('errorHandler', () => {
       expect(result).toBe('Validation failed')
     })
 
-    it('should prefer error field over message field', () => {
+    it('should prefer message field over error field', () => {
       const error = createAxiosError('Request failed', undefined, {
         status: 400,
         data: { error: 'Error field', message: 'Message field' },
       })
 
       const result = extractErrorMessage(error, 'Default message')
-      expect(result).toBe('Error field')
+      expect(result).toBe('Message field')
     })
 
     it('should use axios error message if no response data', () => {

@@ -1,4 +1,5 @@
 // ============ 从生成文件重新导出 ============
+export { ErrorCode } from './types.generated'
 export type {
   BatchCreateRequest,
   BatchDeleteRequest,
@@ -43,6 +44,7 @@ export interface LinkCreateResult {
 // 分页响应包装（组合 PaginationInfo）
 export interface PaginatedLinksResponse {
   code: number
+  message: string
   data: import('./types.generated').LinkResponse[]
   pagination: import('./types.generated').PaginationInfo
 }

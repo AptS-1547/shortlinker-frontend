@@ -4,8 +4,9 @@ import axios, { type AxiosError } from 'axios'
  * API 错误响应接口
  */
 export interface ApiErrorResponse {
-  error?: string
+  code?: number
   message?: string
+  error?: string // 兼容旧格式
   [key: string]: unknown
 }
 
@@ -27,14 +28,14 @@ export function extractErrorMessage(
     if (axiosError.response?.data) {
       const data = axiosError.response.data
 
-      // 优先使用 error 字段
-      if (typeof data.error === 'string' && data.error) {
-        return data.error
-      }
-
-      // 其次使用 message 字段
+      // 优先使用 message 字段（新格式）
       if (typeof data.message === 'string' && data.message) {
         return data.message
+      }
+
+      // 兼容旧格式 error 字段
+      if (typeof data.error === 'string' && data.error) {
+        return data.error
       }
     }
 
