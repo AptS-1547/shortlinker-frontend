@@ -251,7 +251,7 @@
     }
   },
   "analytics": {
-    "title": "分析",
+    "title": "数据分析",
     "description": "查看您的短链接统计和分析数据。",
     "totalLinks": "总链接数",
     "totalClicks": "总点击数",
@@ -270,12 +270,41 @@
     "ofTotal": "占总数",
     "analyticsFeatures": "分析功能",
     "analyticsFeaturesDesc": "点击跟踪和详细分析功能即将推出！目前显示基本链接统计。",
-    "clicks": "点击",
+    "clicks": "次点击",
     "expires": "过期时间",
     "created": "创建时间",
     "averageClicks": "平均点击数",
     "clicksPerLink": "每链接点击数",
     "na": "暂无",
+    "export": "导出",
+    "noData": "暂无数据",
+    "noGeoData": "暂无地理位置数据",
+    "topLinksCount": "热门链接数",
+    "referrersCount": "来源数",
+    "countriesCount": "国家/地区数",
+    "clickTrends": "点击趋势",
+    "clickTrendsDesc": "查看所选时间范围内的点击趋势",
+    "topLinks": "热门链接",
+    "topLinksDesc": "点击数最高的链接排行",
+    "referrers": "来源分布",
+    "referrersDesc": "访客访问链接的来源网站",
+    "geoDistribution": "地理分布",
+    "geoDistributionDesc": "访客的地理位置分布",
+    "dateRange": {
+      "7d": "近 7 天",
+      "30d": "近 30 天",
+      "90d": "近 90 天",
+      "1y": "近 1 年"
+    },
+    "groupBy": {
+      "hour": "按小时",
+      "day": "按天",
+      "week": "按周",
+      "month": "按月"
+    },
+    "error": {
+      "fetchFailed": "获取分析数据失败"
+    },
     "comingSoon": {
       "title": "功能开发中",
       "description": "详细的分析功能即将推出！敬请期待。"

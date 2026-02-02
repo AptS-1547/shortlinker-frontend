@@ -270,6 +270,35 @@
     "averageClicks": "平均クリック数",
     "clicksPerLink": "リンクあたりのクリック数",
     "na": "N/A",
+    "export": "エクスポート",
+    "noData": "データがありません",
+    "noGeoData": "地理データがありません",
+    "topLinksCount": "人気リンク数",
+    "referrersCount": "リファラー数",
+    "countriesCount": "国/地域数",
+    "clickTrends": "クリックトレンド",
+    "clickTrendsDesc": "選択した期間のクリックトレンド",
+    "topLinks": "人気リンク",
+    "topLinksDesc": "クリック数が最も多いリンク",
+    "referrers": "リファラー",
+    "referrersDesc": "訪問者の参照元サイト",
+    "geoDistribution": "地理分布",
+    "geoDistributionDesc": "訪問者の地理的分布",
+    "dateRange": {
+      "7d": "過去7日間",
+      "30d": "過去30日間",
+      "90d": "過去90日間",
+      "1y": "過去1年間"
+    },
+    "groupBy": {
+      "hour": "時間別",
+      "day": "日別",
+      "week": "週別",
+      "month": "月別"
+    },
+    "error": {
+      "fetchFailed": "分析データの取得に失敗しました"
+    },
     "comingSoon": {
       "title": "近日公開",
       "description": "詳細な分析機能は近日公開予定です！お楽しみに。"

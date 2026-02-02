@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { appConfig } from '@/config/app'
 import { adminClient } from './http'
+import { ENDPOINTS } from './endpoints'
 import type {
   BatchCreateRequest,
   BatchDeleteRequest,
@@ -23,7 +24,7 @@ export class BatchService {
    */
   async createLinks(links: PostNewLink[]): Promise<BatchResponse> {
     const response = await adminClient.post<ApiResponse<BatchResponse>>(
-      '/links/batch',
+      ENDPOINTS.LINKS.BATCH,
       { links } satisfies BatchCreateRequest,
     )
 
@@ -40,7 +41,7 @@ export class BatchService {
     updates: { code: string; payload: PostNewLink }[],
   ): Promise<BatchResponse> {
     const response = await adminClient.put<ApiResponse<BatchResponse>>(
-      '/links/batch',
+      ENDPOINTS.LINKS.BATCH,
       { updates } satisfies BatchUpdateRequest,
     )
 
@@ -56,7 +57,7 @@ export class BatchService {
    */
   async deleteLinks(codes: string[]): Promise<BatchResponse> {
     const response = await adminClient.delete<ApiResponse<BatchResponse>>(
-      '/links/batch',
+      ENDPOINTS.LINKS.BATCH,
       { codes } satisfies BatchDeleteRequest,
     )
 
@@ -83,17 +84,16 @@ export class BatchService {
     if (query?.only_active) params.set('only_active', 'true')
 
     const queryString = params.toString()
-    const relativeUrl = `/links/export${queryString ? `?${queryString}` : ''}`
 
     // 2. 预检：确保认证有效（使用 /auth/verify 快速检查）
     // 如果 token 过期，adminClient 会自动刷新
-    await adminClient.get('/auth/verify')
+    await adminClient.get(ENDPOINTS.AUTH.VERIFY)
 
     // 3. 构建完整 URL
     const baseUrl = import.meta.env.PROD
       ? window.location.origin
       : appConfig.apiBaseUrl || 'http://127.0.0.1:8080'
-    const exportUrl = `${baseUrl}${appConfig.adminRoutePrefix}${relativeUrl}`
+    const exportUrl = `${baseUrl}${appConfig.adminRoutePrefix}${ENDPOINTS.LINKS.EXPORT}${queryString ? `?${queryString}` : ''}`
 
     // 4. 使用隐藏 iframe 触发下载（完全无感，无闪烁）
     const iframe = document.createElement('iframe')
@@ -130,7 +130,7 @@ export class BatchService {
       : appConfig.apiBaseUrl || 'http://127.0.0.1:8080'
 
     const response = await axios.post<ApiResponse<ImportResponse>>(
-      `${baseUrl}${appConfig.adminRoutePrefix}/links/import`,
+      `${baseUrl}${appConfig.adminRoutePrefix}${ENDPOINTS.LINKS.IMPORT}`,
       formData,
       {
         headers: {

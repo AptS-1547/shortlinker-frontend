@@ -1,4 +1,5 @@
 import { ApiError, adminClient } from './http'
+import { ENDPOINTS } from './endpoints'
 import type {
   GetLinksQuery,
   LinkCreateResult,
@@ -36,7 +37,9 @@ function buildLinkQueryParams(query?: GetLinksQuery): URLSearchParams {
  */
 function buildLinkUrl(query?: GetLinksQuery): string {
   const params = buildLinkQueryParams(query)
-  return params.toString() ? `/links?${params.toString()}` : '/links'
+  return params.toString()
+    ? `${ENDPOINTS.LINKS.LIST}?${params.toString()}`
+    : ENDPOINTS.LINKS.LIST
 }
 
 export class LinkService {
@@ -105,7 +108,7 @@ export class LinkService {
   async fetchOne(code: string): Promise<LinkResponse | null> {
     try {
       const response = await adminClient.get<{ data?: LinkResponse }>(
-        `/links/${code}`,
+        ENDPOINTS.LINKS.SINGLE(code),
       )
       return response.data || null
     } catch (error) {
@@ -120,7 +123,7 @@ export class LinkService {
    * 创建链接
    */
   async create(payload: PostNewLink): Promise<void> {
-    await adminClient.post('/links', payload)
+    await adminClient.post(ENDPOINTS.LINKS.LIST, payload)
     // 使用标签清理（更精细）
     adminClient.invalidateTags(['links-list', 'stats'])
   }
@@ -153,7 +156,7 @@ export class LinkService {
    * 更新链接
    */
   async update(code: string, payload: PostNewLink): Promise<void> {
-    await adminClient.put(`/links/${code}`, payload)
+    await adminClient.put(ENDPOINTS.LINKS.SINGLE(code), payload)
     // 清除该链接 + 列表缓存 + 统计缓存
     adminClient.invalidateTags([`link:${code}`, 'links-list', 'stats'])
   }
@@ -162,7 +165,7 @@ export class LinkService {
    * 删除链接
    */
   async delete(code: string): Promise<void> {
-    await adminClient.delete(`/links/${code}`)
+    await adminClient.delete(ENDPOINTS.LINKS.SINGLE(code))
     // 清除该链接 + 列表缓存 + 统计缓存
     adminClient.invalidateTags([`link:${code}`, 'links-list', 'stats'])
   }
@@ -174,7 +177,7 @@ export class LinkService {
     const response = await adminClient.get<{
       code?: number
       data?: StatsResponse
-    }>('/stats')
+    }>(ENDPOINTS.STATS)
     return (
       response.data || {
         total_links: 0,

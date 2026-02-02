@@ -15,6 +15,27 @@
 export enum ErrorCode { "Success" = 0, "BadRequest" = 1000, "Unauthorized" = 1001, "NotFound" = 1004, "InternalServerError" = 1005, "ServiceUnavailable" = 1030, "AuthFailed" = 2000, "TokenExpired" = 2001, "TokenInvalid" = 2002, "CsrfInvalid" = 2003, "RateLimitExceeded" = 2004, "LinkNotFound" = 3000, "LinkAlreadyExists" = 3001, "LinkInvalidUrl" = 3002, "LinkInvalidExpireTime" = 3003, "LinkPasswordHashError" = 3004, "LinkDatabaseError" = 3005, "LinkEmptyCode" = 3006, "ImportFailed" = 4000, "ExportFailed" = 4001, "InvalidMultipartData" = 4002, "FileReadError" = 4003, "CsvFileMissing" = 4004, "CsvParseError" = 4005, "CsvGenerationError" = 4006, "ConfigNotFound" = 5000, "ConfigUpdateFailed" = 5001, "ConfigReloadFailed" = 5002 }
 
 /**
+ * Analytics 查询参数
+ */
+export type AnalyticsQuery = { 
+/**
+ * 开始日期 (ISO 8601)
+ */
+start_date: string | null, 
+/**
+ * 结束日期 (ISO 8601)
+ */
+end_date: string | null, 
+/**
+ * 分组方式
+ */
+group_by: GroupBy | null, 
+/**
+ * 返回数量限制
+ */
+limit: number | null, };
+
+/**
  * 认证成功响应
  */
 export type AuthSuccessResponse = { message: string, expires_in: bigint, };
@@ -70,7 +91,17 @@ export type EnumOption = { value: string, label: string, label_i18n_key?: string
  */
 export type ExportQuery = { search: string | null, created_after: string | null, created_before: string | null, only_expired: boolean | null, only_active: boolean | null, };
 
+/**
+ * 地理位置统计
+ */
+export type GeoStats = { country: string, city: string | null, count: bigint, };
+
 export type GetLinksQuery = { page: number | null, page_size: number | null, created_after: string | null, created_before: string | null, only_expired: boolean | null, only_active: boolean | null, search: string | null, };
+
+/**
+ * 分组方式
+ */
+export type GroupBy = "hour" | "day" | "week" | "month";
 
 /**
  * 健康检查项容器
@@ -112,6 +143,11 @@ export type ImportMode = "skip" | "overwrite" | "error";
  */
 export type ImportResponse = { total_rows: number, success_count: number, skipped_count: number, failed_count: number, failed_items: Array<ImportFailedItem>, };
 
+/**
+ * 单链接分析数据
+ */
+export type LinkAnalytics = { code: string, total_clicks: bigint, trend: TrendData, top_referrers: Array<ReferrerStats>, geo_distribution: Array<GeoStats>, };
+
 export type LinkResponse = { code: string, target: string, created_at: string, expires_at: string | null, password: string | null, click_count: number, };
 
 export type LoginCredentials = { password: string, };
@@ -124,6 +160,11 @@ export type MessageResponse = { message: string, };
 export type PaginationInfo = { page: number, page_size: number, total: number, total_pages: number, };
 
 export type PostNewLink = { code: string | null, target: string, expires_at: string | null, password: string | null, force: boolean | null, };
+
+/**
+ * 来源统计
+ */
+export type ReferrerStats = { referrer: string, count: bigint, percentage: number, };
 
 /**
  * Reload 成功响应
@@ -139,6 +180,24 @@ export type SameSitePolicy = "Strict" | "Lax" | "None";
  * 统计信息响应
  */
 export type StatsResponse = { total_links: number, total_clicks: number, active_links: number, };
+
+/**
+ * 热门链接
+ */
+export type TopLink = { code: string, clicks: bigint, };
+
+/**
+ * 点击趋势数据
+ */
+export type TrendData = { 
+/**
+ * 时间标签
+ */
+labels: Array<string>, 
+/**
+ * 点击数
+ */
+values: Array<bigint>, };
 
 /**
  * 配置值类型枚举

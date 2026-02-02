@@ -270,12 +270,41 @@
     "ofTotal": "of total",
     "analyticsFeatures": "Analytics Features",
     "analyticsFeaturesDesc": "Click tracking and detailed analytics are coming soon! Currently showing basic link statistics.",
-    "clicks": "Clicks",
+    "clicks": "clicks",
     "expires": "Expires",
     "created": "Created",
     "averageClicks": "Average Clicks",
     "clicksPerLink": "clicks per link",
     "na": "N/A",
+    "export": "Export",
+    "noData": "No data available",
+    "noGeoData": "No geographic data available",
+    "topLinksCount": "Top Links",
+    "referrersCount": "Referrers",
+    "countriesCount": "Countries",
+    "clickTrends": "Click Trends",
+    "clickTrendsDesc": "Click trends over the selected time range",
+    "topLinks": "Top Links",
+    "topLinksDesc": "Links with the highest click counts",
+    "referrers": "Referrers",
+    "referrersDesc": "Websites that refer visitors to your links",
+    "geoDistribution": "Geographic Distribution",
+    "geoDistributionDesc": "Geographic distribution of your visitors",
+    "dateRange": {
+      "7d": "Last 7 days",
+      "30d": "Last 30 days",
+      "90d": "Last 90 days",
+      "1y": "Last year"
+    },
+    "groupBy": {
+      "hour": "Hourly",
+      "day": "Daily",
+      "week": "Weekly",
+      "month": "Monthly"
+    },
+    "error": {
+      "fetchFailed": "Failed to fetch analytics data"
+    },
     "comingSoon": {
       "title": "Coming Soon",
       "description": "Detailed analytics features are coming soon! Stay tuned."

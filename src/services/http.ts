@@ -7,6 +7,7 @@ import { LRUCache } from 'lru-cache'
 import { appConfig } from '@/config/app'
 import { forceLogout, refreshTokenFromHttp } from '@/stores/authStore'
 import { httpLogger } from '@/utils/logger'
+import { ENDPOINTS, ENDPOINT_PATTERNS } from './endpoints'
 import { ErrorCode } from './types.generated'
 
 /** CSRF Cookie 名称（硬编码常量） */
@@ -169,34 +170,34 @@ class RequestCache {
  */
 const CACHE_POLICIES: Record<string, CachePolicy> = {
   // 链接管理（频繁修改，短 TTL）
-  'GET /links': {
+  [`GET ${ENDPOINTS.LINKS.LIST}`]: {
     ttl: 30 * 1000, // 30 秒（从 2 分钟缩短）
     enabled: true,
     tags: ['links-list'],
   },
-  'GET /links/:code': {
+  [`GET ${ENDPOINT_PATTERNS.LINKS_SINGLE}`]: {
     ttl: 1 * 60 * 1000, // 1 分钟（从 5 分钟缩短）
     enabled: true,
     tags: (params) => [`link:${params.code}`],
   },
-  'GET /stats': {
+  [`GET ${ENDPOINTS.STATS}`]: {
     ttl: 30 * 1000, // 30 秒（从 1 分钟缩短）
     enabled: true,
     tags: ['stats'],
   },
 
   // 系统配置（读多写少，适度缓存）
-  'GET /config': {
+  [`GET ${ENDPOINTS.CONFIG.LIST}`]: {
     ttl: 5 * 60 * 1000, // 5 分钟（从 10 分钟缩短）
     enabled: true,
     tags: ['config-all'],
   },
-  'GET /config/:key': {
+  [`GET ${ENDPOINT_PATTERNS.CONFIG_SINGLE}`]: {
     ttl: 5 * 60 * 1000, // 5 分钟（从 10 分钟缩短）
     enabled: true,
     tags: (params) => [`config:${params.key}`, 'config-all'],
   },
-  'GET /config/:key/history': {
+  [`GET ${ENDPOINT_PATTERNS.CONFIG_HISTORY}`]: {
     ttl: 2 * 60 * 1000, // 2 分钟（从 5 分钟缩短）
     enabled: true,
     tags: (params) => [`config:${params.key}:history`],
@@ -209,7 +210,7 @@ const CACHE_POLICIES: Record<string, CachePolicy> = {
   },
 
   // 认证（不缓存）
-  'GET /auth/verify': {
+  [`GET ${ENDPOINTS.AUTH.VERIFY}`]: {
     enabled: false,
   },
 }

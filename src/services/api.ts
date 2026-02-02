@@ -1,5 +1,6 @@
 // ==================== 导出类型 ====================
 
+export { analyticsService as AnalyticsAPI } from './analyticsService'
 export { type AuthResult, authService as AuthAPI } from './authService'
 export { batchService as BatchAPI } from './batchService'
 export { healthService as HealthAPI } from './healthService'

@@ -1,4 +1,5 @@
 import { adminClient } from './http'
+import { ENDPOINTS } from './endpoints'
 import type {
   ConfigHistoryResponse,
   ConfigItemResponse,
@@ -23,7 +24,7 @@ export class SystemConfigService {
     const response = await adminClient.get<{
       code?: number
       data?: ConfigItemResponse[]
-    }>('/config', { signal, skipCache })
+    }>(ENDPOINTS.CONFIG.LIST, { signal, skipCache })
     return response.data || []
   }
 
@@ -44,7 +45,7 @@ export class SystemConfigService {
     const response = await adminClient.get<{
       code?: number
       data?: ConfigItemResponse
-    }>(`/config/${encodeURIComponent(key)}`, { signal, skipCache })
+    }>(ENDPOINTS.CONFIG.SINGLE(key), { signal, skipCache })
     return response.data || null
   }
 
@@ -56,7 +57,7 @@ export class SystemConfigService {
     const response = await adminClient.put<{
       code?: number
       data?: ConfigUpdateResponse
-    }>(`/config/${encodeURIComponent(key)}`, payload)
+    }>(ENDPOINTS.CONFIG.SINGLE(key), payload)
 
     // 清除该配置项 + 全部配置列表的缓存
     adminClient.invalidateTags([`config:${key}`, 'config-all'])
@@ -83,7 +84,7 @@ export class SystemConfigService {
     const response = await adminClient.get<{
       code?: number
       data?: ConfigHistoryResponse[]
-    }>(`/config/${encodeURIComponent(key)}/history?limit=${limit}`, { signal })
+    }>(`${ENDPOINTS.CONFIG.HISTORY(key)}?limit=${limit}`, { signal })
     return response.data || []
   }
 
@@ -94,7 +95,7 @@ export class SystemConfigService {
     const response = await adminClient.post<{
       code?: number
       data?: ReloadResponse
-    }>('/config/reload', {})
+    }>(ENDPOINTS.CONFIG.RELOAD, {})
 
     // 清除所有配置缓存
     adminClient.invalidateTags(['config-all'])
@@ -111,7 +112,7 @@ export class SystemConfigService {
     const response = await adminClient.get<{
       code?: number
       data?: ConfigSchema[]
-    }>('/config/schema', { signal })
+    }>(ENDPOINTS.CONFIG.SCHEMA, { signal })
     return response.data || []
   }
 }

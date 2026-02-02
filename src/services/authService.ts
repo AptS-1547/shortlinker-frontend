@@ -1,5 +1,6 @@
 import { authLogger } from '@/utils/logger'
 import { adminClient } from './http'
+import { ENDPOINTS } from './endpoints'
 import type { LoginCredentials } from './types'
 import type { AuthSuccessResponse } from './types.generated'
 
@@ -17,7 +18,7 @@ export class AuthService {
     const response = await adminClient.post<{
       code: number
       data: AuthSuccessResponse
-    }>('/auth/login', credentials)
+    }>(ENDPOINTS.AUTH.LOGIN, credentials)
     return {
       expiresIn: Number(response.data?.expires_in) || 900,
     }
@@ -29,7 +30,7 @@ export class AuthService {
    */
   async logout(): Promise<void> {
     try {
-      await adminClient.post('/auth/logout', {})
+      await adminClient.post(ENDPOINTS.AUTH.LOGOUT, {})
     } catch (error) {
       authLogger.error('Logout API failed:', error)
       throw error
@@ -45,7 +46,7 @@ export class AuthService {
     const response = await adminClient.post<{
       code: number
       data: AuthSuccessResponse
-    }>('/auth/refresh', {})
+    }>(ENDPOINTS.AUTH.REFRESH, {})
     return {
       expiresIn: Number(response.data?.expires_in) || 900,
     }
@@ -58,7 +59,7 @@ export class AuthService {
   async verifyToken(): Promise<boolean> {
     try {
       // 认证验证必须实时，跳过缓存
-      await adminClient.get('/auth/verify', { skipCache: true })
+      await adminClient.get(ENDPOINTS.AUTH.VERIFY, { skipCache: true })
       return true
     } catch {
       // 401 或其他错误都视为未认证

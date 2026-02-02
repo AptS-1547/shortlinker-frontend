@@ -264,12 +264,41 @@
     "ofTotal": "du total",
     "analyticsFeatures": "Fonctionnalités analytiques",
     "analyticsFeaturesDesc": "Le suivi des clics et les analyses détaillées arrivent bientôt ! Affichage actuellement des statistiques de base des liens.",
-    "clicks": "Clics",
+    "clicks": "clics",
     "expires": "Expire",
     "created": "Créé",
     "averageClicks": "Clics moyens",
     "clicksPerLink": "clics par lien",
     "na": "N/A",
+    "export": "Exporter",
+    "noData": "Aucune donnée disponible",
+    "noGeoData": "Aucune donnée géographique disponible",
+    "topLinksCount": "Liens populaires",
+    "referrersCount": "Référents",
+    "countriesCount": "Pays",
+    "clickTrends": "Tendances des clics",
+    "clickTrendsDesc": "Tendances des clics sur la période sélectionnée",
+    "topLinks": "Liens populaires",
+    "topLinksDesc": "Liens avec le plus grand nombre de clics",
+    "referrers": "Référents",
+    "referrersDesc": "Sites web qui redirigent les visiteurs vers vos liens",
+    "geoDistribution": "Distribution géographique",
+    "geoDistributionDesc": "Distribution géographique de vos visiteurs",
+    "dateRange": {
+      "7d": "7 derniers jours",
+      "30d": "30 derniers jours",
+      "90d": "90 derniers jours",
+      "1y": "Dernière année"
+    },
+    "groupBy": {
+      "hour": "Par heure",
+      "day": "Par jour",
+      "week": "Par semaine",
+      "month": "Par mois"
+    },
+    "error": {
+      "fetchFailed": "Échec de récupération des données analytiques"
+    },
     "comingSoon": {
       "title": "Bientôt disponible",
       "description": "Les fonctionnalités d'analyse détaillées arrivent bientôt ! Restez à l'écoute."
