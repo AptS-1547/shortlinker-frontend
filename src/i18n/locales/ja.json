@@ -449,7 +449,9 @@
     "configNotFound": "設定が見つかりません",
     "configUpdateFailed": "設定更新失敗",
     "configReloadFailed": "設定リロード失敗",
-    "analyticsQueryFailed": "分析クエリに失敗しました"
+    "analyticsQueryFailed": "分析クエリに失敗しました",
+    "analyticsLinkNotFound": "リンクが見つかりません。分析データを取得できません",
+    "analyticsInvalidDateRange": "日付範囲が無効です"
   },
   "config": {
     "title": "システム設定",

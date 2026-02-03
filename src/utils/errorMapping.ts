@@ -55,6 +55,8 @@ const ERROR_CODE_TO_I18N_KEY: Partial<Record<ErrorCode, string>> = {
 
   // Analytics 错误
   [ErrorCode.AnalyticsQueryFailed]: 'errors.analyticsQueryFailed',
+  [ErrorCode.AnalyticsLinkNotFound]: 'errors.analyticsLinkNotFound',
+  [ErrorCode.AnalyticsInvalidDateRange]: 'errors.analyticsInvalidDateRange',
 }
 
 /**

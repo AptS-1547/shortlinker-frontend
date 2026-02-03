@@ -455,7 +455,9 @@
     "configNotFound": "配置项不存在",
     "configUpdateFailed": "配置更新失败",
     "configReloadFailed": "配置重载失败",
-    "analyticsQueryFailed": "分析数据查询失败"
+    "analyticsQueryFailed": "分析数据查询失败",
+    "analyticsLinkNotFound": "链接不存在，无法查询统计数据",
+    "analyticsInvalidDateRange": "日期范围无效"
   },
   "config": {
     "title": "系统配置",

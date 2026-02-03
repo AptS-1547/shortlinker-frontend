@@ -455,7 +455,9 @@
     "configNotFound": "Configuration not found",
     "configUpdateFailed": "Configuration update failed",
     "configReloadFailed": "Configuration reload failed",
-    "analyticsQueryFailed": "Analytics query failed"
+    "analyticsQueryFailed": "Analytics query failed",
+    "analyticsLinkNotFound": "Link not found, cannot query analytics",
+    "analyticsInvalidDateRange": "Invalid date range"
   },
   "config": {
     "title": "System Configuration",

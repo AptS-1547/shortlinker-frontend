@@ -451,7 +451,9 @@
     "configNotFound": "Конфигурация не найдена",
     "configUpdateFailed": "Ошибка обновления конфигурации",
     "configReloadFailed": "Ошибка перезагрузки конфигурации",
-    "analyticsQueryFailed": "Ошибка запроса аналитики"
+    "analyticsQueryFailed": "Ошибка запроса аналитики",
+    "analyticsLinkNotFound": "Ссылка не найдена, невозможно получить аналитику",
+    "analyticsInvalidDateRange": "Недопустимый диапазон дат"
   },
   "config": {
     "title": "Системные Настройки",

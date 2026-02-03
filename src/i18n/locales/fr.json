@@ -451,7 +451,9 @@
     "configNotFound": "Configuration non trouvée",
     "configUpdateFailed": "Échec de la mise à jour de la configuration",
     "configReloadFailed": "Échec du rechargement de la configuration",
-    "analyticsQueryFailed": "Échec de la requête d'analyse"
+    "analyticsQueryFailed": "Échec de la requête d'analyse",
+    "analyticsLinkNotFound": "Lien non trouvé, impossible de récupérer les analyses",
+    "analyticsInvalidDateRange": "Plage de dates invalide"
   },
   "config": {
     "title": "Configuration Système",
