@@ -1,6 +1,6 @@
 import { authLogger } from '@/utils/logger'
-import { adminClient } from './http'
 import { ENDPOINTS } from './endpoints'
+import { adminClient } from './http'
 import type { LoginCredentials } from './types'
 import type { AuthSuccessResponse } from './types.generated'
 

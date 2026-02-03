@@ -448,7 +448,8 @@
     "linkEmptyCode": "ショートコードは空にできません",
     "configNotFound": "設定が見つかりません",
     "configUpdateFailed": "設定更新失敗",
-    "configReloadFailed": "設定リロード失敗"
+    "configReloadFailed": "設定リロード失敗",
+    "analyticsQueryFailed": "分析クエリに失敗しました"
   },
   "config": {
     "title": "システム設定",

@@ -7,7 +7,7 @@ import { LRUCache } from 'lru-cache'
 import { appConfig } from '@/config/app'
 import { forceLogout, refreshTokenFromHttp } from '@/stores/authStore'
 import { httpLogger } from '@/utils/logger'
-import { ENDPOINTS, ENDPOINT_PATTERNS } from './endpoints'
+import { ENDPOINT_PATTERNS, ENDPOINTS } from './endpoints'
 import { ErrorCode } from './types.generated'
 
 /** CSRF Cookie 名称（硬编码常量） */

@@ -52,6 +52,9 @@ const ERROR_CODE_TO_I18N_KEY: Partial<Record<ErrorCode, string>> = {
   [ErrorCode.ConfigNotFound]: 'errors.configNotFound',
   [ErrorCode.ConfigUpdateFailed]: 'errors.configUpdateFailed',
   [ErrorCode.ConfigReloadFailed]: 'errors.configReloadFailed',
+
+  // Analytics 错误
+  [ErrorCode.AnalyticsQueryFailed]: 'errors.analyticsQueryFailed',
 }
 
 /**

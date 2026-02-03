@@ -2,8 +2,8 @@
  * Analytics API 服务
  */
 import { appConfig } from '@/config/app'
-import { adminClient } from './http'
 import { ENDPOINTS } from './endpoints'
+import { adminClient } from './http'
 import type {
   AnalyticsQuery,
   GeoStats,

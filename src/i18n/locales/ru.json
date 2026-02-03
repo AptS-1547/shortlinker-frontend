@@ -450,7 +450,8 @@
     "linkEmptyCode": "Короткий код не может быть пустым",
     "configNotFound": "Конфигурация не найдена",
     "configUpdateFailed": "Ошибка обновления конфигурации",
-    "configReloadFailed": "Ошибка перезагрузки конфигурации"
+    "configReloadFailed": "Ошибка перезагрузки конфигурации",
+    "analyticsQueryFailed": "Ошибка запроса аналитики"
   },
   "config": {
     "title": "Системные Настройки",

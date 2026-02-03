@@ -454,7 +454,8 @@
     "linkEmptyCode": "短代码不能为空",
     "configNotFound": "配置项不存在",
     "configUpdateFailed": "配置更新失败",
-    "configReloadFailed": "配置重载失败"
+    "configReloadFailed": "配置重载失败",
+    "analyticsQueryFailed": "分析数据查询失败"
   },
   "config": {
     "title": "系统配置",

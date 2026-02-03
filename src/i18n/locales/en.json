@@ -454,7 +454,8 @@
     "linkEmptyCode": "Short code cannot be empty",
     "configNotFound": "Configuration not found",
     "configUpdateFailed": "Configuration update failed",
-    "configReloadFailed": "Configuration reload failed"
+    "configReloadFailed": "Configuration reload failed",
+    "analyticsQueryFailed": "Analytics query failed"
   },
   "config": {
     "title": "System Configuration",

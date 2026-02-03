@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { appConfig } from '@/config/app'
-import { adminClient } from './http'
 import { ENDPOINTS } from './endpoints'
+import { adminClient } from './http'
 import type {
   BatchCreateRequest,
   BatchDeleteRequest,

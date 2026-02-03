@@ -1,5 +1,5 @@
-import { adminClient } from './http'
 import { ENDPOINTS } from './endpoints'
+import { adminClient } from './http'
 import type {
   ConfigHistoryResponse,
   ConfigItemResponse,
