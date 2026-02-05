@@ -485,6 +485,8 @@
     "csvParseError": "CSV 解析错误",
     "csvGenerationError": "CSV 生成错误",
     "linkEmptyCode": "短代码不能为空",
+    "linkInvalidCode": "短代码格式无效（仅支持字母、数字、下划线、连字符、点和斜杠）",
+    "linkReservedCode": "短代码与系统保留路由冲突",
     "configNotFound": "配置项不存在",
     "configUpdateFailed": "配置更新失败",
     "configReloadFailed": "配置重载失败",

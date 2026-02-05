@@ -41,6 +41,8 @@ const ERROR_CODE_TO_I18N_KEY: Partial<Record<ErrorCode, string>> = {
   [ErrorCode.LinkPasswordHashError]: 'errors.linkPasswordHashError',
   [ErrorCode.LinkDatabaseError]: 'errors.linkDatabaseError',
   [ErrorCode.LinkEmptyCode]: 'errors.linkEmptyCode',
+  [ErrorCode.LinkInvalidCode]: 'errors.linkInvalidCode',
+  [ErrorCode.LinkReservedCode]: 'errors.linkReservedCode',
 
   // 导入导出错误
   [ErrorCode.ImportFailed]: 'errors.importFailed',

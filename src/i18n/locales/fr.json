@@ -487,6 +487,8 @@
     "csvParseError": "Erreur d'analyse CSV",
     "csvGenerationError": "Erreur de génération CSV",
     "linkEmptyCode": "Le code court ne peut pas être vide",
+    "linkInvalidCode": "Format de code court invalide (seuls les caractères alphanumériques, tiret bas, tiret, point et barre oblique sont autorisés)",
+    "linkReservedCode": "Le code court entre en conflit avec les routes système réservées",
     "configNotFound": "Configuration non trouvée",
     "configUpdateFailed": "Échec de la mise à jour de la configuration",
     "configReloadFailed": "Échec du rechargement de la configuration",

@@ -485,6 +485,8 @@
     "csvParseError": "CSV解析エラー",
     "csvGenerationError": "CSV生成エラー",
     "linkEmptyCode": "ショートコードは空にできません",
+    "linkInvalidCode": "無効なショートコード形式（英数字、アンダースコア、ハイフン、ドット、スラッシュのみ使用可能）",
+    "linkReservedCode": "ショートコードがシステム予約ルートと競合しています",
     "configNotFound": "設定が見つかりません",
     "configUpdateFailed": "設定更新失敗",
     "configReloadFailed": "設定リロード失敗",

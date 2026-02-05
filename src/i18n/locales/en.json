@@ -485,6 +485,8 @@
     "csvParseError": "CSV parse error",
     "csvGenerationError": "CSV generation error",
     "linkEmptyCode": "Short code cannot be empty",
+    "linkInvalidCode": "Invalid short code format (only alphanumeric, underscore, hyphen, dot, and slash allowed)",
+    "linkReservedCode": "Short code conflicts with reserved system routes",
     "configNotFound": "Configuration not found",
     "configUpdateFailed": "Configuration update failed",
     "configReloadFailed": "Configuration reload failed",
