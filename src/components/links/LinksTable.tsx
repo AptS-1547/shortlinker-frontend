@@ -8,6 +8,7 @@ import {
   FiChevronDown as ChevronDown,
   FiChevronRight as ChevronRight,
   FiCopy as Copy,
+  FiDownload as Download,
   FiEdit as Edit,
   FiExternalLink as ExternalLink,
   FiLock as Lock,
@@ -77,6 +78,7 @@ interface LinksTableProps {
   onSelectAll: (checked: boolean) => void
   onSort: (field: SortField) => void
   onViewAnalytics?: (code: string) => void
+  onDownloadQr?: (code: string) => void
 }
 
 /**
@@ -101,6 +103,7 @@ const LinkRow = memo(function LinkRow({
   onDelete,
   onSelectChange,
   onViewAnalytics,
+  onDownloadQr,
 }: {
   link: LinkResponse
   copiedCode: string | null
@@ -112,6 +115,7 @@ const LinkRow = memo(function LinkRow({
   onDelete: (link: LinkResponse) => void
   onSelectChange: (code: string, checked: boolean) => void
   onViewAnalytics?: (code: string) => void
+  onDownloadQr?: (code: string) => void
 }) {
   const { t } = useTranslation()
   const { formatDateTime } = useDateFormat()
@@ -273,6 +277,10 @@ const LinkRow = memo(function LinkRow({
                 <DropdownMenuItem onClick={() => onViewAnalytics?.(link.code)}>
                   <BarChart3Icon className="w-4 h-4 mr-2" />
                   {t('analytics.viewAnalytics')}
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => onDownloadQr?.(link.code)}>
+                  <Download className="w-4 h-4 mr-2" />
+                  {t('links.qr.download')}
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
@@ -444,6 +452,7 @@ export const LinksTable = memo(function LinksTable({
   onSelectAll,
   onSort,
   onViewAnalytics,
+  onDownloadQr,
 }: LinksTableProps) {
   const { t } = useTranslation()
 
@@ -544,6 +553,7 @@ export const LinksTable = memo(function LinksTable({
                 onDelete={onDelete}
                 onSelectChange={onSelectChange}
                 onViewAnalytics={onViewAnalytics}
+                onDownloadQr={onDownloadQr}
               />
             ))}
           </TableBody>

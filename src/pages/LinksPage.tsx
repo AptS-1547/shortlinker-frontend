@@ -15,6 +15,7 @@ import {
   LinksBatchActions,
   LinksFilterBar,
   LinksTable,
+  QrCodeDialog,
 } from '@/components/links'
 import { LinkAnalyticsSheet } from '@/components/links/LinkAnalyticsSheet'
 import {
@@ -149,6 +150,7 @@ export default function LinksPage() {
   const [importOpen, setImportOpen] = useState(false)
   const [exporting, setExporting] = useState(false)
   const [analyticsCode, setAnalyticsCode] = useState<string | null>(null)
+  const [qrCodeDialogCode, setQrCodeDialogCode] = useState<string | null>(null)
 
   // Handlers
   const handleOpenCreate = useCallback(() => {
@@ -211,6 +213,10 @@ export default function LinksPage() {
     },
     [copy, t],
   )
+
+  const handleOpenQrCode = useCallback((code: string) => {
+    setQrCodeDialogCode(code)
+  }, [])
 
   const handleExport = useCallback(async () => {
     setExporting(true)
@@ -326,6 +332,7 @@ export default function LinksPage() {
                 onSelectAll={batch.handleSelectAll}
                 onSort={handleSort}
                 onViewAnalytics={setAnalyticsCode}
+                onDownloadQr={handleOpenQrCode}
               />
               <PaginationControls
                 pagination={pagination}
@@ -392,6 +399,12 @@ export default function LinksPage() {
       <LinkAnalyticsSheet
         code={analyticsCode}
         onClose={() => setAnalyticsCode(null)}
+      />
+
+      {/* QR Code 预览弹窗 */}
+      <QrCodeDialog
+        code={qrCodeDialogCode}
+        onClose={() => setQrCodeDialogCode(null)}
       />
     </div>
   )

@@ -253,6 +253,23 @@
       "failedDetails": "失敗の詳細:",
       "failedItem": "行 {{row}}: {{code}} - {{error}}",
       "andMore": "...他 {{count}} 件"
+    },
+    "qr": {
+      "code": "QRコード",
+      "download": "QRコードをダウンロード",
+      "downloading": "ダウンロード中...",
+      "preview": "QRコードプレビュー",
+      "size": "サイズ",
+      "margin": "余白",
+      "foreground": "前景色",
+      "background": "背景色",
+      "errorLevel": "誤り訂正",
+      "downloadPng": "PNGをダウンロード",
+      "generateFailed": "生成に失敗しました",
+      "logo": "ロゴ（任意）",
+      "logoSize": "サイズ",
+      "logoHint": "推奨：透明背景の正方形PNG",
+      "errorLevelWarning": "ヒント：ロゴを追加する場合はHレベルを推奨"
     }
   },
   "analytics": {

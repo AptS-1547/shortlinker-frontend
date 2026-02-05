@@ -34,6 +34,10 @@ export interface QRCodeOptions {
   size?: number
   margin?: number
   errorCorrectionLevel?: 'L' | 'M' | 'Q' | 'H'
+  color?: {
+    dark?: string
+    light?: string
+  }
 }
 
 export interface LinkCreateResult {

@@ -253,6 +253,23 @@
       "exporting": "Exporting...",
       "success": "Export successful",
       "error": "Export failed"
+    },
+    "qr": {
+      "code": "QR Code",
+      "download": "Download QR Code",
+      "downloading": "Downloading...",
+      "preview": "QR Code Preview",
+      "size": "Size",
+      "margin": "Margin",
+      "foreground": "Foreground",
+      "background": "Background",
+      "errorLevel": "Error Correction",
+      "downloadPng": "Download PNG",
+      "generateFailed": "Failed to generate",
+      "logo": "Logo (optional)",
+      "logoSize": "Size",
+      "logoHint": "Recommended: Square PNG with transparent background",
+      "errorLevelWarning": "Recommended: Use \"H\" level when adding a logo"
     }
   },
   "analytics": {

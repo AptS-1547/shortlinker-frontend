@@ -253,6 +253,23 @@
       "failedDetails": "Détails des échecs:",
       "failedItem": "Ligne {{row}}: {{code}} - {{error}}",
       "andMore": "...et {{count}} de plus"
+    },
+    "qr": {
+      "code": "Code QR",
+      "download": "Télécharger le code QR",
+      "downloading": "Téléchargement...",
+      "preview": "Aperçu du code QR",
+      "size": "Taille",
+      "margin": "Marge",
+      "foreground": "Premier plan",
+      "background": "Arrière-plan",
+      "errorLevel": "Correction d'erreur",
+      "downloadPng": "Télécharger PNG",
+      "generateFailed": "Échec de la génération",
+      "logo": "Logo (optionnel)",
+      "logoSize": "Taille",
+      "logoHint": "Recommandé : PNG carré avec fond transparent",
+      "errorLevelWarning": "Conseil : utilisez le niveau « H » avec un logo"
     }
   },
   "analytics": {

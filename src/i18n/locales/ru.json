@@ -253,7 +253,24 @@
       "failedItem": "Строка {{row}}: {{code}} - {{error}}",
       "andMore": "...и ещё {{count}}"
     },
-    "pageSize": "Показать"
+    "pageSize": "Показать",
+    "qr": {
+      "code": "QR-код",
+      "download": "Скачать QR-код",
+      "downloading": "Скачивание...",
+      "preview": "Предпросмотр QR-кода",
+      "size": "Размер",
+      "margin": "Отступ",
+      "foreground": "Передний план",
+      "background": "Фон",
+      "errorLevel": "Коррекция ошибок",
+      "downloadPng": "Скачать PNG",
+      "generateFailed": "Ошибка генерации",
+      "logo": "Логотип (необязательно)",
+      "logoSize": "Размер",
+      "logoHint": "Рекомендуется: квадратный PNG с прозрачным фоном",
+      "errorLevelWarning": "Совет: используйте уровень «H» при добавлении логотипа"
+    }
   },
   "analytics": {
     "title": "Аналитика",

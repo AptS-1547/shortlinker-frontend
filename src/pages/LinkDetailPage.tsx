@@ -4,6 +4,7 @@ import {
   FiArrowLeft as ArrowLeft,
   FiCheck as Check,
   FiCopy as Copy,
+  FiDownload as Download,
   FiExternalLink as ExternalLink,
 } from 'react-icons/fi'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -18,6 +19,7 @@ import {
   TrendChart,
 } from '@/components/analytics'
 import PageHeader from '@/components/layout/PageHeader'
+import { QrCodeDialog } from '@/components/links'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -50,6 +52,7 @@ export default function LinkDetailPage() {
   const [deviceData, setDeviceData] = useState<DeviceAnalyticsResponse | null>(
     null,
   )
+  const [qrCodeDialogOpen, setQrCodeDialogOpen] = useState(false)
 
   const fetchData = useCallback(async () => {
     if (!code) return
@@ -98,6 +101,10 @@ export default function LinkDetailPage() {
     await navigator.clipboard.writeText(url)
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
+  }
+
+  const handleOpenQrCode = () => {
+    setQrCodeDialogOpen(true)
   }
 
   // Transform data for charts
@@ -242,6 +249,14 @@ export default function LinkDetailPage() {
                   </div>
                 )}
               </div>
+
+              {/* QR Code Button */}
+              <div className="flex items-center gap-4 pt-4 border-t">
+                <Button variant="outline" size="sm" onClick={handleOpenQrCode}>
+                  <Download className="w-4 h-4 mr-1" />
+                  {t('links.qr.download')}
+                </Button>
+              </div>
             </div>
           ) : null}
         </CardContent>
@@ -258,6 +273,12 @@ export default function LinkDetailPage() {
 
       {/* Device Analytics */}
       <DeviceAnalytics data={deviceData} loading={loading} />
+
+      {/* QR Code Dialog */}
+      <QrCodeDialog
+        code={qrCodeDialogOpen ? (code ?? null) : null}
+        onClose={() => setQrCodeDialogOpen(false)}
+      />
     </div>
   )
 }

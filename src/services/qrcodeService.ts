@@ -7,7 +7,13 @@ export class QRCodeService {
    * 生成二维码
    */
   async generate(url: string, options: QRCodeOptions = {}): Promise<string> {
-    const { size = 200, margin = 4, errorCorrectionLevel = 'M' } = options
+    const {
+      size = 200,
+      margin = 4,
+      errorCorrectionLevel = 'M',
+      color = {},
+    } = options
+    const { dark = '#000000', light = '#FFFFFF' } = color
 
     try {
       const QRCode = await import('qrcode')
@@ -18,15 +24,17 @@ export class QRCodeService {
         errorCorrectionLevel,
         type: 'image/png',
         color: {
-          dark: '#000000',
-          light: '#FFFFFF',
+          dark,
+          light,
         },
       })
     } catch (error) {
       qrcodeLogger.error('Failed to generate QR code:', error)
       // 备用方案：使用在线服务
       const encodedUrl = encodeURIComponent(url)
-      return `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&data=${encodedUrl}&format=png&ecc=${errorCorrectionLevel}&bgcolor=ffffff&color=000000&qzone=4`
+      const darkColor = (color?.dark ?? '#000000').replace('#', '')
+      const lightColor = (color?.light ?? '#FFFFFF').replace('#', '')
+      return `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&data=${encodedUrl}&format=png&ecc=${errorCorrectionLevel}&bgcolor=${lightColor}&color=${darkColor}&qzone=${margin}`
     }
   }
 

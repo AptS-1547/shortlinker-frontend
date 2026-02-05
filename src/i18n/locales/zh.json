@@ -253,6 +253,23 @@
       "exporting": "导出中...",
       "success": "导出成功",
       "error": "导出失败"
+    },
+    "qr": {
+      "code": "二维码",
+      "download": "下载二维码",
+      "downloading": "下载中...",
+      "preview": "二维码预览",
+      "size": "尺寸",
+      "margin": "边距",
+      "foreground": "前景色",
+      "background": "背景色",
+      "errorLevel": "纠错级别",
+      "downloadPng": "下载 PNG",
+      "generateFailed": "生成失败",
+      "logo": "Logo（可选）",
+      "logoSize": "大小",
+      "logoHint": "推荐：方形 PNG，透明背景",
+      "errorLevelWarning": "提示：添加 Logo 时建议使用 H 级纠错"
     }
   },
   "analytics": {
