@@ -12,8 +12,8 @@ const PageHeader = memo(function PageHeader({
   actions,
 }: PageHeaderProps) {
   return (
-    <div className="flex items-start justify-between mb-6">
-      <div>
+    <div className="flex flex-col gap-4 mb-6 sm:flex-row sm:items-start sm:justify-between">
+      <div className="min-w-0">
         <h1 className="text-2xl font-semibold tracking-tight text-foreground">
           {title}
         </h1>
@@ -21,7 +21,9 @@ const PageHeader = memo(function PageHeader({
           <p className="text-muted-foreground mt-1 text-sm">{description}</p>
         )}
       </div>
-      {actions && <div className="flex items-center gap-2">{actions}</div>}
+      {actions && (
+        <div className="flex items-center gap-2 flex-shrink-0">{actions}</div>
+      )}
     </div>
   )
 })
