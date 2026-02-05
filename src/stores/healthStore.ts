@@ -52,6 +52,7 @@ export const useHealthStore = create<HealthState>((set, get) => ({
               },
               error: null,
             },
+            cache: null,
           },
         },
       })

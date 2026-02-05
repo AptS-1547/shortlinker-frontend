@@ -27,6 +27,13 @@ describe('healthStore', () => {
         },
         error: null,
       },
+      cache: {
+        status: 'healthy' as const,
+        cache_type: 'memory',
+        bloom_filter_enabled: true,
+        negative_cache_enabled: true,
+        error: null,
+      },
     },
   }
 
@@ -200,6 +207,7 @@ describe('healthStore', () => {
             },
             error: null,
           },
+          cache: null,
         },
       })
     })

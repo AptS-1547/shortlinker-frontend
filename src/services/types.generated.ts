@@ -114,9 +114,14 @@ export type GetLinksQuery = { page: number | null, page_size: number | null, cre
 export type GroupBy = "hour" | "day" | "week" | "month";
 
 /**
+ * 缓存健康检查状态
+ */
+export type HealthCacheCheck = { status: string, cache_type: string, bloom_filter_enabled: boolean, negative_cache_enabled: boolean, error: string | null, };
+
+/**
  * 健康检查项容器
  */
-export type HealthChecks = { storage: HealthStorageCheck, };
+export type HealthChecks = { storage: HealthStorageCheck, cache: HealthCacheCheck | null, };
 
 /**
  * 健康检查响应

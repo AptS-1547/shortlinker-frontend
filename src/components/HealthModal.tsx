@@ -5,6 +5,7 @@ import {
   FiCheckCircle as CheckCircle2,
   FiClock as Clock,
   FiDatabase as Database,
+  FiHardDrive as HardDrive,
   FiLink as Link,
   FiLoader as Loader2,
   FiRefreshCw as RefreshCw,
@@ -192,9 +193,16 @@ export default function HealthModal({
   const supportClick =
     healthData?.checks?.storage?.backend?.support_click || false
 
+  // Cache health check data
+  const cacheData = healthData?.checks?.cache
+  const cacheStatus = cacheData?.status || 'unknown'
+  const cacheType = cacheData?.cache_type || 'Unknown'
+  const bloomFilterEnabled = cacheData?.bloom_filter_enabled ?? false
+  const negativeCacheEnabled = cacheData?.negative_cache_enabled ?? false
+
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-lg">
+      <DialogContent className="max-w-[calc(100vw-2rem)] sm:max-w-lg max-h-[90vh] flex flex-col">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Activity className="h-5 w-5" />
@@ -204,7 +212,7 @@ export default function HealthModal({
         </DialogHeader>
 
         {healthData ? (
-          <div className="space-y-4">
+          <div className="space-y-4 overflow-y-auto flex-1 pr-1">
             {/* Overall Status */}
             <Card className="bg-muted/50">
               <CardContent className="pt-4">
@@ -286,6 +294,73 @@ export default function HealthModal({
                 </div>
               </CardContent>
             </Card>
+
+            {/* Cache System */}
+            {cacheData && (
+              <Card>
+                <CardContent className="pt-4">
+                  <div className="flex items-center gap-2 text-sm font-medium mb-3">
+                    <HardDrive className="h-4 w-4 text-orange-500" />
+                    {t('health.cacheSystem')}
+                  </div>
+                  <div className="space-y-3">
+                    <InfoItem
+                      label={t('health.cacheType')}
+                      value={
+                        <Badge variant="secondary" className="font-mono">
+                          {cacheType}
+                        </Badge>
+                      }
+                    />
+                    <Separator />
+                    <InfoItem
+                      label={t('health.status')}
+                      value={<StatusBadge status={cacheStatus} size="sm" />}
+                    />
+                    <Separator />
+                    <InfoItem
+                      label={t('health.bloomFilter')}
+                      value={
+                        <Badge
+                          variant={bloomFilterEnabled ? 'default' : 'outline'}
+                        >
+                          {bloomFilterEnabled ? (
+                            <CheckCircle2 className="h-3 w-3 mr-1" />
+                          ) : (
+                            <XCircle className="h-3 w-3 mr-1" />
+                          )}
+                          {t(
+                            bloomFilterEnabled
+                              ? 'health.enabled'
+                              : 'health.disabled',
+                          )}
+                        </Badge>
+                      }
+                    />
+                    <Separator />
+                    <InfoItem
+                      label={t('health.negativeCache')}
+                      value={
+                        <Badge
+                          variant={negativeCacheEnabled ? 'default' : 'outline'}
+                        >
+                          {negativeCacheEnabled ? (
+                            <CheckCircle2 className="h-3 w-3 mr-1" />
+                          ) : (
+                            <XCircle className="h-3 w-3 mr-1" />
+                          )}
+                          {t(
+                            negativeCacheEnabled
+                              ? 'health.enabled'
+                              : 'health.disabled',
+                          )}
+                        </Badge>
+                      }
+                    />
+                  </div>
+                </CardContent>
+              </Card>
+            )}
 
             {/* Timestamp */}
             <div className="flex items-center justify-between text-sm px-1">
