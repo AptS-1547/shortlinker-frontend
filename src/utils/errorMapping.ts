@@ -22,6 +22,9 @@ const ERROR_CODE_TO_I18N_KEY: Partial<Record<ErrorCode, string>> = {
   [ErrorCode.NotFound]: 'errors.notFound',
   [ErrorCode.RateLimitExceeded]: 'errors.tooManyRequests',
   [ErrorCode.InternalServerError]: 'errors.serverError',
+  [ErrorCode.BatchSizeTooLarge]: 'errors.batchSizeTooLarge',
+  [ErrorCode.FileTooLarge]: 'errors.fileTooLarge',
+  [ErrorCode.InvalidDateFormat]: 'errors.invalidDateFormat',
   [ErrorCode.ServiceUnavailable]: 'errors.serviceUnavailable',
 
   // 认证错误

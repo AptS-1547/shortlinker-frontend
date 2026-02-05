@@ -20,8 +20,8 @@ import { cn } from '@/lib/utils'
 import { batchService } from '@/services/batchService'
 import type { ImportMode, ImportResponse } from '@/services/types'
 
-// 与后端 PayloadConfig 保持一致 (src/runtime/modes/server.rs:174)
-const MAX_FILE_SIZE = 1024 * 1024 // 1MB
+// 与后端 MAX_IMPORT_FILE_SIZE 保持一致 (src/api/services/admin/export_import.rs)
+const MAX_FILE_SIZE = 10 * 1024 * 1024 // 10MB
 
 interface LinkImportDialogProps {
   open: boolean
@@ -200,6 +200,9 @@ export function LinkImportDialog({
                   <Upload className="h-6 w-6" />
                   <span className="text-sm">
                     {t('links.import.dragOrClick')}
+                  </span>
+                  <span className="text-xs text-muted-foreground/70">
+                    {t('links.import.maxFileSize', { size: '10MB' })}
                   </span>
                 </div>
               )}
