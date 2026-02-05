@@ -1,7 +1,7 @@
 import { memo, type ReactNode } from 'react'
 
 interface PageHeaderProps {
-  title: string
+  title: string | ReactNode
   description?: string
   actions?: ReactNode
 }

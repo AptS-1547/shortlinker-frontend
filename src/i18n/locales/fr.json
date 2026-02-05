@@ -72,7 +72,11 @@
       "activeLinks": "Liens actifs",
       "notExpired": "Non expirés",
       "uptime": "Temps de fonctionnement",
-      "systemHealth": "Santé du système"
+      "systemHealth": "Santé du système",
+      "todayClicks": "Clics aujourd'hui",
+      "vsYesterday": "vs hier",
+      "clickTrend": "Tendance des clics",
+      "last7Days": "7 derniers jours"
     },
     "recentLinks": {
       "title": "Liens récents",
@@ -220,6 +224,12 @@
       "shortUrl": "URL courte",
       "passwordProtection": "Protection par mot de passe"
     },
+    "export": {
+      "button": "Exporter",
+      "exporting": "Exportation...",
+      "success": "Exportation réussie",
+      "error": "Échec de l'exportation"
+    },
     "import": {
       "button": "Importer",
       "title": "Importer des liens",
@@ -299,6 +309,13 @@
     "error": {
       "fetchFailed": "Échec de récupération des données analytiques"
     },
+    "devices": "Appareils et navigateurs",
+    "devicesDesc": "Distribution des navigateurs, OS et types d'appareils des visiteurs",
+    "browsers": "Navigateurs",
+    "operatingSystems": "Systèmes d'exploitation",
+    "deviceCategories": "Types d'appareils",
+    "botTraffic": "Trafic Bot",
+    "viewAnalytics": "Voir les analyses",
     "comingSoon": {
       "title": "Bientôt disponible",
       "description": "Les fonctionnalités d'analyse détaillées arrivent bientôt ! Restez à l'écoute."
@@ -313,6 +330,20 @@
       "topLinks": "Liens populaires",
       "topLinksDesc": "Découvrez vos liens les plus populaires"
     }
+  },
+  "linkDetail": {
+    "title": "Détails du lien",
+    "description": "Afficher les statistiques complètes de ce lien",
+    "info": "Informations du lien",
+    "targetUrl": "URL cible",
+    "totalClicks": "Clics totaux",
+    "createdAt": "Créé le",
+    "expiresAt": "Expire le",
+    "status": "Statut",
+    "viewFull": "Analyse complète",
+    "notFound": "Lien non trouvé",
+    "fetchFailed": "Échec de la récupération des données du lien",
+    "noCode": "Aucun code de lien spécifié"
   },
   "layout": {
     "title": "Panneau d'administration ShortLinker",
@@ -465,6 +496,7 @@
       "features": "Fonctionnalités",
       "click": "Suivi des Clics",
       "cors": "CORS",
+      "analytics": "Analytiques",
       "other": "Autre"
     },
     "keys": {
@@ -491,7 +523,14 @@
       "cors.allowed_origins": "Origines autorisées ([\"*\"] = toutes, vide = même origine)",
       "cors.allowed_methods": "Méthodes Autorisées",
       "cors.allowed_headers": "En-têtes Autorisés",
-      "cors.max_age": "Durée Maximale (secondes)"
+      "cors.max_age": "Durée Maximale (secondes)",
+      "analytics.enable_detailed_logging": "Activer les logs de clics détaillés",
+      "analytics.log_retention_days": "Rétention des logs bruts (jours)",
+      "analytics.enable_ip_logging": "Enregistrer les adresses IP",
+      "analytics.enable_geo_lookup": "Activer la géolocalisation IP",
+      "analytics.hourly_retention_days": "Rétention agrégation horaire (jours)",
+      "analytics.daily_retention_days": "Rétention agrégation journalière (jours)",
+      "analytics.enable_auto_rollup": "Activer agrégation et nettoyage auto"
     },
     "key": "Clé",
     "value": "Valeur",
@@ -520,6 +559,7 @@
       "routes": "Configuration des routes",
       "cors": "Paramètres CORS",
       "tracking": "Suivi des clics",
+      "analytics": "Analytiques",
       "other": "Autre"
     },
     "placeholder": {

@@ -72,7 +72,11 @@
       "activeLinks": "活跃链接",
       "notExpired": "未过期",
       "uptime": "运行时间",
-      "systemHealth": "系统健康"
+      "systemHealth": "系统健康",
+      "todayClicks": "今日点击",
+      "vsYesterday": "较昨日",
+      "clickTrend": "点击趋势",
+      "last7Days": "最近 7 天"
     },
     "recentLinks": {
       "title": "最近链接",
@@ -305,6 +309,13 @@
     "error": {
       "fetchFailed": "获取分析数据失败"
     },
+    "devices": "设备与浏览器",
+    "devicesDesc": "访客的浏览器、操作系统和设备类型分布",
+    "browsers": "浏览器分布",
+    "operatingSystems": "操作系统",
+    "deviceCategories": "设备类型",
+    "botTraffic": "Bot 流量",
+    "viewAnalytics": "查看分析",
     "comingSoon": {
       "title": "功能开发中",
       "description": "详细的分析功能即将推出！敬请期待。"
@@ -319,6 +330,20 @@
       "topLinks": "热门链接",
       "topLinksDesc": "发现您最受欢迎的链接"
     }
+  },
+  "linkDetail": {
+    "title": "链接详情",
+    "description": "查看此链接的完整统计分析",
+    "info": "链接信息",
+    "targetUrl": "目标网址",
+    "totalClicks": "总点击数",
+    "createdAt": "创建时间",
+    "expiresAt": "过期时间",
+    "status": "状态",
+    "viewFull": "完整分析",
+    "notFound": "未找到此链接",
+    "fetchFailed": "获取链接数据失败",
+    "noCode": "未指定链接代码"
   },
   "layout": {
     "title": "ShortLinker 管理面板",
@@ -469,6 +494,7 @@
       "features": "功能",
       "click": "点击追踪",
       "cors": "跨域配置",
+      "analytics": "分析统计",
       "other": "其他"
     },
     "keys": {
@@ -495,7 +521,14 @@
       "cors.allowed_origins": "允许的来源（使用 [\"*\"] 允许任意来源，留空则仅同源）",
       "cors.allowed_methods": "允许的方法",
       "cors.allowed_headers": "允许的请求头",
-      "cors.max_age": "最大缓存时间(秒)"
+      "cors.max_age": "最大缓存时间(秒)",
+      "analytics.enable_detailed_logging": "启用详细点击日志",
+      "analytics.log_retention_days": "原始日志保留天数",
+      "analytics.enable_ip_logging": "记录访客 IP 地址",
+      "analytics.enable_geo_lookup": "启用 IP 地理位置查询",
+      "analytics.hourly_retention_days": "小时汇总数据保留天数",
+      "analytics.daily_retention_days": "日汇总数据保留天数",
+      "analytics.enable_auto_rollup": "启用自动数据汇总清理"
     },
     "key": "配置键",
     "value": "配置值",
@@ -524,6 +557,7 @@
       "routes": "路由配置",
       "cors": "CORS 设置",
       "tracking": "点击追踪",
+      "analytics": "分析统计",
       "other": "其他"
     },
     "placeholder": {

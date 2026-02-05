@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import {
   FiArrowDown as ArrowDown,
   FiArrowUp as ArrowUp,
+  FiBarChart2 as BarChart3Icon,
   FiCheck as Check,
   FiChevronDown as ChevronDown,
   FiChevronRight as ChevronRight,
@@ -75,6 +76,7 @@ interface LinksTableProps {
   onSelectChange: (code: string, checked: boolean) => void
   onSelectAll: (checked: boolean) => void
   onSort: (field: SortField) => void
+  onViewAnalytics?: (code: string) => void
 }
 
 /**
@@ -98,6 +100,7 @@ const LinkRow = memo(function LinkRow({
   onEdit,
   onDelete,
   onSelectChange,
+  onViewAnalytics,
 }: {
   link: LinkResponse
   copiedCode: string | null
@@ -108,6 +111,7 @@ const LinkRow = memo(function LinkRow({
   onEdit: (link: LinkResponse) => void
   onDelete: (link: LinkResponse) => void
   onSelectChange: (code: string, checked: boolean) => void
+  onViewAnalytics?: (code: string) => void
 }) {
   const { t } = useTranslation()
   const { formatDateTime } = useDateFormat()
@@ -265,6 +269,10 @@ const LinkRow = memo(function LinkRow({
                 >
                   <ExternalLink className="w-4 h-4 mr-2" />
                   {t('links.openInNewTab')}
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => onViewAnalytics?.(link.code)}>
+                  <BarChart3Icon className="w-4 h-4 mr-2" />
+                  {t('analytics.viewAnalytics')}
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
@@ -435,6 +443,7 @@ export const LinksTable = memo(function LinksTable({
   onSelectChange,
   onSelectAll,
   onSort,
+  onViewAnalytics,
 }: LinksTableProps) {
   const { t } = useTranslation()
 
@@ -534,6 +543,7 @@ export const LinksTable = memo(function LinksTable({
                 onEdit={onEdit}
                 onDelete={onDelete}
                 onSelectChange={onSelectChange}
+                onViewAnalytics={onViewAnalytics}
               />
             ))}
           </TableBody>

@@ -72,7 +72,11 @@
       "activeLinks": "アクティブリンク",
       "notExpired": "未期限切れ",
       "uptime": "稼働時間",
-      "systemHealth": "システムヘルス"
+      "systemHealth": "システムヘルス",
+      "todayClicks": "今日のクリック",
+      "vsYesterday": "昨日比",
+      "clickTrend": "クリックトレンド",
+      "last7Days": "過去7日間"
     },
     "recentLinks": {
       "title": "最近のリンク",
@@ -220,6 +224,12 @@
       "shortUrl": "短縮URL",
       "passwordProtection": "パスワード保護"
     },
+    "export": {
+      "button": "エクスポート",
+      "exporting": "エクスポート中...",
+      "success": "エクスポート成功",
+      "error": "エクスポート失敗"
+    },
     "import": {
       "button": "インポート",
       "title": "リンクをインポート",
@@ -299,6 +309,13 @@
     "error": {
       "fetchFailed": "分析データの取得に失敗しました"
     },
+    "devices": "デバイスとブラウザ",
+    "devicesDesc": "訪問者のブラウザ、OS、デバイスタイプの分布",
+    "browsers": "ブラウザ分布",
+    "operatingSystems": "オペレーティングシステム",
+    "deviceCategories": "デバイスタイプ",
+    "botTraffic": "Botトラフィック",
+    "viewAnalytics": "分析を表示",
     "comingSoon": {
       "title": "近日公開",
       "description": "詳細な分析機能は近日公開予定です！お楽しみに。"
@@ -313,6 +330,20 @@
       "topLinks": "人気リンク",
       "topLinksDesc": "最も人気のあるリンクを発見"
     }
+  },
+  "linkDetail": {
+    "title": "リンク詳細",
+    "description": "このリンクの完全な統計分析を表示",
+    "info": "リンク情報",
+    "targetUrl": "ターゲットURL",
+    "totalClicks": "総クリック数",
+    "createdAt": "作成日時",
+    "expiresAt": "有効期限",
+    "status": "ステータス",
+    "viewFull": "完全な分析",
+    "notFound": "リンクが見つかりません",
+    "fetchFailed": "リンクデータの取得に失敗しました",
+    "noCode": "リンクコードが指定されていません"
   },
   "layout": {
     "title": "ShortLinker 管理",
@@ -463,6 +494,7 @@
       "features": "機能",
       "click": "クリック追跡",
       "cors": "CORS",
+      "analytics": "分析統計",
       "other": "その他"
     },
     "keys": {
@@ -489,7 +521,14 @@
       "cors.allowed_origins": "許可されたオリジン（[\"*\"]で任意、空は同一オリジンのみ）",
       "cors.allowed_methods": "許可されたメソッド",
       "cors.allowed_headers": "許可されたヘッダー",
-      "cors.max_age": "最大キャッシュ時間(秒)"
+      "cors.max_age": "最大キャッシュ時間(秒)",
+      "analytics.enable_detailed_logging": "詳細クリックログを有効化",
+      "analytics.log_retention_days": "生ログ保持日数",
+      "analytics.enable_ip_logging": "訪問者IPアドレスを記録",
+      "analytics.enable_geo_lookup": "IP地理位置検索を有効化",
+      "analytics.hourly_retention_days": "時間別集計データ保持日数",
+      "analytics.daily_retention_days": "日別集計データ保持日数",
+      "analytics.enable_auto_rollup": "自動集計・クリーンアップを有効化"
     },
     "key": "キー",
     "value": "値",
@@ -518,6 +557,7 @@
       "routes": "ルート設定",
       "cors": "CORS設定",
       "tracking": "クリック追跡",
+      "analytics": "分析統計",
       "other": "その他"
     },
     "placeholder": {

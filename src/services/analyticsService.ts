@@ -6,6 +6,7 @@ import { ENDPOINTS } from './endpoints'
 import { adminClient } from './http'
 import type {
   AnalyticsQuery,
+  DeviceAnalyticsResponse,
   GeoStats,
   LinkAnalytics,
   ReferrerStats,
@@ -86,6 +87,33 @@ class AnalyticsService {
       `${ENDPOINTS.ANALYTICS.LINK(code)}${query}`,
       { skipCache: true },
     )
+    return response.data
+  }
+
+  /**
+   * 获取单链接设备分析
+   */
+  async getLinkDeviceStats(
+    code: string,
+    params?: AnalyticsQuery,
+  ): Promise<DeviceAnalyticsResponse> {
+    const query = this.buildQueryString(params)
+    const response = await adminClient.get<
+      ApiResponse<DeviceAnalyticsResponse>
+    >(`${ENDPOINTS.ANALYTICS.LINK_DEVICES(code)}${query}`, { skipCache: true })
+    return response.data
+  }
+
+  /**
+   * 获取设备分析
+   */
+  async getDeviceStats(
+    params?: AnalyticsQuery,
+  ): Promise<DeviceAnalyticsResponse> {
+    const query = this.buildQueryString(params)
+    const response = await adminClient.get<
+      ApiResponse<DeviceAnalyticsResponse>
+    >(`${ENDPOINTS.ANALYTICS.DEVICES}${query}`, { skipCache: true })
     return response.data
   }
 

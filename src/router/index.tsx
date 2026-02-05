@@ -63,6 +63,7 @@ const LoginPage = lazy(() => import('@/pages/LoginPage'))
 const AdminLayout = lazy(() => import('@/components/layout/AdminLayout'))
 const DashboardPage = lazy(() => import('@/pages/DashboardPage'))
 const LinksPage = lazy(() => import('@/pages/LinksPage'))
+const LinkDetailPage = lazy(() => import('@/pages/LinkDetailPage'))
 const AnalyticsPage = lazy(() => import('@/pages/AnalyticsPage'))
 const SettingsPage = lazy(() => import('@/pages/SettingsPage'))
 
@@ -219,6 +220,14 @@ const routes = [
             element: (
               <LazyComponent>
                 <LinksPage />
+              </LazyComponent>
+            ),
+          },
+          {
+            path: 'links/:code',
+            element: (
+              <LazyComponent>
+                <LinkDetailPage />
               </LazyComponent>
             ),
           },

@@ -34,7 +34,9 @@ export const ENDPOINTS = {
     REFERRERS: `${V1}/analytics/referrers`,
     GEO: `${V1}/analytics/geo`,
     LINK: (code: string) => `${V1}/links/${code}/analytics`,
+    LINK_DEVICES: (code: string) => `${V1}/links/${code}/analytics/devices`,
     EXPORT: `${V1}/analytics/export`,
+    DEVICES: `${V1}/analytics/devices`,
   },
 } as const
 

@@ -16,6 +16,7 @@ import {
   LinksFilterBar,
   LinksTable,
 } from '@/components/links'
+import { LinkAnalyticsSheet } from '@/components/links/LinkAnalyticsSheet'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -147,6 +148,7 @@ export default function LinksPage() {
   const [copiedCode, setCopiedCode] = useState<string | null>(null)
   const [importOpen, setImportOpen] = useState(false)
   const [exporting, setExporting] = useState(false)
+  const [analyticsCode, setAnalyticsCode] = useState<string | null>(null)
 
   // Handlers
   const handleOpenCreate = useCallback(() => {
@@ -323,6 +325,7 @@ export default function LinksPage() {
                 onSelectChange={batch.handleSelectChange}
                 onSelectAll={batch.handleSelectAll}
                 onSort={handleSort}
+                onViewAnalytics={setAnalyticsCode}
               />
               <PaginationControls
                 pagination={pagination}
@@ -383,6 +386,12 @@ export default function LinksPage() {
         open={importOpen}
         onOpenChange={setImportOpen}
         onSuccess={handleImportSuccess}
+      />
+
+      {/* 链接分析侧边栏 */}
+      <LinkAnalyticsSheet
+        code={analyticsCode}
+        onClose={() => setAnalyticsCode(null)}
       />
     </div>
   )

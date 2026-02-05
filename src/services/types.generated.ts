@@ -53,6 +53,11 @@ export type BatchUpdateItem = { code: string, payload: PostNewLink, };
 export type BatchUpdateRequest = { updates: Array<BatchUpdateItem>, };
 
 /**
+ * 分类统计响应
+ */
+export type CategoryStatsResponse = { name: string, count: bigint, percentage: number, };
+
+/**
  * 配置历史记录响应
  */
 export type ConfigHistoryResponse = { id: number, config_key: string, old_value: string | null, new_value: string, changed_at: string, changed_by: string | null, };
@@ -80,6 +85,11 @@ export type ConfigUpdateRequest = { value: string, };
  * 配置更新响应
  */
 export type ConfigUpdateResponse = { key: string, value: string, requires_restart: boolean, is_sensitive: boolean, message: string | null, };
+
+/**
+ * 设备分析响应
+ */
+export type DeviceAnalyticsResponse = { browsers: Array<CategoryStatsResponse>, operating_systems: Array<CategoryStatsResponse>, devices: Array<CategoryStatsResponse>, bot_percentage: number, total_with_ua: bigint, };
 
 /**
  * 单个 enum 选项

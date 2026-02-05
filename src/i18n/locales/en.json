@@ -72,7 +72,11 @@
       "activeLinks": "Active Links",
       "notExpired": "Not Expired",
       "uptime": "Uptime",
-      "systemHealth": "System Health"
+      "systemHealth": "System Health",
+      "todayClicks": "Today's Clicks",
+      "vsYesterday": "vs yesterday",
+      "clickTrend": "Click Trend",
+      "last7Days": "Last 7 days"
     },
     "recentLinks": {
       "title": "Recent Links",
@@ -305,6 +309,13 @@
     "error": {
       "fetchFailed": "Failed to fetch analytics data"
     },
+    "devices": "Devices & Browsers",
+    "devicesDesc": "Browser, OS, and device type distribution of visitors",
+    "browsers": "Browsers",
+    "operatingSystems": "Operating Systems",
+    "deviceCategories": "Device Types",
+    "botTraffic": "Bot Traffic",
+    "viewAnalytics": "View Analytics",
     "comingSoon": {
       "title": "Coming Soon",
       "description": "Detailed analytics features are coming soon! Stay tuned."
@@ -319,6 +330,20 @@
       "topLinks": "Top Links",
       "topLinksDesc": "Discover your most popular links"
     }
+  },
+  "linkDetail": {
+    "title": "Link Details",
+    "description": "View complete analytics for this link",
+    "info": "Link Information",
+    "targetUrl": "Target URL",
+    "totalClicks": "Total Clicks",
+    "createdAt": "Created At",
+    "expiresAt": "Expires At",
+    "status": "Status",
+    "viewFull": "Full Analytics",
+    "notFound": "Link not found",
+    "fetchFailed": "Failed to fetch link data",
+    "noCode": "No link code specified"
   },
   "layout": {
     "title": "ShortLinker Admin",
@@ -469,6 +494,7 @@
       "features": "Features",
       "click": "Click Tracking",
       "cors": "CORS",
+      "analytics": "Analytics",
       "other": "Other"
     },
     "keys": {
@@ -495,7 +521,14 @@
       "cors.allowed_origins": "Allowed Origins (use [\"*\"] for any, empty = same-origin only)",
       "cors.allowed_methods": "Allowed Methods",
       "cors.allowed_headers": "Allowed Headers",
-      "cors.max_age": "Max Age (seconds)"
+      "cors.max_age": "Max Age (seconds)",
+      "analytics.enable_detailed_logging": "Enable Detailed Click Logging",
+      "analytics.log_retention_days": "Raw Log Retention (Days)",
+      "analytics.enable_ip_logging": "Log Visitor IP Addresses",
+      "analytics.enable_geo_lookup": "Enable IP Geo Lookup",
+      "analytics.hourly_retention_days": "Hourly Rollup Retention (Days)",
+      "analytics.daily_retention_days": "Daily Rollup Retention (Days)",
+      "analytics.enable_auto_rollup": "Enable Auto Rollup & Cleanup"
     },
     "key": "Key",
     "value": "Value",
@@ -524,6 +557,7 @@
       "routes": "Route Configuration",
       "cors": "CORS Settings",
       "tracking": "Click Tracking",
+      "analytics": "Analytics",
       "other": "Other"
     },
     "placeholder": {

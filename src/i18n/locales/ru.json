@@ -72,7 +72,11 @@
       "activeLinks": "Активные ссылки",
       "notExpired": "Не истекшие",
       "uptime": "Время работы",
-      "systemHealth": "Состояние системы"
+      "systemHealth": "Состояние системы",
+      "todayClicks": "Клики сегодня",
+      "vsYesterday": "по сравнению со вчера",
+      "clickTrend": "Тренд кликов",
+      "last7Days": "Последние 7 дней"
     },
     "recentLinks": {
       "title": "Недавние ссылки",
@@ -219,6 +223,12 @@
       "shortUrl": "Короткая ссылка",
       "passwordProtection": "Защита паролем"
     },
+    "export": {
+      "button": "Экспорт",
+      "exporting": "Экспортирование...",
+      "success": "Экспорт успешен",
+      "error": "Ошибка экспорта"
+    },
     "import": {
       "button": "Импорт",
       "title": "Импорт ссылок",
@@ -299,6 +309,13 @@
     "error": {
       "fetchFailed": "Ошибка загрузки аналитических данных"
     },
+    "devices": "Устройства и браузеры",
+    "devicesDesc": "Распределение браузеров, ОС и типов устройств посетителей",
+    "browsers": "Браузеры",
+    "operatingSystems": "Операционные системы",
+    "deviceCategories": "Типы устройств",
+    "botTraffic": "Бот-трафик",
+    "viewAnalytics": "Просмотр аналитики",
     "comingSoon": {
       "title": "Скоро появится",
       "description": "Детальные функции аналитики скоро появятся! Следите за обновлениями."
@@ -313,6 +330,20 @@
       "topLinks": "Популярные ссылки",
       "topLinksDesc": "Откройте для себя ваши самые популярные ссылки"
     }
+  },
+  "linkDetail": {
+    "title": "Детали ссылки",
+    "description": "Просмотр полной статистики этой ссылки",
+    "info": "Информация о ссылке",
+    "targetUrl": "Целевой URL",
+    "totalClicks": "Всего кликов",
+    "createdAt": "Создано",
+    "expiresAt": "Истекает",
+    "status": "Статус",
+    "viewFull": "Полная аналитика",
+    "notFound": "Ссылка не найдена",
+    "fetchFailed": "Не удалось загрузить данные ссылки",
+    "noCode": "Код ссылки не указан"
   },
   "layout": {
     "title": "Панель администрирования ShortLinker",
@@ -465,6 +496,7 @@
       "features": "Функции",
       "click": "Отслеживание Кликов",
       "cors": "CORS",
+      "analytics": "Аналитика",
       "other": "Другое"
     },
     "keys": {
@@ -491,7 +523,14 @@
       "cors.allowed_origins": "Разрешенные источники ([\"*\"] = любые, пусто = только свой)",
       "cors.allowed_methods": "Разрешенные Методы",
       "cors.allowed_headers": "Разрешенные Заголовки",
-      "cors.max_age": "Макс. Время Кэша (секунды)"
+      "cors.max_age": "Макс. Время Кэша (секунды)",
+      "analytics.enable_detailed_logging": "Включить детальное логирование кликов",
+      "analytics.log_retention_days": "Хранение сырых логов (дни)",
+      "analytics.enable_ip_logging": "Записывать IP-адреса посетителей",
+      "analytics.enable_geo_lookup": "Включить геолокацию по IP",
+      "analytics.hourly_retention_days": "Хранение почасовой агрегации (дни)",
+      "analytics.daily_retention_days": "Хранение ежедневной агрегации (дни)",
+      "analytics.enable_auto_rollup": "Включить автоагрегацию и очистку"
     },
     "key": "Ключ",
     "value": "Значение",
@@ -520,6 +559,7 @@
       "routes": "Конфигурация маршрутов",
       "cors": "Настройки CORS",
       "tracking": "Отслеживание кликов",
+      "analytics": "Аналитика",
       "other": "Другое"
     },
     "placeholder": {
