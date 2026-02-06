@@ -557,7 +557,8 @@
       "analytics.enable_geo_lookup": "Activer la géolocalisation IP",
       "analytics.hourly_retention_days": "Rétention agrégation horaire (jours)",
       "analytics.daily_retention_days": "Rétention agrégation journalière (jours)",
-      "analytics.enable_auto_rollup": "Activer agrégation et nettoyage auto"
+      "analytics.enable_auto_rollup": "Activer agrégation et nettoyage auto",
+      "utm.enable_passthrough": "Activer le passthrough des paramètres UTM"
     },
     "key": "Clé",
     "value": "Valeur",

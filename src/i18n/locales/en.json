@@ -555,7 +555,8 @@
       "analytics.enable_geo_lookup": "Enable IP Geo Lookup",
       "analytics.hourly_retention_days": "Hourly Rollup Retention (Days)",
       "analytics.daily_retention_days": "Daily Rollup Retention (Days)",
-      "analytics.enable_auto_rollup": "Enable Auto Rollup & Cleanup"
+      "analytics.enable_auto_rollup": "Enable Auto Rollup & Cleanup",
+      "utm.enable_passthrough": "Enable UTM Parameter Passthrough"
     },
     "key": "Key",
     "value": "Value",

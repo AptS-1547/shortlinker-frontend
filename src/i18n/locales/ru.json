@@ -557,7 +557,8 @@
       "analytics.enable_geo_lookup": "Включить геолокацию по IP",
       "analytics.hourly_retention_days": "Хранение почасовой агрегации (дни)",
       "analytics.daily_retention_days": "Хранение ежедневной агрегации (дни)",
-      "analytics.enable_auto_rollup": "Включить автоагрегацию и очистку"
+      "analytics.enable_auto_rollup": "Включить автоагрегацию и очистку",
+      "utm.enable_passthrough": "Включить сквозную передачу UTM-параметров"
     },
     "key": "Ключ",
     "value": "Значение",

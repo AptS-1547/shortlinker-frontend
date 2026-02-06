@@ -54,6 +54,12 @@ export function MiniTrendChart({ data, loading }: MiniTrendChartProps) {
                 }}
                 labelStyle={{ color: 'var(--popover-foreground)' }}
                 itemStyle={{ color: 'var(--popover-foreground)' }}
+                labelFormatter={(_, payload) => {
+                  if (payload?.[0]?.payload?.date) {
+                    return payload[0].payload.date
+                  }
+                  return ''
+                }}
               />
               <Area
                 type="monotone"

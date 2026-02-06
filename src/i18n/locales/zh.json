@@ -555,7 +555,8 @@
       "analytics.enable_geo_lookup": "启用 IP 地理位置查询",
       "analytics.hourly_retention_days": "小时汇总数据保留天数",
       "analytics.daily_retention_days": "日汇总数据保留天数",
-      "analytics.enable_auto_rollup": "启用自动数据汇总清理"
+      "analytics.enable_auto_rollup": "启用自动数据汇总清理",
+      "utm.enable_passthrough": "启用 UTM 参数透传"
     },
     "key": "配置键",
     "value": "配置值",

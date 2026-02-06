@@ -555,7 +555,8 @@
       "analytics.enable_geo_lookup": "IP地理位置検索を有効化",
       "analytics.hourly_retention_days": "時間別集計データ保持日数",
       "analytics.daily_retention_days": "日別集計データ保持日数",
-      "analytics.enable_auto_rollup": "自動集計・クリーンアップを有効化"
+      "analytics.enable_auto_rollup": "自動集計・クリーンアップを有効化",
+      "utm.enable_passthrough": "UTMパラメータパススルーを有効化"
     },
     "key": "キー",
     "value": "値",
