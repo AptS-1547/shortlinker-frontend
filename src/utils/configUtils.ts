@@ -55,6 +55,7 @@ export const CONFIG_CATEGORY_INFO: Record<
   routes: { label: 'Route Configuration', i18nKey: 'config.category.routes' },
   cors: { label: 'CORS Settings', i18nKey: 'config.category.cors' },
   tracking: { label: 'Click Tracking', i18nKey: 'config.category.tracking' },
+  analytics: { label: 'Analytics', i18nKey: 'config.category.analytics' },
   other: { label: 'Other', i18nKey: 'config.category.other' },
 }
 

@@ -556,6 +556,9 @@
       "analytics.hourly_retention_days": "時間別集計データ保持日数",
       "analytics.daily_retention_days": "日別集計データ保持日数",
       "analytics.enable_auto_rollup": "自動集計・クリーンアップを有効化",
+      "analytics.sample_rate": "クリックログサンプリング率 (0.0-1.0)",
+      "analytics.max_log_rows": "最大クリックログ行数 (0=無制限)",
+      "analytics.max_rows_action": "最大行数超過時の動作",
       "utm.enable_passthrough": "UTMパラメータパススルーを有効化"
     },
     "key": "キー",
@@ -642,6 +645,16 @@
       "options": {
         "label": "OPTIONS",
         "description": "サポートされているメソッドを取得"
+      }
+    },
+    "maxRowsAction": {
+      "cleanup": {
+        "label": "自動クリーンアップ",
+        "description": "制限超過時に最も古いレコードを削除"
+      },
+      "stop": {
+        "label": "記録停止",
+        "description": "制限超過時に新しいクリックの記録を停止"
       }
     }
   },

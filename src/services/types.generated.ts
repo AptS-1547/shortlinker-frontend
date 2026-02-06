@@ -219,4 +219,4 @@ values: Array<bigint>, };
  *
  * 用于标识配置项在数据库和前端的类型。
  */
-export type ValueType = "string" | "int" | "bool" | "json" | "enum" | "stringarray" | "enumarray";
+export type ValueType = "string" | "int" | "float" | "bool" | "json" | "enum" | "stringarray" | "enumarray";

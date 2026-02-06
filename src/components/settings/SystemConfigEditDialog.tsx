@@ -312,6 +312,17 @@ export function SystemConfigEditDialog({
           />
         )
 
+      case 'float':
+        return (
+          <Input
+            type="text"
+            value={field.value}
+            onChange={(e) => field.onChange(e.target.value)}
+            className="font-mono"
+            placeholder="3.14"
+          />
+        )
+
       case 'json':
         // 没有 enum_options 的 json，使用 textarea
         return (

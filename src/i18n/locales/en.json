@@ -556,6 +556,9 @@
       "analytics.hourly_retention_days": "Hourly Rollup Retention (Days)",
       "analytics.daily_retention_days": "Daily Rollup Retention (Days)",
       "analytics.enable_auto_rollup": "Enable Auto Rollup & Cleanup",
+      "analytics.sample_rate": "Click Log Sampling Rate (0.0-1.0)",
+      "analytics.max_log_rows": "Max Click Log Rows (0 = unlimited)",
+      "analytics.max_rows_action": "Max Rows Exceeded Action",
       "utm.enable_passthrough": "Enable UTM Parameter Passthrough"
     },
     "key": "Key",
@@ -642,6 +645,16 @@
       "options": {
         "label": "OPTIONS",
         "description": "Get supported methods"
+      }
+    },
+    "maxRowsAction": {
+      "cleanup": {
+        "label": "Cleanup",
+        "description": "Delete oldest records when limit exceeded"
+      },
+      "stop": {
+        "label": "Stop",
+        "description": "Stop logging new clicks when limit exceeded"
       }
     }
   },

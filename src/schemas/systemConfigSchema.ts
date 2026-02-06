@@ -28,6 +28,22 @@ export function createConfigValueSchema(valueType: ConfigValueType) {
           { message: 'Must be a valid integer' },
         )
 
+    case 'float':
+      // float 类型必须是有效的浮点数字符串
+      return z
+        .string()
+        .regex(
+          /^-?(\d+\.?\d*|\d*\.?\d+)$/,
+          'Must be a valid number (e.g., 3.14, -2.5, 42)',
+        )
+        .refine(
+          (val) => {
+            const num = Number.parseFloat(val)
+            return !Number.isNaN(num) && Number.isFinite(num)
+          },
+          { message: 'Must be a valid number' },
+        )
+
     case 'json':
       // json 类型必须是有效的 JSON 字符串
       return z.string().refine(

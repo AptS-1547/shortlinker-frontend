@@ -558,6 +558,9 @@
       "analytics.hourly_retention_days": "Хранение почасовой агрегации (дни)",
       "analytics.daily_retention_days": "Хранение ежедневной агрегации (дни)",
       "analytics.enable_auto_rollup": "Включить автоагрегацию и очистку",
+      "analytics.sample_rate": "Частота выборки кликов (0.0-1.0)",
+      "analytics.max_log_rows": "Макс. строк журнала кликов (0=без лимита)",
+      "analytics.max_rows_action": "Действие при превышении лимита",
       "utm.enable_passthrough": "Включить сквозную передачу UTM-параметров"
     },
     "key": "Ключ",
@@ -644,6 +647,16 @@
       "options": {
         "label": "OPTIONS",
         "description": "Получить поддерживаемые методы"
+      }
+    },
+    "maxRowsAction": {
+      "cleanup": {
+        "label": "Очистка",
+        "description": "Удалить старые записи при превышении лимита"
+      },
+      "stop": {
+        "label": "Остановить",
+        "description": "Прекратить запись кликов при превышении лимита"
       }
     }
   },

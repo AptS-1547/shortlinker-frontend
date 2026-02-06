@@ -556,6 +556,9 @@
       "analytics.hourly_retention_days": "小时汇总数据保留天数",
       "analytics.daily_retention_days": "日汇总数据保留天数",
       "analytics.enable_auto_rollup": "启用自动数据汇总清理",
+      "analytics.sample_rate": "点击日志采样率 (0.0-1.0)",
+      "analytics.max_log_rows": "最大点击日志行数 (0=不限)",
+      "analytics.max_rows_action": "超出最大行数时的处理",
       "utm.enable_passthrough": "启用 UTM 参数透传"
     },
     "key": "配置键",
@@ -642,6 +645,16 @@
       "options": {
         "label": "OPTIONS",
         "description": "获取支持的方法"
+      }
+    },
+    "maxRowsAction": {
+      "cleanup": {
+        "label": "自动清理",
+        "description": "超出限制时删除最旧的记录"
+      },
+      "stop": {
+        "label": "停止记录",
+        "description": "超出限制时停止记录新点击"
       }
     }
   },

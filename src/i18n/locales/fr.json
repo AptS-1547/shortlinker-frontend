@@ -558,6 +558,9 @@
       "analytics.hourly_retention_days": "Rétention agrégation horaire (jours)",
       "analytics.daily_retention_days": "Rétention agrégation journalière (jours)",
       "analytics.enable_auto_rollup": "Activer agrégation et nettoyage auto",
+      "analytics.sample_rate": "Taux d'échantillonnage des clics (0.0-1.0)",
+      "analytics.max_log_rows": "Lignes max du journal des clics (0=illimité)",
+      "analytics.max_rows_action": "Action si limite dépassée",
       "utm.enable_passthrough": "Activer le passthrough des paramètres UTM"
     },
     "key": "Clé",
@@ -644,6 +647,16 @@
       "options": {
         "label": "OPTIONS",
         "description": "Obtenir les méthodes supportées"
+      }
+    },
+    "maxRowsAction": {
+      "cleanup": {
+        "label": "Nettoyage",
+        "description": "Supprimer les enregistrements les plus anciens si limite dépassée"
+      },
+      "stop": {
+        "label": "Arrêter",
+        "description": "Arrêter l'enregistrement des clics si limite dépassée"
       }
     }
   },
