@@ -51,7 +51,8 @@ export class QRCodeService {
       config.baseUrl ||
       (typeof window !== 'undefined' ? window.location.origin : '')
 
-    const fullUrl = `${domain}/${shortCode}`
+    // QR Code 链接自动添加 utm_source=qrcode 用于流量来源追踪
+    const fullUrl = `${domain}/${shortCode}?utm_source=qrcode`
     return this.generate(fullUrl, options)
   }
 
