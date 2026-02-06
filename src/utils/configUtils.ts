@@ -68,14 +68,26 @@ export function groupConfigsByCategory(
 ): Record<string, ConfigItemResponse[]> {
   const groups: Record<string, ConfigItemResponse[]> = {}
 
+  // 创建 key -> schema 的映射，便于快速查找
+  const schemaMap = new Map(schemas.map((s) => [s.key, s]))
+
   for (const config of configs) {
-    const schema = schemas.find((s) => s.key === config.key)
+    const schema = schemaMap.get(config.key)
     const category = schema?.category || 'other'
 
     if (!groups[category]) {
       groups[category] = []
     }
     groups[category].push(config)
+  }
+
+  // 按 schema.order 对每个分组内的配置项排序
+  for (const category of Object.keys(groups)) {
+    groups[category].sort((a, b) => {
+      const orderA = schemaMap.get(a.key)?.order ?? Number.MAX_SAFE_INTEGER
+      const orderB = schemaMap.get(b.key)?.order ?? Number.MAX_SAFE_INTEGER
+      return orderA - orderB
+    })
   }
 
   return groups

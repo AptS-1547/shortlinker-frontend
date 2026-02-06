@@ -74,7 +74,11 @@ value_type: ValueType, requires_restart: boolean, is_sensitive: boolean, updated
 /**
  * 配置项的 schema 元信息
  */
-export type ConfigSchema = { key: string, value_type: ValueType, default_value: string, description: string, category?: string, enum_options?: Array<EnumOption>, requires_restart: boolean, editable: boolean, };
+export type ConfigSchema = { key: string, value_type: ValueType, default_value: string, description: string, category?: string, enum_options?: Array<EnumOption>, requires_restart: boolean, editable: boolean, 
+/**
+ * 排序顺序（基于 definitions.rs 中 ALL_CONFIGS 的索引）
+ */
+order: number, };
 
 /**
  * 配置更新请求
