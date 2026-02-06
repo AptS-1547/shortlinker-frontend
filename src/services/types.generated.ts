@@ -15,6 +15,14 @@
 export enum ErrorCode { "Success" = 0, "BadRequest" = 1000, "Unauthorized" = 1001, "NotFound" = 1004, "InternalServerError" = 1005, "BatchSizeTooLarge" = 1010, "FileTooLarge" = 1011, "InvalidDateFormat" = 1012, "ServiceUnavailable" = 1030, "AuthFailed" = 2000, "TokenExpired" = 2001, "TokenInvalid" = 2002, "CsrfInvalid" = 2003, "RateLimitExceeded" = 2004, "LinkNotFound" = 3000, "LinkAlreadyExists" = 3001, "LinkInvalidUrl" = 3002, "LinkInvalidExpireTime" = 3003, "LinkPasswordHashError" = 3004, "LinkDatabaseError" = 3005, "LinkEmptyCode" = 3006, "LinkInvalidCode" = 3007, "LinkReservedCode" = 3008, "ImportFailed" = 4000, "ExportFailed" = 4001, "InvalidMultipartData" = 4002, "FileReadError" = 4003, "CsvFileMissing" = 4004, "CsvParseError" = 4005, "CsvGenerationError" = 4006, "ConfigNotFound" = 5000, "ConfigUpdateFailed" = 5001, "ConfigReloadFailed" = 5002, "AnalyticsQueryFailed" = 6000, "AnalyticsLinkNotFound" = 6001, "AnalyticsInvalidDateRange" = 6002 }
 
 /**
+ * 配置 Action 类型枚举
+ *
+ * 用于标识配置项可执行的操作（如生成 token）。
+ * 这是一个与 ValueType 正交的概念 - 任何类型的配置都可以有可选的 action。
+ */
+export type ActionType = "generate_token";
+
+/**
  * Analytics 查询参数
  */
 export type AnalyticsQuery = { 
@@ -58,6 +66,16 @@ export type BatchUpdateRequest = { updates: Array<BatchUpdateItem>, };
 export type CategoryStatsResponse = { name: string, count: bigint, percentage: number, };
 
 /**
+ * 配置 action 执行请求
+ */
+export type ConfigActionRequest = { action: ActionType, };
+
+/**
+ * 配置 action 执行响应
+ */
+export type ConfigActionResponse = { value: string, };
+
+/**
  * 配置历史记录响应
  */
 export type ConfigHistoryResponse = { id: number, config_key: string, old_value: string | null, new_value: string, changed_at: string, changed_by: string | null, };
@@ -78,7 +96,11 @@ export type ConfigSchema = { key: string, value_type: ValueType, default_value: 
 /**
  * 排序顺序（基于 definitions.rs 中 ALL_CONFIGS 的索引）
  */
-order: number, };
+order: number, 
+/**
+ * 可执行的 action（如生成 token）
+ */
+action?: ActionType, };
 
 /**
  * 配置更新请求
@@ -99,6 +121,11 @@ export type DeviceAnalyticsResponse = { browsers: Array<CategoryStatsResponse>, 
  * 单个 enum 选项
  */
 export type EnumOption = { value: string, label: string, label_i18n_key?: string, description?: string, description_i18n_key?: string, };
+
+/**
+ * 执行并保存响应（安全版本，不返回密钥值）
+ */
+export type ExecuteAndSaveResponse = { success: boolean, requires_restart: boolean, message: string | null, };
 
 /**
  * 导出查询参数

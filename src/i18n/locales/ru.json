@@ -602,7 +602,10 @@
       "invalidIpCidr": "Неверный формат IP/CIDR",
       "invalidUrl": "Неверный формат URL",
       "invalidHeader": "Неверное имя заголовка"
-    }
+    },
+    "generateAndSaveHint": "Нажмите кнопку, чтобы автоматически сгенерировать и сохранить новый ключ безопасности",
+    "generating": "Генерация...",
+    "generateAndSave": "Сгенерировать и сохранить"
   },
   "enums": {
     "sameSite": {

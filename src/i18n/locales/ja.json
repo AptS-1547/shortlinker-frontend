@@ -600,7 +600,10 @@
       "invalidIpCidr": "無効なIP/CIDR形式",
       "invalidUrl": "無効なURL形式",
       "invalidHeader": "無効なヘッダー名"
-    }
+    },
+    "generateAndSaveHint": "ボタンをクリックすると、新しいセキュリティキーが自動生成および保存されます",
+    "generating": "生成中...",
+    "generateAndSave": "生成して保存"
   },
   "enums": {
     "sameSite": {

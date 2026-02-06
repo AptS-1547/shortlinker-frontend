@@ -6,7 +6,13 @@ import type {
   ConfigUpdateRequest,
   ConfigUpdateResponse,
 } from './types'
-import type { ConfigSchema, ReloadResponse } from './types.generated'
+import type {
+  ActionType,
+  ConfigActionResponse,
+  ConfigSchema,
+  ExecuteAndSaveResponse,
+  ReloadResponse,
+} from './types.generated'
 
 export class SystemConfigService {
   /**
@@ -114,6 +120,46 @@ export class SystemConfigService {
       data?: ConfigSchema[]
     }>(ENDPOINTS.CONFIG.SCHEMA, { signal })
     return response.data || []
+  }
+
+  /**
+   * 执行配置 action（如生成 token）
+   */
+  async executeAction(
+    key: string,
+    action: ActionType,
+  ): Promise<ConfigActionResponse> {
+    const response = await adminClient.post<{
+      code?: number
+      data?: ConfigActionResponse
+    }>(ENDPOINTS.CONFIG.ACTION(key), { action })
+    return response.data || { value: '' }
+  }
+
+  /**
+   * 执行配置 action 并保存（安全版本）
+   *
+   * 密钥值在后端生成并保存，不返回给前端，最大化安全性
+   */
+  async executeAndSave(
+    key: string,
+    action: ActionType,
+  ): Promise<ExecuteAndSaveResponse> {
+    const response = await adminClient.post<{
+      code?: number
+      data?: ExecuteAndSaveResponse
+    }>(ENDPOINTS.CONFIG.EXECUTE_AND_SAVE(key), { action })
+
+    // 清除该配置项的缓存
+    adminClient.invalidateTags([`config:${key}`, 'config-all'])
+
+    return (
+      response.data || {
+        success: false,
+        requires_restart: false,
+        message: null,
+      }
+    )
   }
 }
 

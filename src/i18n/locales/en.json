@@ -600,7 +600,10 @@
       "invalidIpCidr": "Invalid IP/CIDR format",
       "invalidUrl": "Invalid URL format",
       "invalidHeader": "Invalid header name"
-    }
+    },
+    "generateAndSaveHint": "Click the button to automatically generate and save a new security key",
+    "generating": "Generating...",
+    "generateAndSave": "Generate and Save"
   },
   "enums": {
     "sameSite": {

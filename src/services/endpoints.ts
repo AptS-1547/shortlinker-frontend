@@ -25,6 +25,9 @@ export const ENDPOINTS = {
     LIST: `${V1}/config`,
     SINGLE: (key: string) => `${V1}/config/${encodeURIComponent(key)}`,
     HISTORY: (key: string) => `${V1}/config/${encodeURIComponent(key)}/history`,
+    ACTION: (key: string) => `${V1}/config/${encodeURIComponent(key)}/action`,
+    EXECUTE_AND_SAVE: (key: string) =>
+      `${V1}/config/${encodeURIComponent(key)}/execute-and-save`,
     RELOAD: `${V1}/config/reload`,
     SCHEMA: `${V1}/config/schema`,
   },

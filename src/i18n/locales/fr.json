@@ -602,7 +602,10 @@
       "invalidIpCidr": "Format IP/CIDR invalide",
       "invalidUrl": "Format URL invalide",
       "invalidHeader": "Nom d'en-tête invalide"
-    }
+    },
+    "generateAndSaveHint": "Cliquez sur le bouton pour générer et enregistrer automatiquement une nouvelle clé de sécurité",
+    "generating": "Génération en cours...",
+    "generateAndSave": "Générer et enregistrer"
   },
   "enums": {
     "sameSite": {

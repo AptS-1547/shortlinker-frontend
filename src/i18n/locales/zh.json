@@ -600,7 +600,10 @@
       "invalidIpCidr": "无效的 IP/CIDR 格式",
       "invalidUrl": "无效的 URL 格式",
       "invalidHeader": "无效的 Header 名称"
-    }
+    },
+    "generateAndSaveHint": "点击按钮将自动生成并保存新的安全密钥",
+    "generating": "生成中...",
+    "generateAndSave": "生成并保存"
   },
   "enums": {
     "sameSite": {

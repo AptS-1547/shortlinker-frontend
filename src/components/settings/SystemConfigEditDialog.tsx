@@ -2,9 +2,10 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { FiAlertTriangle, FiCode } from 'react-icons/fi'
+import { FiAlertTriangle, FiCode, FiRefreshCw } from 'react-icons/fi'
 import type { z } from 'zod'
 
+import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
@@ -40,6 +41,7 @@ import {
   createConfigFormSchema,
 } from '@/schemas/systemConfigSchema'
 import type { ConfigItemResponse } from '@/services/api'
+import { systemConfigService } from '@/services/systemConfigService'
 import type { EnumOption } from '@/services/types.generated'
 import { formatJSON, getConfigKeyLabel } from '@/utils/configUtils'
 
@@ -63,6 +65,7 @@ export function SystemConfigEditDialog({
 }: SystemConfigEditDialogProps) {
   const { t } = useTranslation()
   const [showRestartWarning, setShowRestartWarning] = useState(false)
+  const [generating, setGenerating] = useState(false)
 
   // 从 API 获取 schema
   const { schema: configSchema } = useConfigSchemaByKey(config?.key || '')
@@ -115,6 +118,29 @@ export function SystemConfigEditDialog({
     form.setValue('value', formatted)
   }
 
+  const handleSecureGenerate = async () => {
+    if (!config || !configSchema?.action) return
+
+    setGenerating(true)
+    try {
+      const result = await systemConfigService.executeAndSave(
+        config.key,
+        configSchema.action,
+      )
+      if (result.success) {
+        if (result.requires_restart) {
+          setShowRestartWarning(true)
+        } else {
+          onOpenChange(false)
+        }
+      }
+    } catch {
+      // Error is handled by the store
+    } finally {
+      setGenerating(false)
+    }
+  }
+
   if (!config) return null
 
   // 根据类型和 schema 渲染不同的输入组件
@@ -122,6 +148,36 @@ export function SystemConfigEditDialog({
     value: string
     onChange: (value: string) => void
   }) => {
+    // 0. 敏感配置 + Action → 只显示 Generate and Save 按钮
+    if (config.is_sensitive && configSchema?.action) {
+      return (
+        <div className="space-y-3">
+          <Alert>
+            <AlertDescription>
+              {t(
+                'config.generateAndSaveHint',
+                '点击按钮将自动生成并保存新的安全密钥',
+              )}
+            </AlertDescription>
+          </Alert>
+          <Button
+            type="button"
+            variant="default"
+            onClick={handleSecureGenerate}
+            disabled={generating}
+            className="w-full"
+          >
+            <FiRefreshCw
+              className={`mr-2 h-4 w-4 ${generating ? 'animate-spin' : ''}`}
+            />
+            {generating
+              ? t('config.generating', 'Generating...')
+              : t('config.generateAndSave', 'Generate and Save')}
+          </Button>
+        </div>
+      )
+    }
+
     // 1. Bool 类型优先使用 Switch（无论是否有 enum_options）
     if (config.value_type === 'bool') {
       return (
