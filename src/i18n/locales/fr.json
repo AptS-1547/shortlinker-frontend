@@ -524,6 +524,7 @@
       "click": "Suivi des Clics",
       "cors": "CORS",
       "analytics": "Analytiques",
+      "cache": "Cache",
       "other": "Autre"
     },
     "keys": {
@@ -561,7 +562,8 @@
       "analytics.sample_rate": "Taux d'échantillonnage des clics (0.0-1.0)",
       "analytics.max_log_rows": "Lignes max du journal des clics (0=illimité)",
       "analytics.max_rows_action": "Action si limite dépassée",
-      "utm.enable_passthrough": "Activer le passthrough des paramètres UTM"
+      "utm.enable_passthrough": "Activer le passthrough des paramètres UTM",
+      "cache.bloom_rebuild_interval": "Intervalle de reconstruction du filtre Bloom (secondes)"
     },
     "key": "Clé",
     "value": "Valeur",
@@ -591,6 +593,7 @@
       "cors": "Paramètres CORS",
       "tracking": "Suivi des clics",
       "analytics": "Analytiques",
+      "cache": "Paramètres du cache",
       "other": "Autre"
     },
     "placeholder": {

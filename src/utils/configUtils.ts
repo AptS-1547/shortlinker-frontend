@@ -56,6 +56,7 @@ export const CONFIG_CATEGORY_INFO: Record<
   cors: { label: 'CORS Settings', i18nKey: 'config.category.cors' },
   tracking: { label: 'Click Tracking', i18nKey: 'config.category.tracking' },
   analytics: { label: 'Analytics', i18nKey: 'config.category.analytics' },
+  cache: { label: 'Cache Settings', i18nKey: 'config.category.cache' },
   other: { label: 'Other', i18nKey: 'config.category.other' },
 }
 

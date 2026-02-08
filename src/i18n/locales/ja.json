@@ -522,6 +522,7 @@
       "click": "クリック追跡",
       "cors": "CORS",
       "analytics": "分析統計",
+      "cache": "キャッシュ",
       "other": "その他"
     },
     "keys": {
@@ -559,7 +560,8 @@
       "analytics.sample_rate": "クリックログサンプリング率 (0.0-1.0)",
       "analytics.max_log_rows": "最大クリックログ行数 (0=無制限)",
       "analytics.max_rows_action": "最大行数超過時の動作",
-      "utm.enable_passthrough": "UTMパラメータパススルーを有効化"
+      "utm.enable_passthrough": "UTMパラメータパススルーを有効化",
+      "cache.bloom_rebuild_interval": "ブルームフィルタ再構築間隔(秒)"
     },
     "key": "キー",
     "value": "値",
@@ -589,6 +591,7 @@
       "cors": "CORS設定",
       "tracking": "クリック追跡",
       "analytics": "分析統計",
+      "cache": "キャッシュ設定",
       "other": "その他"
     },
     "placeholder": {

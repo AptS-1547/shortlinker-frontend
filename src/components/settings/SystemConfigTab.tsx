@@ -76,6 +76,8 @@ export function SystemConfigTab({ isActive = true }: SystemConfigTabProps) {
     'routes',
     'cors',
     'tracking',
+    'analytics',
+    'cache',
     'other',
   ]
   const sortedCategories = useMemo(() => {
