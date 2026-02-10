@@ -177,10 +177,14 @@ export type HttpMethod = "GET" | "POST" | "PUT" | "DELETE" | "PATCH" | "HEAD" | 
 /**
  * 导入失败项
  */
-export type ImportFailedItem = { row: number, code: string, error: string, error_code: number | null, };
+export type ImportFailedItem = { 
+/**
+ * CSV 行号（1-based），None 表示行号未知（如 service 层返回的冲突项无法反查行号）
+ */
+row: number | null, code: string, error: string, error_code: number | null, };
 
 /**
- * 导入模式
+ * Import conflict resolution mode
  */
 export type ImportMode = "skip" | "overwrite" | "error";
 

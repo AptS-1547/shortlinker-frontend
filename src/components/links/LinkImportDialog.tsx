@@ -283,10 +283,13 @@ export function LinkImportDialog({
                   <p className="text-xs text-muted-foreground mb-1">
                     {t('links.import.failedDetails')}
                   </p>
-                  {result.failed_items.slice(0, 5).map((item) => (
-                    <p key={item.row} className="text-xs text-red-500">
+                  {result.failed_items.slice(0, 5).map((item, index) => (
+                    <p
+                      key={item.row ?? `unknown-${index}`}
+                      className="text-xs text-red-500"
+                    >
                       {t('links.import.failedItem', {
-                        row: item.row,
+                        row: item.row ?? '?',
                         code: item.code,
                         error: item.error,
                       })}
